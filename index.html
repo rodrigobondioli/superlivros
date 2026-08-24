@@ -154,7 +154,102 @@ select{appearance:none;-webkit-appearance:none;padding:10px 40px 10px 14px;borde
 .postbody pre{white-space:pre-wrap;word-wrap:break-word;font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;color:var(--ink)}
 .cp{display:inline-flex;align-items:center;gap:5px;margin-bottom:10px;border:0;background:var(--acc);color:var(--acc-ink);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer}
 .cp.done{background:#1a6b2e;color:#fff}
-</style></head><body><div class="wrap">
+</style><style id="rd-style">
+#modal.rd{--rdbg:#131315;--rdp:#181819;--rdp2:#1f1f22;--rdln:#262629;--rdln2:#303035;--rdtx:#ececee;--rdmut:#8c8c94;--rdft:#5a5a62;--rdlime:#E7F99A}
+#modal.rd,#modal.rd *{box-sizing:border-box}
+#modal.rd{background:var(--rdbg);color:var(--rdtx)}
+#modal.rd .mx{z-index:5}
+/* HEAD */
+#modal.rd .rd-head{display:flex;gap:20px;padding:26px 26px 22px;border-bottom:1px solid var(--rdln);align-items:flex-start}
+#modal.rd .rd-head .mcov,#modal.rd .rd-head .mfb{width:90px;height:132px;border-radius:8px;object-fit:cover;flex:0 0 auto;box-shadow:none}
+#modal.rd .rd-head .mfb{display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;padding:8px;color:#fff;line-height:1.25}
+#modal.rd .rd-hmeta{flex:1;min-width:0;padding-top:2px}
+#modal.rd .rd-t{font-size:23px;font-weight:750;letter-spacing:-.02em;line-height:1.15;margin:0 0 3px;color:var(--rdtx)}
+#modal.rd .rd-a{color:var(--rdmut);font-size:14.5px;margin:0 0 14px}
+#modal.rd .rd-metarow{display:flex;flex-wrap:wrap;gap:8px 15px;align-items:center}
+#modal.rd .rd-cat{font-size:12px;padding:3px 11px;border-radius:999px;border:1px solid var(--rdln2);color:var(--rdtx)}
+#modal.rd .rd-grd{font-size:12.5px;color:var(--rdmut);display:inline-flex;align-items:center;gap:6px}
+#modal.rd .rd-ck{color:var(--rdlime)}
+#modal.rd .rd-feeds{margin-top:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--rdmut)}
+#modal.rd .rd-fl{color:var(--rdft);text-transform:uppercase;font-size:10.5px;letter-spacing:.08em}
+#modal.rd .rd-feed{display:inline-flex;align-items:center;gap:7px}
+#modal.rd .rd-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;display:inline-block}
+#modal.rd .rd-hact{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+/* BOTOES */
+#modal.rd .rd-btn{border:1px solid var(--rdln2);background:var(--rdp);color:var(--rdtx);font-size:12.5px;font-weight:550;padding:8px 13px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.14s;white-space:nowrap;justify-content:center}
+#modal.rd .rd-btn:hover{background:var(--rdp2);border-color:#3d3d44}
+#modal.rd .rd-ghost{background:transparent}
+#modal.rd .rd-btn .mi{font-size:16px}
+#modal.rd .dfav.on{color:var(--rdlime);border-color:rgba(231,249,154,.35)}
+/* BODY */
+#modal.rd .rd-body{padding:0 26px}
+#modal.rd .rd-sec{padding:22px 0;border-bottom:1px solid var(--rdln)}
+#modal.rd .rd-sec:last-child{border-bottom:0;padding-bottom:30px}
+#modal.rd .rd-lbl{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--rdft);margin-bottom:15px}
+#modal.rd .rd-cnt{letter-spacing:.02em;text-transform:none;font-weight:500}
+#modal.rd .rd-soon{color:var(--rdmut);font-size:14px;margin:0 0 12px}
+#modal.rd .rd-quote{background:var(--rdp);border:1px solid var(--rdln);border-radius:12px;padding:15px 17px;color:var(--rdmut);font-size:13.5px;font-style:italic;line-height:1.6}
+/* SOBRE */
+#modal.rd .rd-two{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rdln);border:1px solid var(--rdln);border-radius:12px;overflow:hidden}
+#modal.rd .rd-card{background:var(--rdp);padding:16px 18px}
+#modal.rd .rd-card h4{margin:0 0 8px;font-size:11px;color:var(--rdft);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+#modal.rd .rd-card p{margin:0;font-size:14.5px;line-height:1.55;color:var(--rdtx)}
+/* COBERTURA */
+#modal.rd .rd-cov{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+#modal.rd .rd-covi{background:var(--rdp);border:1px solid var(--rdln);border-radius:10px;padding:12px 13px}
+#modal.rd .rd-covt{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+#modal.rd .rd-nm{font-size:12.5px;font-weight:550;display:flex;align-items:center;gap:8px;color:var(--rdtx)}
+#modal.rd .rd-lv{font-size:10.5px;color:var(--rdft);text-transform:uppercase;letter-spacing:.04em}
+#modal.rd .rd-bar{height:4px;border-radius:2px;background:#26262b;overflow:hidden}
+#modal.rd .rd-bar>i{display:block;height:100%;border-radius:2px;background:var(--rdmut)}
+#modal.rd .rd-covi.empty{border-style:dashed}
+#modal.rd .rd-covi.empty .rd-nm{color:var(--rdmut)}
+/* MATERIA-PRIMA */
+#modal.rd .rd-mp{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+#modal.rd .rd-ing{background:var(--rdp);border:1px solid var(--rdln);border-radius:11px;padding:14px 16px;transition:.14s}
+#modal.rd .rd-ing:hover{border-color:var(--rdln2)}
+#modal.rd .rd-kindrow{margin-bottom:8px}
+#modal.rd .rd-kind{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rdft);display:inline-flex;align-items:center;gap:6px}
+#modal.rd .rd-ing .rd-q{font-size:14.5px;line-height:1.5;color:var(--rdtx)}
+#modal.rd .rd-ing.frase .rd-q{font-style:italic;color:#dcdce0}
+#modal.rd .rd-ifoot{display:flex;align-items:center;gap:8px;margin-top:11px}
+#modal.rd .rd-ifoot .qcopy,#modal.rd .rd-ifoot .qfav{border:1px solid var(--rdln2);background:transparent;color:var(--rdmut);font-size:12px;padding:5px 10px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:.14s}
+#modal.rd .rd-ifoot .qcopy:hover,#modal.rd .rd-ifoot .qfav:hover{color:var(--rdtx);border-color:#3d3d44}
+#modal.rd .rd-ifoot .qfav.on{color:var(--rdlime);border-color:rgba(231,249,154,.35)}
+#modal.rd .rd-ifoot .mi{font-size:15px}
+/* PAUTAS */
+#modal.rd .pfilter{display:flex;gap:6px;margin-bottom:15px;flex-wrap:wrap}
+#modal.rd .pfilter button{font-size:12px;padding:6px 12px;border-radius:8px;border:1px solid var(--rdln);background:transparent;color:var(--rdmut);cursor:pointer;transition:.14s}
+#modal.rd .pfilter button:hover{border-color:var(--rdln2)}
+#modal.rd .pfilter button.on{background:var(--rdp2);color:var(--rdtx);border-color:var(--rdln2)}
+#modal.rd .pfilter button b{color:inherit;font-weight:650;margin-left:3px}
+#modal.rd .rd-posts{display:flex;flex-direction:column;gap:9px}
+#modal.rd .post{background:var(--rdp);border:1px solid var(--rdln);border-radius:11px;overflow:hidden}
+#modal.rd .post[open]{border-color:var(--rdln2)}
+#modal.rd .post.discarded{opacity:.4}
+#modal.rd .post summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:13px 15px}
+#modal.rd .post summary::-webkit-details-marker{display:none}
+#modal.rd .rd-ptag{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--rdtx)}
+#modal.rd .rd-star{color:var(--rdlime);font-size:12px}
+#modal.rd .rd-ms{font-size:11.5px;color:var(--rdmut)}
+#modal.rd .rd-ed{color:var(--rdft)}
+#modal.rd .rd-msep{color:var(--rdft);font-size:11px}
+#modal.rd .post.published .rd-ptag::after{content:'publicado';margin-left:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--rdlime)}
+#modal.rd .pacts{margin-left:auto;display:flex;gap:2px}
+#modal.rd .pacts button{background:transparent;border:0;color:var(--rdft);cursor:pointer;padding:4px;border-radius:6px;display:inline-flex;transition:.14s}
+#modal.rd .pacts button:hover{color:var(--rdtx);background:var(--rdp2)}
+#modal.rd .pacts .mi{font-size:17px}
+#modal.rd .post.published .pub{color:var(--rdlime)}
+#modal.rd .postbody{padding:0 15px 14px}
+#modal.rd .pbtns{display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap}
+#modal.rd .pbtns button{border:1px solid var(--rdln2);background:transparent;color:var(--rdmut);font-size:12px;padding:5px 10px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:.14s}
+#modal.rd .pbtns button:hover{color:var(--rdtx);border-color:#3d3d44}
+#modal.rd .pbtns .mi{font-size:15px}
+#modal.rd .ptext{white-space:pre-wrap;font:14px/1.55 inherit;color:#d6d6da;margin:0;background:transparent;border:0;padding:0}
+#modal.rd .genhint{font-size:12px;color:var(--rdmut);margin-top:8px}
+@media(max-width:720px){#modal.rd .rd-two{grid-template-columns:1fr}#modal.rd .rd-cov{grid-template-columns:1fr 1fr}#modal.rd .rd-head{flex-wrap:wrap}#modal.rd .rd-hact{flex-direction:row;width:100%}}
+</style>
+</head><body><div class="wrap">
 <div class="head"><div class="titlewrap"><h1>Superlivros</h1><div class="stats" id="stats"></div></div>
 <div class="toolbar">
 <button id="favbtn" class="favtoggle" type="button" title="Mostrar só favoritos"><span class="mi">star</span>Favoritos</button>
@@ -215,38 +310,90 @@ function card(b){
 }
 let COPY={};
 function openBook(i){
-  CUR=i;const b=BOOKS[i];
-  const cov=b.cover?`<img class="mcov" src="${esc(b.cover)}" onerror="this.outerHTML='<div class=\\'mfb\\' style=\\'background:${col(b.titulo)}\\'>'+this.alt+'</div>'" alt="${esc(b.titulo)}">`:`<div class="mfb" style="background:${col(b.titulo)}">${esc(b.titulo)}</div>`;
-  let body='';
-  if(b.desc||b.muda||(b.ganchos&&b.ganchos.length)){
-    if(b.desc)body+=`<div class="sec"><h3>Do que trata</h3><p>${esc(b.desc)}</p></div>`;
-    if(b.muda)body+=`<div class="sec"><h3>O que muda em você</h3><p>${esc(b.muda)}</p></div>`;
-    if(b.ganchos&&b.ganchos.length)body+=`<div class="sec gan"><h3><span class="mi">bolt</span> Ganchos de conteúdo</h3><ul>${b.ganchos.map(g=>`<li>${esc(g)}</li>`).join('')}</ul></div>`;
-  }else{body=`<p class="soon">Descrição chegando em breve.</p>`}
-  body+=quotesSectionHTML(b);
-  if(postsOf(b).length){
-    COPY={};
-    const platOf=t=>t.indexOf('Substack')>=0?'Substack':(t.indexOf('LinkedIn')>=0?'LinkedIn':(t.indexOf('Instagram')>=0?'Instagram':(t.indexOf('X ·')>=0?'X':'Outro')));
-    const P=postsOf(b);const counts={};P.forEach(p=>{const pl=platOf(p.tag);counts[pl]=(counts[pl]||0)+1});
-    let fbar=`<div class="pfilter"><button data-pf="all" class="on">Todos <b>${P.length}</b></button>`;
-    ['Substack','LinkedIn','Instagram','X','Outro'].forEach(pl=>{if(counts[pl])fbar+=`<button data-pf="${pl}">${pl==='Substack'?'<span class="mi" style="font-size:14px;vertical-align:-3px">star</span> ':''}${pl} <b>${counts[pl]}</b></button>`});
-    fbar+=`</div>`;
-    body+=`<div class="sec posts"><h3><span class="mi">edit_note</span> Pauta pronta — ${P.length} posts</h3>${fbar}<div id="postlist">`;
-    P.forEach((p,pi)=>{
-      const cid='cp'+i+'_'+pi;const pid=(b.hash||('b'+i))+'#'+pi;
-      ORIG[pid]=p.text;
-      const txt=(EDITS[pid]!=null)?EDITS[pid]:p.text;COPY[cid]=txt;
-      const pl=platOf(p.tag);const ed=(EDITS[pid]!=null)?' (editado)':'';
-      const cls=(p.tag.indexOf('Substack')>=0?' mae':'')+(PS.pub[pid]?' published':'')+(PS.del[pid]?' discarded':'');
-      body+=`<details class="post${cls}" data-pid="${pid}" data-plat="${pl}" data-cid="${cid}"><summary><span class="ptag">${esc(p.tag)}${ed}</span><span class="pacts"><button class="pub" title="Marcar como publicado"><span class="mi">check</span></button><button class="del" title="Descartar / restaurar"><span class="mi">delete</span></button></span></summary><div class="postbody"><div class="pbtns"><button class="cp" data-cp="${cid}"><span class="mi">content_copy</span> copiar</button><button class="ed"><span class="mi">edit</span> editar</button><button class="ai"><span class="mi">auto_awesome</span> ajustar com IA</button></div><pre class="ptext">${esc(txt)}</pre></div></details>`;
-    });
-    body+=`</div></div>`;
-  } else {
-    body+=`<div class="sec posts"><h3><span class="mi">edit_note</span> Pauta</h3><p class="soon" style="margin-bottom:10px">Esse livro ainda não tem pauta gerada.</p><button class="genp" data-t="${esc(b.titulo)}" data-a="${esc(b.autor)}"><span class="mi">auto_awesome</span> Gerar pauta deste livro</button><div class="genhint"></div></div>`;
+  CUR=i;const b=BOOKS[i];modal.classList.add('rd');
+  const cov=b.cover?`<img class="mcov" src="${esc(b.cover)}" onerror="this.outerHTML='<div class=\'mfb\' style=\'background:${col(b.titulo)}\'>'+this.alt+'</div>'" alt="${esc(b.titulo)}">`:`<div class="mfb" style="background:${col(b.titulo)}">${esc(b.titulo)}</div>`;
+  function tparts(t){var a=(t||'').split('·').map(function(s){return s.trim();});return{plat:a[0]||'',cam:a[1]||'',pil:a[2]||''};}
+  function platOf(t){t=t||'';return t.indexOf('Substack')>=0?'Substack':(t.indexOf('LinkedIn')>=0?'LinkedIn':(t.indexOf('Instagram')>=0?'Instagram':(t.indexOf('X ·')>=0?'X':'Outro')));}
+  function qItemMP(hs,qi,t,kind){
+    var isFr=kind==='frase';
+    var fav=isFr?`<button class="qfav${isQF(hs,t)?' on':''}" title="Favoritar (banco)"><span class="mi">star</span></button>`:'';
+    var da=isFr?`data-h="${esc(hs)}" data-qi="${qi}"`:'';
+    var lab=isFr?`<span class="rd-kind"><span class="rd-ck">✓</span> frase do livro</span>`:`<span class="rd-kind">ângulo</span>`;
+    return `<div class="rd-ing${isFr?' frase':''} qitem" ${da}><div class="rd-kindrow">${lab}</div><div class="rd-q qtext">${esc(t)}</div><div class="rd-ifoot"><button class="qcopy rd-cp" title="Copiar"><span class="mi">content_copy</span> copiar</button>${fav}</div></div>`;
   }
+  const P=postsOf(b);
+
+  // grounded + alimenta
+  const grounded=b.txt?`<span class="rd-grd"><span class="rd-ck">✓</span> fundado no PDF real</span>`:'';
+  let feeds='';
+  if(P.length){
+    var fc={};P.forEach(function(p){var pl=pilarOf(tparts(p.tag).pil);var k=pl.n;if(!fc[k])fc[k]={s:pl.s||pl.n,c:pl.c,k:0};fc[k].k++;});
+    var top=Object.keys(fc).map(function(k){return fc[k];}).sort(function(a,b){return b.k-a.k;}).slice(0,3);
+    if(top.length)feeds=`<div class="rd-feeds"><span class="rd-fl">Alimenta</span>`+top.map(function(x){return `<span class="rd-feed"><span class="rd-dot" style="background:${x.c}"></span>${esc(x.s)}</span>`;}).join('')+`</div>`;
+  }
+
+  // trecho real
+  const exc=b.txt?`<div id="rdexc" class="rd-sec" style="display:none"><div class="rd-lbl">Trecho real <span class="rd-cnt">— é isto que a IA lê pra gerar</span></div><div class="rd-quote">${esc(b.txt.slice(0,460))}…</div></div>`:'';
+
+  // sobre (2 col)
+  let about='';
+  if(b.desc||b.muda){
+    about=`<div class="rd-sec"><div class="rd-two">`+
+      (b.desc?`<div class="rd-card"><h4>Do que trata</h4><p>${esc(b.desc)}</p></div>`:'')+
+      (b.muda?`<div class="rd-card"><h4>O que muda em você</h4><p>${esc(b.muda)}</p></div>`:'')+
+    `</div></div>`;
+  }
+
+  // cobertura
+  let cov2='';
+  if(P.length){
+    var cc={};P.forEach(function(p){var pl=pilarOf(tparts(p.tag).pil);cc[pl.n]=(cc[pl.n]||0)+1;});
+    var max=Math.max.apply(null,PILARES.map(function(pl){return cc[pl.n]||0;}))||1;
+    cov2=`<div class="rd-sec"><div class="rd-lbl">Cobertura <span class="rd-cnt">— em que pilar este livro rende</span></div><div class="rd-cov">`+
+      PILARES.map(function(pl){var n=cc[pl.n]||0;var w=Math.round(n/max*100);var e=n===0;return `<div class="rd-covi${e?' empty':''}"><div class="rd-covt"><span class="rd-nm"><span class="rd-dot" style="background:${pl.c}"></span>${esc(pl.s||pl.n)}</span><span class="rd-lv">${n?(n+(n>1?' posts':' post')):'vazio'}</span></div><div class="rd-bar"><i style="width:${e?4:Math.max(w,8)}%"></i></div></div>`;}).join('')+
+    `</div></div>`;
+  }
+
+  // materia-prima
+  let mp='';
+  var frArr=QUOTES[qkey(b)]||[];var gan=b.ganchos||[];
+  if(frArr.length||gan.length){
+    var items='';
+    frArr.forEach(function(t,qi){items+=qItemMP(qkey(b),qi,t,'frase');});
+    gan.forEach(function(g){items+=qItemMP(null,null,g,'angulo');});
+    mp=`<div class="rd-sec"><div class="rd-lbl">Matéria-prima <span class="rd-cnt">— insumo cru do livro</span></div><div class="rd-mp">${items}</div><button class="genq rd-btn" data-t="${esc(b.titulo)}" data-a="${esc(b.autor)}"><span class="mi">auto_awesome</span> gerar novas frases</button></div>`;
+  } else {
+    mp=`<div class="rd-sec"><div class="rd-lbl">Matéria-prima</div><p class="rd-soon">Sem frases ainda — gera que eu leio o livro e trago as mais afiadas.</p><button class="genq rd-btn" data-t="${esc(b.titulo)}" data-a="${esc(b.autor)}"><span class="mi">auto_awesome</span> gerar frases</button></div>`;
+  }
+
+  // pautas
+  let posts='';
+  if(P.length){
+    COPY={};
+    var cnt={};P.forEach(function(p){var pl=platOf(p.tag);cnt[pl]=(cnt[pl]||0)+1;});
+    var fbar=`<div class="pfilter"><button data-pf="all" class="on">Todas <b>${P.length}</b></button>`;
+    ['Substack','LinkedIn','Instagram','X','Outro'].forEach(function(pl){if(cnt[pl])fbar+=`<button data-pf="${pl}">${pl} <b>${cnt[pl]}</b></button>`;});
+    fbar+=`</div>`;
+    var list='';
+    P.forEach(function(p,pi){
+      var cid='cp'+i+'_'+pi;var pid=(b.hash||('b'+i))+'#'+pi;ORIG[pid]=p.text;
+      var txt=(EDITS[pid]!=null)?EDITS[pid]:p.text;COPY[cid]=txt;
+      var pl=platOf(p.tag);var tp=tparts(p.tag);var pr=pilarOf(tp.pil);var ed=(EDITS[pid]!=null)?' editado':'';
+      var cls=(p.tag.indexOf('Substack')>=0?' mae':'')+(PS.pub[pid]?' published':'')+(PS.del[pid]?' discarded':'');
+      var star=(p.tag.indexOf('Substack')>=0)?`<span class="rd-star">★</span>`:'';
+      var meta=[tp.plat,tp.cam].filter(Boolean).map(function(x){return `<span class="rd-ms">${esc(x)}</span>`;}).join('<span class="rd-msep">·</span>');
+      list+=`<details class="post" data-pid="${pid}" data-plat="${pl}" data-cid="${cid}"><summary><span class="rd-ptag">${star}<span class="rd-dot" style="background:${pr.c}"></span>${esc(pr.s||pr.n)}</span><span class="rd-msep">·</span>${meta}${ed?`<span class="rd-ms rd-ed">· ${ed}</span>`:''}<span class="pacts"><button class="pub" title="Publicado"><span class="mi">check</span></button><button class="del" title="Descartar"><span class="mi">delete</span></button></span></summary><div class="postbody"><div class="pbtns"><button class="cp" data-cp="${cid}"><span class="mi">content_copy</span> copiar</button><button class="ed"><span class="mi">edit</span> editar</button><button class="ai"><span class="mi">auto_awesome</span> ajustar</button></div><pre class="ptext">${esc(txt)}</pre></div></details>`;
+    });
+    posts=`<div class="rd-sec"><div class="rd-lbl">Pautas prontas <span class="rd-cnt">— ${P.length} posts</span></div>${fbar}<div id="postlist" class="rd-posts">${list}</div></div>`;
+  } else {
+    posts=`<div class="rd-sec"><div class="rd-lbl">Pautas prontas</div><p class="rd-soon">Esse livro ainda não tem pauta gerada.</p><button class="genp rd-btn" data-t="${esc(b.titulo)}" data-a="${esc(b.autor)}"><span class="mi">auto_awesome</span> gerar pauta deste livro</button><div class="genhint"></div></div>`;
+  }
+
   modal.innerHTML=`<button class="mx" id="mx" aria-label="Fechar"><span class="mi">close</span></button>`+
-    `<div class="mhead">${cov}<div class="mhinfo"><p class="mh-t">${esc(b.titulo)}</p><p class="mh-a">${esc(b.autor)||'—'}</p><span class="mh-c">${esc(b.cat)}</span></div><div class="mhactions"><a class="readbtn" href="${encodeURIComponent(b.cat)+'/'+encodeURIComponent(b.file)}" target="_blank" rel="noopener"><span class="mi">menu_book</span> Ler livro (PDF)</a><button class="dfav${FAVS[fkey(b)]?' on':''}" id="dfav" data-i="${i}" title="Favoritar"><span class="mi">star</span> favoritar</button></div></div>`+
-    `<div class="mbody">${body}</div>`;
+    `<div class="rd-head">${cov}<div class="rd-hmeta"><p class="rd-t">${esc(b.titulo)}</p><p class="rd-a">${esc(b.autor)||'—'}</p><div class="rd-metarow"><span class="rd-cat">${esc(b.cat)}</span>${grounded}</div>${feeds}</div><div class="rd-hact">`+
+      (b.txt?`<button class="rd-btn rd-ghost" onclick="var e=document.getElementById('rdexc');if(e){e.style.display=e.style.display==='none'?'block':'none';if(e.style.display!=='none')e.scrollIntoView({behavior:'smooth',block:'center'});}">ver trecho real</button>`:'')+
+      `<button class="dfav rd-btn rd-ghost${FAVS[fkey(b)]?' on':''}" id="dfav" data-i="${i}" title="Favoritar"><span class="mi">star</span> favoritar</button></div></div>`+
+    `<div class="mbody rd-body">${exc}${about}${cov2}${mp}${posts}</div>`;
   modal.dataset.view='book';
   document.getElementById('mx').onclick=closeOv;
   modal.scrollTop=0;ov.classList.add('on');
@@ -256,7 +403,7 @@ function qItemGlobal(qfi,t){return `<div class="qitem" data-qfi="${qfi}"><span c
 function bookQuotesHTML(b){const arr=QUOTES[qkey(b)]||[];if(!arr.length)return `<p class="qempty">Nenhuma frase ainda. Clica em <b>gerar novas frases</b> — eu leio o livro e trago as mais afiadas.</p>`;const k=qkey(b);return arr.map((t,i)=>qItemBook(k,i,t)).join('')}
 function quotesSectionHTML(b){return `<div class="sec quotes"><h3><span class="mi">format_quote</span> Frases-bala</h3><div class="qlist">${bookQuotesHTML(b)}</div><button class="genq" data-t="${esc(b.titulo)}" data-a="${esc(b.autor)}"><span class="mi">auto_awesome</span> gerar novas frases</button></div>`}
 function updateSwipeCount(){const el=document.getElementById('swipecount');if(!el)return;el.textContent=QFAV.length?(' '+QFAV.length):''}
-function openSwipe(){
+function openSwipe(){modal.classList.remove('rd');
   const byh={};QFAV.forEach((x,i)=>{(byh[x.h]=byh[x.h]||[]).push({t:x.t,i})});
   let groups=[];const total=QFAV.length;
   BOOKS.forEach(b=>{const k=qkey(b);if(byh[k])groups.push({b,items:byh[k]})});
