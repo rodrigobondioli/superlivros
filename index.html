@@ -311,6 +311,9 @@ function card(b){
 let COPY={};
 function openBook(i){
   CUR=i;const b=BOOKS[i];modal.classList.add('rd');
+  var RDPIL=[{n:'IA na criação',s:'Criação',c:'#8B5CF6',re:/ia na cria|na criaç|criaç|direç.*arte|imagem|ilustr|layout|branding/i},{n:'Construir com IA',s:'Construir',c:'#3B82F6',re:/construir|constru.*ia|vibe cod|\bmvp\b|produto digital|\bsite\b|\bapp\b|\bagente|colocar no ar|do zero|executor/i},{n:'Máquina de trabalho',s:'Máquina',c:'#22B8CF',re:/máquina|maquina|automa|sistema|produtiv|claude code|workflow|processo/i},{n:'Aquisição com IA',s:'Aquisição',c:'#37B24D',re:/aquisiç|aquisic|posicion|cabaç|cabac|prospec|funil|marketing|audiênc|audienc|client|indicaç/i},{n:'Negócio na era da IA',s:'Negócio',c:'#F08C00',re:/negóci|negoci|monetiz|precifica|preço|preco|oferta|modelo de neg|cobr|vend/i},{n:'Futuro do trabalho criativo',s:'Futuro',c:'#E64980',re:/futuro|trabalho criativo|criativ|opini|crític|critic|mercado|tese|\bopb\b|mentalidade|one person/i}];
+  var RDOUT={n:'Outros',s:'Outros',c:'#8c8c94'};
+  function rdPil(t){t=t||'';for(var z=0;z<RDPIL.length;z++){if(RDPIL[z].re.test(t))return RDPIL[z];}return RDOUT;}
   const cov=b.cover?`<img class="mcov" src="${esc(b.cover)}" onerror="this.outerHTML='<div class=\'mfb\' style=\'background:${col(b.titulo)}\'>'+this.alt+'</div>'" alt="${esc(b.titulo)}">`:`<div class="mfb" style="background:${col(b.titulo)}">${esc(b.titulo)}</div>`;
   function tparts(t){var a=(t||'').split('·').map(function(s){return s.trim();});return{plat:a[0]||'',cam:a[1]||'',pil:a[2]||''};}
   function platOf(t){t=t||'';return t.indexOf('Substack')>=0?'Substack':(t.indexOf('LinkedIn')>=0?'LinkedIn':(t.indexOf('Instagram')>=0?'Instagram':(t.indexOf('X ·')>=0?'X':'Outro')));}
@@ -327,7 +330,7 @@ function openBook(i){
   const grounded=b.txt?`<span class="rd-grd"><span class="rd-ck">✓</span> fundado no PDF real</span>`:'';
   let feeds='';
   if(P.length){
-    var fc={};P.forEach(function(p){var pl=pilarOf(tparts(p.tag).pil);var k=pl.n;if(!fc[k])fc[k]={s:pl.s||pl.n,c:pl.c,k:0};fc[k].k++;});
+    var fc={};P.forEach(function(p){var pl=rdPil(tparts(p.tag).pil);var k=pl.n;if(!fc[k])fc[k]={s:pl.s||pl.n,c:pl.c,k:0};fc[k].k++;});
     var top=Object.keys(fc).map(function(k){return fc[k];}).sort(function(a,b){return b.k-a.k;}).slice(0,3);
     if(top.length)feeds=`<div class="rd-feeds"><span class="rd-fl">Alimenta</span>`+top.map(function(x){return `<span class="rd-feed"><span class="rd-dot" style="background:${x.c}"></span>${esc(x.s)}</span>`;}).join('')+`</div>`;
   }
@@ -347,10 +350,10 @@ function openBook(i){
   // cobertura
   let cov2='';
   if(P.length){
-    var cc={};P.forEach(function(p){var pl=pilarOf(tparts(p.tag).pil);cc[pl.n]=(cc[pl.n]||0)+1;});
-    var max=Math.max.apply(null,PILARES.map(function(pl){return cc[pl.n]||0;}))||1;
+    var cc={};P.forEach(function(p){var pl=rdPil(tparts(p.tag).pil);cc[pl.n]=(cc[pl.n]||0)+1;});
+    var max=Math.max.apply(null,RDPIL.map(function(pl){return cc[pl.n]||0;}))||1;
     cov2=`<div class="rd-sec"><div class="rd-lbl">Cobertura <span class="rd-cnt">— em que pilar este livro rende</span></div><div class="rd-cov">`+
-      PILARES.map(function(pl){var n=cc[pl.n]||0;var w=Math.round(n/max*100);var e=n===0;return `<div class="rd-covi${e?' empty':''}"><div class="rd-covt"><span class="rd-nm"><span class="rd-dot" style="background:${pl.c}"></span>${esc(pl.s||pl.n)}</span><span class="rd-lv">${n?(n+(n>1?' posts':' post')):'vazio'}</span></div><div class="rd-bar"><i style="width:${e?4:Math.max(w,8)}%"></i></div></div>`;}).join('')+
+      RDPIL.map(function(pl){var n=cc[pl.n]||0;var w=Math.round(n/max*100);var e=n===0;return `<div class="rd-covi${e?' empty':''}"><div class="rd-covt"><span class="rd-nm"><span class="rd-dot" style="background:${pl.c}"></span>${esc(pl.s||pl.n)}</span><span class="rd-lv">${n?(n+(n>1?' posts':' post')):'vazio'}</span></div><div class="rd-bar"><i style="width:${e?4:Math.max(w,8)}%"></i></div></div>`;}).join('')+
     `</div></div>`;
   }
 
@@ -378,7 +381,7 @@ function openBook(i){
     P.forEach(function(p,pi){
       var cid='cp'+i+'_'+pi;var pid=(b.hash||('b'+i))+'#'+pi;ORIG[pid]=p.text;
       var txt=(EDITS[pid]!=null)?EDITS[pid]:p.text;COPY[cid]=txt;
-      var pl=platOf(p.tag);var tp=tparts(p.tag);var pr=pilarOf(tp.pil);var ed=(EDITS[pid]!=null)?' editado':'';
+      var pl=platOf(p.tag);var tp=tparts(p.tag);var pr=rdPil(tp.pil);var ed=(EDITS[pid]!=null)?' editado':'';
       var cls=(p.tag.indexOf('Substack')>=0?' mae':'')+(PS.pub[pid]?' published':'')+(PS.del[pid]?' discarded':'');
       var star=(p.tag.indexOf('Substack')>=0)?`<span class="rd-star">★</span>`:'';
       var meta=[tp.plat,tp.cam].filter(Boolean).map(function(x){return `<span class="rd-ms">${esc(x)}</span>`;}).join('<span class="rd-msep">·</span>');
