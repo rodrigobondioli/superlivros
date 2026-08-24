@@ -394,12 +394,12 @@ renderChips();render();
 /* ==== Estúdio de conteúdo (cockpit global) ==== */
 (function(){
   var PILARES=[
-    {n:'Modo Executor',s:'Executor',c:'#EF4444',re:/executor/i},
-    {n:'Posicionamento Anti-Cabaço',s:'Posicionamento',c:'#F59E0B',re:/posicion|cabaç|cabac/i},
-    {n:'Oferta que Vende Sozinha',s:'Oferta',c:'#10B981',re:/oferta|cobr|vend/i},
-    {n:'Aquisição sem Indicação',s:'Aquisição',c:'#3B82F6',re:/aquisiç|aquisic|indicaç|client/i},
-    {n:'Sistemas & IA',s:'Sistemas & IA',c:'#8B5CF6',re:/sistema|\bia\b|claude|automa/i},
-    {n:'Mentalidade OPB',s:'OPB',c:'#14B8A6',re:/opb|one person|mentalidade/i}
+    {n:'IA na criação',s:'Criação',c:'#8B5CF6',re:/ia na cria|na criaç|criaç|direç.*arte|imagem|ilustr|layout|branding/i},
+    {n:'Construir com IA',s:'Construir',c:'#3B82F6',re:/construir|constru.*ia|vibe cod|\bmvp\b|produto digital|\bsite\b|\bapp\b|\bagente|colocar no ar|do zero|executor/i},
+    {n:'Máquina de trabalho',s:'Máquina',c:'#06B6D4',re:/máquina|maquina|automa|sistema|produtiv|claude code|workflow|processo/i},
+    {n:'Aquisição com IA',s:'Aquisição',c:'#10B981',re:/aquisiç|aquisic|posicion|cabaç|cabac|prospec|funil|marketing|audiênc|audienc|client|indicaç/i},
+    {n:'Negócio na era da IA',s:'Negócio',c:'#F59E0B',re:/negóci|negoci|monetiz|precifica|preço|preco|oferta|modelo de neg|cobr|vend/i},
+    {n:'Futuro do trabalho criativo',s:'Futuro',c:'#EF4444',re:/futuro|trabalho criativo|criativ|opini|crític|critic|mercado|tese|\bopb\b|mentalidade|one person/i}
   ];
   var OUTRO={n:'Outros',c:'#9CA3AF'};
   function pilarOf(tema){tema=tema||'';for(var i=0;i<PILARES.length;i++){if(PILARES[i].re.test(tema))return PILARES[i];}return OUTRO;}
