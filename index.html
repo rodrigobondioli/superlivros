@@ -46,7 +46,7 @@
   .pactions{display:flex;gap:12px;padding:8px 8px 4px}
   .pactions a{font-size:12px;color:var(--mut);cursor:pointer;text-decoration:underline}
   .pactions a.del{color:#b5545a}.pactions a.del:hover{color:var(--red)}
-  .ppwrap{text-align:center;margin-bottom:20px}
+  .ppwrap{position:absolute;top:18px;left:22px;z-index:2}
   .projpill{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--mut)}
   .projpill b{color:var(--txt)}
   .projpill a{color:var(--faint);cursor:pointer;text-decoration:underline;margin-left:2px}
@@ -93,7 +93,7 @@
   .star{position:absolute;top:8px;right:8px;font-size:14px;background:rgba(0,0,0,.5);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer}
   .empty{color:var(--faint);font-size:14px;padding:40px 4px}
   /* CONSELHEIROS (mesa) */
-  .opening{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 24px;overflow-y:auto}
+  .opening{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 24px;overflow-y:auto;position:relative}
   .opening .inner{width:100%;max-width:660px}
   .kick{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;text-align:center}
   .kick b{color:var(--lime)}
@@ -241,8 +241,8 @@
     <!-- CONSELHEIROS -->
     <section class="view" id="view-conselheiros">
       <section class="opening" id="opening">
+        <div class="ppwrap"><span class="projpill" id="projpill"></span></div>
         <div class="inner">
-          <div class="ppwrap"><span class="projpill" id="projpill"></span></div>
           <h1 class="q">No que você tá mexendo?</h1>
           <p class="subq">Uma ideia, um problema, uma decisão, uma oferta. A mesa monta o conselho certo e discute com você — brigando entre si quando for o caso.</p>
           <div class="obox">
