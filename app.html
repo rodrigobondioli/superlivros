@@ -104,6 +104,8 @@
   .memcard .mp{font-size:13.5px;font-weight:600;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .memcard .mm{font-size:11.5px;color:var(--mut);margin-top:2px}
   .memcard .ar{color:var(--faint);font-size:16px}
+  .memdel{background:transparent;border:0;color:var(--faint);font-size:13px;padding:4px 6px;border-radius:6px;flex:0 0 auto}
+  .memdel:hover{color:var(--red);background:#2a1a1a}
   .convo{flex:1;display:none;flex-direction:column;overflow:hidden}.convo.show{display:flex}
   .mesahead{border-bottom:1px solid var(--line);padding:12px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel)}
   .mesahead .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-right:2px}
@@ -256,7 +258,7 @@
     <button class="btn sm" id="p_briefbtn" type="button" onclick="briefCtx()">✨ Resumir com IA</button>
     <span id="p_fstatus" style="font-size:11.5px;color:var(--faint);flex:1;min-width:120px"></span>
   </div>
-  <div class="row"><button class="btn" onclick="closePmodal()">Cancelar</button><button class="btn lime" onclick="saveProject()">Criar projeto</button></div>
+  <div class="row"><button class="btn" id="p_delbtn" onclick="deleteProject()" style="margin-right:auto;display:none;color:var(--red);border-color:#3a2323">Excluir projeto</button><button class="btn" onclick="closePmodal()">Cancelar</button><button class="btn lime" id="p_savebtn" onclick="saveProject()">Criar projeto</button></div>
 </div></div>
 
 <script>
@@ -384,13 +386,14 @@ function renderMemory(){
   if(!ap||!ap.convos||!ap.convos.length){w.style.display='none';return;}
   w.style.display='';
   document.getElementById('memhd').textContent=`Conversas em ${ap.nome}`;
-  document.getElementById('memlist').innerHTML=ap.convos.slice().reverse().map(c=>`<div class="memcard" onclick="resumeConvo('${c.id}')"><div class="mi"><div class="mp">${esc(c.problem)}</div><div class="mm">${(c.thread||[]).filter(m=>m.role==='mente').length} falas · ${new Date(c.ts).toLocaleDateString('pt-BR')}</div></div><div class="ar">→</div></div>`).join('');
+  document.getElementById('memlist').innerHTML=ap.convos.slice().reverse().map(c=>`<div class="memcard" onclick="resumeConvo('${c.id}')"><div class="mi"><div class="mp">${esc(c.problem)}</div><div class="mm">${(c.thread||[]).filter(m=>m.role==='mente').length} falas · ${new Date(c.ts).toLocaleDateString('pt-BR')}</div></div><button class="memdel" onclick="deleteConvo('${c.id}',event)" title="Apagar esta conversa">🗑</button><div class="ar">→</div></div>`).join('');
 }
 function selectProject(id){active=id;persistP();renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();}
 let editing=null;
-function newProject(){editing=null;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('pmodal').classList.add('on');resetFstatus();}
-function editProject(){const p=activeProj();if(!p)return;editing=p.id;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('pmodal').classList.add('on');resetFstatus();}
+function newProject(){editing=null;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();}
+function editProject(){const p=activeProj();if(!p)return;editing=p.id;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();}
+function deleteProject(){if(!editing)return;const p=projects.find(x=>x.id===editing);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==editing);if(active===editing)active=null;editing=null;persistP();renderProjects();closePmodal();}
 function closePmodal(){document.getElementById('pmodal').classList.remove('on');}
 function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.textContent='';}
 function lazyScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('falha ao carregar '+src));document.head.appendChild(s);});}
@@ -439,6 +442,7 @@ function saveConvo(){
   if(i>=0)ap.convos[i]=rec;else ap.convos.push(rec);
   persistP();renderProjects();
 }
+function deleteConvo(cid,ev){if(ev)ev.stopPropagation();const ap=activeProj();if(!ap)return;const c=ap.convos.find(x=>x.id===cid);if(!confirm('Apagar esta conversa'+(c?' ("'+(c.problem||'').slice(0,40)+'")':'')+'? Não dá pra desfazer.'))return;ap.convos=ap.convos.filter(x=>x.id!==cid);if(convoId===cid){convoId=null;}persistP();renderProjects();}
 function resumeConvo(cid){
   const ap=activeProj();if(!ap)return;const c=ap.convos.find(x=>x.id===cid);if(!c)return;
   convoId=c.id;problem=c.problem;mesa=(c.mesa||[]).map(id=>MENTES.find(m=>m.id===id)).filter(Boolean);
@@ -468,7 +472,7 @@ function newSubject(){document.getElementById('convo').classList.remove('show');
 function isSubstantial(t){const s=(t||'').trim();if(s.length<15)return false;if(/^(oi+|ol[áa]+|opa+|e ?a[íi]+|blz|beleza|salve|fala+|hey|hello|h[íi]|tudo bem\??|tudo bom\??|bom dia|boa tarde|boa noite|teste?|test)[\s!.,\?]*$/i.test(s))return false;return true;}
 function convene(){const userTexts=thread.filter(m=>m.role==='user').map(m=>m.text);problem=userTexts.join(' · ');mesa=castCouncil(problem);renderMesaHead();thread.push({role:'curator'});renderThread();callCouncil();}
 function startFromOpening(){const t=document.getElementById('opentext').value.trim();if(!t){document.getElementById('opentext').focus();return;}mesa=[];thread=[];convoId=null;problem='';document.getElementById('opening').style.display='none';document.getElementById('convo').classList.add('show');renderMesaHead();thread.push({role:'user',text:t});if(isSubstantial(t)){convene();}else{thread.push({role:'host',text:'E aí! 👋 Me conta <b>no que você tá mexendo</b> — a ideia, o problema, a decisão ou a oferta que você quer botar na mesa. Aí eu chamo as mentes certas.'});renderThread();document.getElementById('reply').focus();}}
-function renderMesaHead(){const el=document.getElementById('mesahead');const ap=activeProj();const tag=ap?`<span class="mchip" style="border-color:#2c2f1a"><span class="dot" style="background:${ap.color}"></span><span class="nm">${esc(ap.nome)}</span></span>`:'';el.innerHTML=`<span class="lbl">Na mesa</span>${tag}`+mesa.map(m=>`<span class="mchip"><span class="dot" style="background:${pickM(m)}"></span><span class="nm">${esc(m.autor||m.titulo)}</span></span>`).join('')+`<span class="rt"><button onclick="reshuffle()">+ mente</button><button onclick="newSubject()">novo assunto</button></span>`;}
+function renderMesaHead(){const el=document.getElementById('mesahead');const ap=activeProj();const tag=ap?`<span class="mchip" style="border-color:#2c2f1a"><span class="dot" style="background:${ap.color}"></span><span class="nm">${esc(ap.nome)}</span></span>`:'';el.innerHTML=`<span class="lbl">Na mesa</span>${tag}`+mesa.map(m=>`<span class="mchip"><span class="dot" style="background:${pickM(m)}"></span><span class="nm">${esc(m.autor||m.titulo)}</span></span>`).join('')+`<span class="rt"><button onclick="reshuffle()" title="Trazer mais uma mente pra esta conversa">+ mente</button><button onclick="newSubject()" title="Começar uma conversa nova do zero">novo assunto</button></span>`;}
 function reshuffle(){const all=castCouncil(problem+' '+thread.filter(m=>m.role==='user').map(m=>m.text).join(' '));const have=new Set(mesa.map(m=>m.id));for(const m of all){if(!have.has(m.id)){mesa.push(m);renderMesaHead();thread.push({role:'sys',text:`Chamei <b>${esc(m.autor)}</b> — ${esc(reasonFor(m))}.`});renderThread();return;}}thread.push({role:'sys',text:'Já chamei as mentes mais fortes. Manda mais contexto.'});renderThread();}
 function curatorHTML(){const ap=activeProj();const ctx=ap?` no contexto de <b>${esc(ap.nome)}</b>`:'';const mem=(ap&&ap.convos&&ap.convos.filter(c=>c.id!==convoId).length)?` <span style="color:var(--mut)">(lembrando de ${ap.convos.filter(c=>c.id!==convoId).length} conversa${ap.convos.filter(c=>c.id!==convoId).length!==1?'s':''} anterior${ap.convos.filter(c=>c.id!==convoId).length!==1?'es':''})</span>`:'';return `<div class="curator"><div class="ch">Montando a mesa</div><div class="cq">Pra isso${ctx}, chamei <b>${mesa.length} mentes</b> — cada uma por um motivo:${mem}</div>${mesa.map(m=>`<div class="why"><div class="av" style="background:${pickM(m)}">${esc(initials(m))}</div><div class="wt"><span class="n">${esc(m.autor)}</span> <span class="b">${esc(m.titulo)}</span><span class="r">${esc(reasonFor(m))}</span></div></div>`).join('')}</div>`;}
 function linkBooks(html){
