@@ -264,13 +264,13 @@
 
 <div class="modal" id="pmodal"><div class="card">
   <h3 id="pmtitle">Novo projeto</h3>
-  <div class="subh">O contexto do teu negócio. Cola texto, anexa um arquivo (DOC, MD, TXT, PDF) ou resume com IA. A mesa fala sabendo disso — e guarda as conversas aqui dentro.</div>
+  <div class="subh">Cola texto ou anexa arquivos (DOC, MD, TXT, PDF) e clica <b>Criar projeto</b>. Se tiver muito texto, eu resumo sozinho num briefing enxuto. A mesa passa a falar sabendo disso.</div>
   <label>Nome do negócio/projeto</label><input id="p_nome" placeholder="SUPERBAR">
   <label>Em uma linha, o que é</label><input id="p_seed" placeholder="Sistema de gestão pra bar premium">
   <label>Contexto (cole texto, anexe arquivo ou resuma)</label><textarea id="p_ctx" rows="4" placeholder="Cole texto aqui — ou arraste arquivos (DOC, MD, TXT, PDF) direto pra cá. Depois 'Resumir com IA' deixa enxuto."></textarea>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
     <label class="btn sm" style="cursor:pointer;margin:0"><input type="file" id="p_file" accept=".txt,.md,.pdf,.docx" multiple style="display:none">📎 Anexar arquivo(s)</label>
-    <button class="btn sm" id="p_briefbtn" type="button" onclick="briefCtx()">✨ Resumir com IA</button>
+    <button class="btn sm" id="p_briefbtn" type="button" onclick="briefCtx()" title="Opcional — condensa num briefing pra você ver/editar antes. Se não clicar, eu resumo sozinho ao salvar.">✨ Resumir agora (opcional)</button>
     <span id="p_fstatus" style="font-size:11.5px;color:var(--faint);flex:1;min-width:120px"></span>
   </div>
   <div id="p_docs" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px"></div>
@@ -408,12 +408,12 @@ function renderProjpill(){const el=document.getElementById('projpill');if(!el)re
 function selectProject(id){active=id;persistP();renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();}
 let editing=null;
-function newProject(){editing=null;pendingDocs=[];document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
-function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
+function newProject(){editing=null;pendingDocs=[];briefed=true;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
+function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();briefed=true;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
 function deleteProject(id){const pid=id||editing;if(!pid)return;const p=projects.find(x=>x.id===pid);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==pid);if(active===pid)active=null;if(editing===pid)editing=null;persistP();renderProjects();closePmodal();}
 function closePmodal(){document.getElementById('pmodal').classList.remove('on');}
 function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.textContent='';}
-let pendingDocs=[];
+let pendingDocs=[], briefed=true;
 function renderPendingDocs(){const el=document.getElementById('p_docs');if(!el)return;el.innerHTML=pendingDocs.map(d=>`<span class="docchip">📄 ${esc(d.name)} <span class="dz">${(d.chars/1000).toFixed(1)}k</span></span>`).join('');}
 function toast(msg){let t=document.getElementById('slostoast');if(!t){t=document.createElement('div');t.id='slostoast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel3);border:1px solid var(--line2);color:var(--txt);padding:11px 18px;border-radius:12px;font-size:13.5px;z-index:200;box-shadow:0 10px 34px rgba(0,0,0,.55);opacity:0;transition:opacity .2s';document.body.appendChild(t);}t.textContent=msg;requestAnimationFrame(()=>t.style.opacity='1');clearTimeout(window.__tt);window.__tt=setTimeout(()=>{t.style.opacity='0';},2800);}
 function lazyScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('falha ao carregar '+src));document.head.appendChild(s);});}
@@ -437,7 +437,7 @@ async function handleFiles(files){
       pendingDocs.push({name:f.name,chars:txt.length});renderPendingDocs();
     }catch(err){st.textContent='erro em '+f.name+': '+(err.message||err);}
   }
-  if(added)st.innerHTML='<b style="color:var(--lime)">'+added+' arquivo(s) lido(s) ✓</b> — dá pra <b>Resumir com IA</b> pra ficar enxuto, ou já salvar.';
+  if(added){briefed=false;st.innerHTML='<b style="color:var(--lime)">'+added+' arquivo(s) lido(s) ✓</b> — é só clicar <b>Criar projeto</b>. Se tiver muito texto, eu resumo sozinho ao salvar.';}
 }
 function onProjFile(e){handleFiles(e.target.files);e.target.value='';}
 async function briefCtx(){
@@ -447,12 +447,27 @@ async function briefCtx(){
   try{
     const r=await fetch(BRIEF_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
     const j=await r.json();
-    if(j.brief){ta.value=j.brief;st.textContent='resumido ✓ — edita à vontade antes de salvar.';}
+    if(j.brief){ta.value=j.brief;briefed=true;pendingDocs=[];renderPendingDocs();st.textContent='resumido ✓ — edita à vontade antes de salvar.';}
     else st.textContent='não rolou resumir agora ('+(j.error||'erro')+'). O texto completo tá salvo mesmo assim.';
   }catch(e){st.textContent='erro ao resumir: '+(e.message||e);}
   btn.disabled=false;
 }
-function saveProject(){const nome=document.getElementById('p_nome').value.trim();if(!nome){alert('Dá um nome');return;}const seed=document.getElementById('p_seed').value.trim();const ctx=document.getElementById('p_ctx').value.trim();const docs=pendingDocs.slice();if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.ctx=ctx;p.docs=docs;}else{const id='p'+Date.now();projects.push({id,nome,seed,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;}persistP();renderProjects();closePmodal();const bits=[];if(docs.length)bits.push(docs.length+' arquivo(s)');if(ctx.length)bits.push(ctx.length+' caracteres de contexto');toast('Projeto salvo'+(bits.length?' · '+bits.join(' · '):'')+'. A mesa já fala sabendo disso.');}
+async function saveProject(){
+  const nome=document.getElementById('p_nome').value.trim();if(!nome){alert('Dá um nome pro projeto');document.getElementById('p_nome').focus();return;}
+  const seed=document.getElementById('p_seed').value.trim();let ctx=document.getElementById('p_ctx').value.trim();const docs=pendingDocs.slice();
+  const savebtn=document.getElementById('p_savebtn'),st=document.getElementById('p_fstatus');
+  // muito texto cru e ainda não resumido → resume sozinho ao salvar
+  if(!briefed && ctx.length>5000){
+    savebtn.disabled=true;const lbl=savebtn.textContent;savebtn.textContent='Resumindo e salvando…';if(st)st.textContent='muito texto — resumindo num briefing enxuto…';
+    try{const r=await fetch(BRIEF_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:ctx})});const j=await r.json();if(j.brief&&j.brief.length>40){ctx=j.brief;}}catch(e){}
+    savebtn.disabled=false;savebtn.textContent=lbl;
+  }
+  if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.ctx=ctx;p.docs=docs;}
+  else{const id='p'+Date.now();projects.push({id,nome,seed,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;}
+  briefed=true;persistP();renderProjects();closePmodal();
+  const bits=[];if(docs.length)bits.push(docs.length+' arquivo(s)');if(ctx.length)bits.push(Math.round(ctx.length/100)/10+'k de contexto');
+  toast('Projeto salvo'+(bits.length?' · '+bits.join(' · '):'')+'. A mesa já fala sabendo disso.');
+}
 
 /* salva a conversa atual dentro do projeto ativo */
 function saveConvo(){
