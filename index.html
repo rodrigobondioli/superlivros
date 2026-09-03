@@ -250,9 +250,9 @@
   <div class="subh">O contexto do teu negócio. Cola texto, anexa um arquivo (DOC, MD, TXT, PDF) ou resume com IA. A mesa fala sabendo disso — e guarda as conversas aqui dentro.</div>
   <label>Nome do negócio/projeto</label><input id="p_nome" placeholder="SUPERBAR">
   <label>Em uma linha, o que é</label><input id="p_seed" placeholder="Sistema de gestão pra bar premium">
-  <label>Contexto (cole texto, anexe arquivo ou resuma)</label><textarea id="p_ctx" rows="4" placeholder="Cole aqui o que a mesa precisa saber — produto, preço, ICP, objetivo, números, restrições. Ou anexe um arquivo abaixo."></textarea>
+  <label>Contexto (cole texto, anexe arquivo ou resuma)</label><textarea id="p_ctx" rows="4" placeholder="Cole texto aqui — ou arraste arquivos (DOC, MD, TXT, PDF) direto pra cá. Depois 'Resumir com IA' deixa enxuto."></textarea>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
-    <label class="btn sm" style="cursor:pointer;margin:0"><input type="file" id="p_file" accept=".txt,.md,.pdf,.docx" style="display:none">📎 Anexar arquivo</label>
+    <label class="btn sm" style="cursor:pointer;margin:0"><input type="file" id="p_file" accept=".txt,.md,.pdf,.docx" multiple style="display:none">📎 Anexar arquivo(s)</label>
     <button class="btn sm" id="p_briefbtn" type="button" onclick="briefCtx()">✨ Resumir com IA</button>
     <span id="p_fstatus" style="font-size:11.5px;color:var(--faint);flex:1;min-width:120px"></span>
   </div>
@@ -401,18 +401,21 @@ async function extractFileText(file){
   if(name.endsWith('.pdf')){await lazyScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const ab=await file.arrayBuffer();const pdf=await window.pdfjsLib.getDocument({data:ab}).promise;let txt='';const max=Math.min(pdf.numPages,50);for(let i=1;i<=max;i++){const pg=await pdf.getPage(i);const c=await pg.getTextContent();txt+=c.items.map(it=>it.str).join(' ')+'\n';}return txt;}
   return await file.text();
 }
-async function onProjFile(e){
-  const f=e.target.files&&e.target.files[0];if(!f)return;
-  const st=document.getElementById('p_fstatus');st.textContent='lendo '+f.name+'…';
-  try{
-    let txt=((await extractFileText(f))||'').trim();
-    if(!txt){st.textContent='não consegui extrair texto (PDF escaneado/imagem?). Cola o texto na mão.';e.target.value='';return;}
-    if(txt.length>28000)txt=txt.slice(0,28000);
-    const ta=document.getElementById('p_ctx');ta.value=(ta.value.trim()?ta.value.trim()+'\n\n':'')+txt;
-    st.innerHTML=esc(f.name)+' — '+txt.length+' caracteres. Clica <b>Resumir com IA</b> pra ficar enxuto.';
-  }catch(err){st.textContent='erro lendo arquivo: '+(err.message||err);}
-  e.target.value='';
+async function handleFiles(files){
+  const list=[...files].filter(Boolean);if(!list.length)return;
+  const st=document.getElementById('p_fstatus'),ta=document.getElementById('p_ctx');let added=0;
+  for(const f of list){
+    st.textContent='lendo '+f.name+'…';
+    try{
+      let txt=((await extractFileText(f))||'').trim();
+      if(!txt){st.innerHTML='<b>'+esc(f.name)+'</b>: sem texto extraível (PDF imagem/escaneado?). Pulei esse.';continue;}
+      if(txt.length>28000)txt=txt.slice(0,28000);
+      ta.value=(ta.value.trim()?ta.value.trim()+'\n\n':'')+'### '+f.name+'\n'+txt;added++;
+    }catch(err){st.textContent='erro em '+f.name+': '+(err.message||err);}
+  }
+  if(added)st.innerHTML=added+' arquivo(s) lido(s). Clica <b>Resumir com IA</b> pra destilar num briefing enxuto.';
 }
+function onProjFile(e){handleFiles(e.target.files);e.target.value='';}
 async function briefCtx(){
   const ta=document.getElementById('p_ctx'),st=document.getElementById('p_fstatus'),btn=document.getElementById('p_briefbtn');
   const text=ta.value.trim();if(text.length<40){st.textContent='pouco texto pra resumir — cola mais ou anexa um arquivo.';return;}
@@ -462,7 +465,9 @@ function initials(m){const a=(m.autor||m.titulo||'?').trim().split(/\s+/);return
 function reasonFor(m){let c=(m.convoque||'').replace(/^convoque para:?\s*/i,'').trim();let parts=c.split(/;|\.|—/).map(s=>s.trim()).filter(Boolean);let r=parts.slice(0,2).join('; ');if(r.length>135)r=r.slice(0,132).replace(/\s+\S*$/,'')+'…';return r||m.tese.slice(0,120);}
 function seed(btn){document.getElementById('opentext').value=btn.textContent.replace(/^[^:]+:\s*/,'');document.getElementById('opentext').focus();}
 function newSubject(){document.getElementById('convo').classList.remove('show');document.getElementById('opening').style.display='flex';mesa=[];thread=[];convoId=null;problem='';document.getElementById('opentext').value='';renderMemory();}
-function startFromOpening(){const t=document.getElementById('opentext').value.trim();if(!t){document.getElementById('opentext').focus();return;}problem=t;mesa=castCouncil(t);thread=[];convoId=null;document.getElementById('opening').style.display='none';document.getElementById('convo').classList.add('show');renderMesaHead();thread.push({role:'user',text:t});thread.push({role:'curator'});renderThread();callCouncil();}
+function isSubstantial(t){const s=(t||'').trim();if(s.length<15)return false;if(/^(oi+|ol[áa]+|opa+|e ?a[íi]+|blz|beleza|salve|fala+|hey|hello|h[íi]|tudo bem\??|tudo bom\??|bom dia|boa tarde|boa noite|teste?|test)[\s!.,\?]*$/i.test(s))return false;return true;}
+function convene(){const userTexts=thread.filter(m=>m.role==='user').map(m=>m.text);problem=userTexts.join(' · ');mesa=castCouncil(problem);renderMesaHead();thread.push({role:'curator'});renderThread();callCouncil();}
+function startFromOpening(){const t=document.getElementById('opentext').value.trim();if(!t){document.getElementById('opentext').focus();return;}mesa=[];thread=[];convoId=null;problem='';document.getElementById('opening').style.display='none';document.getElementById('convo').classList.add('show');renderMesaHead();thread.push({role:'user',text:t});if(isSubstantial(t)){convene();}else{thread.push({role:'host',text:'E aí! 👋 Me conta <b>no que você tá mexendo</b> — a ideia, o problema, a decisão ou a oferta que você quer botar na mesa. Aí eu chamo as mentes certas.'});renderThread();document.getElementById('reply').focus();}}
 function renderMesaHead(){const el=document.getElementById('mesahead');const ap=activeProj();const tag=ap?`<span class="mchip" style="border-color:#2c2f1a"><span class="dot" style="background:${ap.color}"></span><span class="nm">${esc(ap.nome)}</span></span>`:'';el.innerHTML=`<span class="lbl">Na mesa</span>${tag}`+mesa.map(m=>`<span class="mchip"><span class="dot" style="background:${pickM(m)}"></span><span class="nm">${esc(m.autor||m.titulo)}</span></span>`).join('')+`<span class="rt"><button onclick="reshuffle()">+ mente</button><button onclick="newSubject()">novo assunto</button></span>`;}
 function reshuffle(){const all=castCouncil(problem+' '+thread.filter(m=>m.role==='user').map(m=>m.text).join(' '));const have=new Set(mesa.map(m=>m.id));for(const m of all){if(!have.has(m.id)){mesa.push(m);renderMesaHead();thread.push({role:'sys',text:`Chamei <b>${esc(m.autor)}</b> — ${esc(reasonFor(m))}.`});renderThread();return;}}thread.push({role:'sys',text:'Já chamei as mentes mais fortes. Manda mais contexto.'});renderThread();}
 function curatorHTML(){const ap=activeProj();const ctx=ap?` no contexto de <b>${esc(ap.nome)}</b>`:'';const mem=(ap&&ap.convos&&ap.convos.filter(c=>c.id!==convoId).length)?` <span style="color:var(--mut)">(lembrando de ${ap.convos.filter(c=>c.id!==convoId).length} conversa${ap.convos.filter(c=>c.id!==convoId).length!==1?'s':''} anterior${ap.convos.filter(c=>c.id!==convoId).length!==1?'es':''})</span>`:'';return `<div class="curator"><div class="ch">Montando a mesa</div><div class="cq">Pra isso${ctx}, chamei <b>${mesa.length} mentes</b> — cada uma por um motivo:${mem}</div>${mesa.map(m=>`<div class="why"><div class="av" style="background:${pickM(m)}">${esc(initials(m))}</div><div class="wt"><span class="n">${esc(m.autor)}</span> <span class="b">${esc(m.titulo)}</span><span class="r">${esc(reasonFor(m))}</span></div></div>`).join('')}</div>`;}
@@ -470,9 +475,16 @@ function linkBooks(html){
   // linka títulos citados entre aspas pros livros da estante
   return html.replace(/"([^"]{6,60})"/g,(full,t)=>{const i=bookByTitle(t);return i>=0?`<a class="blink" onclick="openBook(${i})">"${esc(t)}"</a>`:full;});
 }
-function renderThread(){const el=document.getElementById('tinner');el.innerHTML=thread.map(m=>{if(m.role==='curator')return curatorHTML();if(m.role==='user')return `<div class="msg user"><div class="ubub">${esc(m.text)}</div></div>`;if(m.role==='sys')return `<div class="msg sys"><div class="bd">${m.text}</div></div>`;return `<div class="msg"><div class="av" style="background:${pickM({id:m.autor||'x'})}">${esc(initials({autor:m.autor,titulo:m.livro}))}</div><div class="bd"><div class="who"><span class="nm">${esc(m.autor)}</span><span class="bk2">${esc(m.livro||'')}</span></div><div class="tx">${m.text}</div>${m.quote?`<div class="qt">${esc(m.quote)}</div>`:''}</div></div>`;}).join('');const th=document.getElementById('thread');th.scrollTop=th.scrollHeight;}
+function renderThread(){const el=document.getElementById('tinner');el.innerHTML=thread.map(m=>{if(m.role==='curator')return curatorHTML();if(m.role==='user')return `<div class="msg user"><div class="ubub">${esc(m.text)}</div></div>`;if(m.role==='sys')return `<div class="msg sys"><div class="bd">${m.text}</div></div>`;if(m.role==='host')return `<div class="msg"><div class="av" style="background:var(--lime)">✦</div><div class="bd"><div class="who"><span class="nm">Mesa</span></div><div class="tx">${m.text}</div></div></div>`;return `<div class="msg"><div class="av" style="background:${pickM({id:m.autor||'x'})}">${esc(initials({autor:m.autor,titulo:m.livro}))}</div><div class="bd"><div class="who"><span class="nm">${esc(m.autor)}</span><span class="bk2">${esc(m.livro||'')}</span></div><div class="tx">${m.text}</div>${m.quote?`<div class="qt">${esc(m.quote)}</div>`:''}</div></div>`;}).join('');const th=document.getElementById('thread');th.scrollTop=th.scrollHeight;}
 function showTyping(on){const el=document.getElementById('tinner');let t=document.getElementById('typingrow');if(on){if(!t){const d=document.createElement('div');d.id='typingrow';d.className='msg';d.innerHTML=`<div class="av" style="background:var(--panel3);color:var(--mut)">···</div><div class="bd"><div class="typing"><span class="d"></span><span class="d"></span><span class="d"></span> a mesa tá pensando…</div></div>`;el.appendChild(d);}}else if(t)t.remove();const th=document.getElementById('thread');th.scrollTop=th.scrollHeight;}
-function sendReply(){if(busy)return;const ta=document.getElementById('reply');const t=ta.value.trim();if(!t)return;ta.value='';ta.style.height='auto';thread.push({role:'user',text:t});renderThread();callCouncil();}
+function sendReply(){if(busy)return;const ta=document.getElementById('reply');const t=ta.value.trim();if(!t)return;ta.value='';ta.style.height='auto';thread.push({role:'user',text:t});
+  if(!mesa.length){ // mesa ainda não convocada — essa mensagem (ou o acumulado) vira o problema
+    const nUser=thread.filter(m=>m.role==='user').length;
+    if(isSubstantial(t)||nUser>=2){renderThread();convene();}
+    else{thread.push({role:'host',text:'Manda um pouco mais — o que você quer <b>resolver, decidir ou criar</b>? Pode ser cru.'});renderThread();}
+    return;
+  }
+  renderThread();callCouncil();}
 async function callCouncil(){busy=true;document.getElementById('sendb').disabled=true;showTyping(true);const ap=activeProj();const payload={problem,project:ap?{nome:ap.nome,seed:ap.seed,ctx:ap.ctx}:null,memory:projectMemory(),mentes:mesa.map(m=>({autor:m.autor,titulo:m.titulo,dossie:m.md})),history:thread.filter(m=>m.role==='user'||m.role==='mente').map(m=>({role:m.role,autor:m.autor||null,livro:m.livro||null,text:stripTags(m.text)}))};try{const r=await fetch(COUNCIL_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json();showTyping(false);const replies=(j.replies||j.turns||[]);if(!replies.length)throw new Error('vazio');replies.forEach(rp=>thread.push({role:'mente',autor:rp.autor||rp.nome,livro:rp.livro||rp.titulo,text:linkBooks(rp.txt||rp.text||''),quote:rp.quote}));renderThread();saveConvo();}catch(e){showTyping(false);thread.push({role:'sys',text:`<b>Motor indisponível.</b> A mesa foi montada, mas o conselho não respondeu agora (${esc(String(e.message||e))}). Tenta de novo.`});renderThread();}busy=false;document.getElementById('sendb').disabled=false;}
 
 /* ===== mentes ===== */
@@ -484,6 +496,7 @@ function mdToHtml(md){return esc(md).replace(/^# (.+)$/m,'<h3>$1</h3>').replace(
 /* ===== init ===== */
 document.getElementById('search').addEventListener('input',e=>{query=e.target.value;renderGrid();});
 document.getElementById('p_file').addEventListener('change',onProjFile);
+(function(){const pctx=document.getElementById('p_ctx');['dragover','dragenter'].forEach(ev=>pctx.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();pctx.style.borderColor='var(--lime)';}));['dragleave','dragend'].forEach(ev=>pctx.addEventListener(ev,e=>{e.preventDefault();pctx.style.borderColor='';}));pctx.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();pctx.style.borderColor='';if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)handleFiles(e.dataTransfer.files);});})();
 document.getElementById('opentext').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();startFromOpening();}});
 const rep=document.getElementById('reply');rep.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendReply();}});rep.addEventListener('input',()=>{rep.style.height='auto';rep.style.height=Math.min(rep.scrollHeight,140)+'px';});
 loadFavs();renderCats();renderGrid();loadP();renderProjects();
