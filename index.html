@@ -35,6 +35,21 @@
   .pitem .nm{font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px}
   .pitem .sd{font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .pitem .cv{font-size:10.5px;color:var(--faint);margin-top:3px}
+  .pnest{margin:2px 0 10px 6px;padding-left:10px;border-left:1px solid var(--line2)}
+  .pnesthd{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:6px 0 5px 6px}
+  .pconvo{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;cursor:pointer;color:var(--mut);font-size:12.5px}
+  .pconvo:hover{background:var(--panel2);color:var(--txt)}
+  .pconvo .pcx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pcdel{background:transparent;border:0;color:var(--faint);font-size:12px;padding:2px 4px;border-radius:5px;flex:0 0 auto;opacity:0}
+  .pconvo:hover .pcdel{opacity:1}.pcdel:hover{color:var(--red)}
+  .pnone{font-size:12px;color:var(--faint);padding:4px 8px}
+  .pactions{display:flex;gap:12px;padding:8px 8px 4px}
+  .pactions a{font-size:12px;color:var(--mut);cursor:pointer;text-decoration:underline}
+  .pactions a.del{color:#b5545a}.pactions a.del:hover{color:var(--red)}
+  .ppwrap{text-align:center;margin-bottom:20px}
+  .projpill{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--mut)}
+  .projpill b{color:var(--txt)}
+  .projpill a{color:var(--faint);cursor:pointer;text-decoration:underline;margin-left:2px}
   .catchip{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:9px;background:transparent;border:0;color:var(--mut);font-size:13px;margin-bottom:3px;line-height:1.35}
   .catchip:hover{background:var(--panel2);color:var(--txt)}
   .catchip.on{background:var(--panel3);color:var(--txt);font-weight:600}
@@ -220,9 +235,9 @@
     <section class="view" id="view-conselheiros">
       <section class="opening" id="opening">
         <div class="inner">
-          <div class="kick"><b>37 mentes</b> · fundadas no texto real dos livros</div>
+          <div class="ppwrap"><span class="projpill" id="projpill"></span></div>
           <h1 class="q">No que você tá mexendo?</h1>
-          <p class="subq">Joga uma ideia, um problema, uma decisão travada, uma oferta, um preço. O conselho monta a mesa certa — e te diz por que chamou cada mente — e senta pra trocar ideia com você, brigando entre si quando for o caso.</p>
+          <p class="subq">Uma ideia, um problema, uma decisão, uma oferta. A mesa monta o conselho certo e discute com você — brigando entre si quando for o caso.</p>
           <div class="obox">
             <textarea class="ta" id="opentext" placeholder="Ex: 'Quero lançar uma consultoria de IA pra empresas tradicionais por R$15k' — ou 'meu churn tá alto e não sei por quê' — ou 'tô em dúvida entre cobrar mensalidade ou valor fechado'."></textarea>
             <div class="obar"><span class="hint">Enter pra começar · Shift+Enter pula linha</span><button class="btn lime" onclick="startFromOpening()">Chamar a mesa →</button></div>
@@ -232,8 +247,6 @@
             <button class="seed" onclick="seed(this)">Tô travado: não vendo acima de R$2k</button>
             <button class="seed" onclick="seed(this)">Decisão: contrato fechado ou mensalidade?</button>
           </div>
-          <div class="octx" id="octx"></div>
-          <div class="memwrap" id="memwrap" style="display:none"><div class="memhd" id="memhd"></div><div id="memlist"></div></div>
         </div>
       </section>
       <section class="convo" id="convo">
@@ -377,23 +390,23 @@ function renderProjects(){
   const el=document.getElementById('plist');
   const nb=document.getElementById('pnovobtn');if(nb)nb.style.display=projects.length?'':'none';
   if(!projects.length){el.innerHTML='<div style="padding:12px 10px 8px;color:var(--faint);font-size:12.5px;line-height:1.5">Sem projetos ainda.<br>Cria um pra a mesa falar no contexto do teu negócio e guardar as conversas.</div><button class="btn lime sm" style="margin:2px 10px 6px;width:calc(100% - 20px);justify-content:center" onclick="newProject()">+ Criar projeto</button>';}
-  else el.innerHTML=projects.map(p=>`<div class="pitem${p.id===active?' on':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div><div class="sd">${esc(p.seed||'')}</div>${(p.convos&&p.convos.length)?`<div class="cv">${p.convos.length} conversa${p.convos.length!==1?'s':''} salva${p.convos.length!==1?'s':''}</div>`:''}</div>`).join('');
-  renderOctx();renderMemory();
+  else el.innerHTML=projects.map(p=>{
+    const on=p.id===active;
+    const head=`<div class="pitem${on?' on':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div>${p.seed?`<div class="sd">${esc(p.seed)}</div>`:''}</div>`;
+    if(!on)return head;
+    const convos=(p.convos||[]).slice().reverse();
+    const cv=convos.length?convos.map(c=>`<div class="pconvo" onclick="resumeConvo('${c.id}')" title="${esc(c.problem)}"><span class="pcx">${esc(c.problem)}</span><button class="pcdel" onclick="deleteConvo('${c.id}',event)" title="Apagar conversa">🗑</button></div>`).join(''):'<div class="pnone">Sem conversas ainda.</div>';
+    return head+`<div class="pnest"><div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
+  }).join('');
+  renderProjpill();
 }
-function renderOctx(){const el=document.getElementById('octx');if(!el)return;const ap=activeProj();el.innerHTML=ap?`A mesa fala no contexto de <b>${esc(ap.nome)}</b> e lembra das conversas passadas · <a onclick="editProject()">editar</a> · <a onclick="clearActive()">tirar</a>`:`Sem projeto ativo — a mesa fala no geral. <a onclick="newProject()">Criar projeto</a> dá contexto e memória.`;}
-function renderMemory(){
-  const w=document.getElementById('memwrap');if(!w)return;const ap=activeProj();
-  if(!ap||!ap.convos||!ap.convos.length){w.style.display='none';return;}
-  w.style.display='';
-  document.getElementById('memhd').textContent=`Conversas em ${ap.nome}`;
-  document.getElementById('memlist').innerHTML=ap.convos.slice().reverse().map(c=>`<div class="memcard" onclick="resumeConvo('${c.id}')"><div class="mi"><div class="mp">${esc(c.problem)}</div><div class="mm">${(c.thread||[]).filter(m=>m.role==='mente').length} falas · ${new Date(c.ts).toLocaleDateString('pt-BR')}</div></div><button class="memdel" onclick="deleteConvo('${c.id}',event)" title="Apagar esta conversa">🗑</button><div class="ar">→</div></div>`).join('');
-}
+function renderProjpill(){const el=document.getElementById('projpill');if(!el)return;const ap=activeProj();el.innerHTML=ap?`<span class="dot" style="background:${ap.color}"></span>nova conversa em <b>${esc(ap.nome)}</b> <a onclick="clearActive()">tirar</a>`:(projects.length?'sem projeto — a mesa fala no geral':'sem projeto — <a onclick="newProject()">criar um</a> dá contexto e memória');}
 function selectProject(id){active=id;persistP();renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();}
 let editing=null;
 function newProject(){editing=null;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();}
 function editProject(){const p=activeProj();if(!p)return;editing=p.id;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();}
-function deleteProject(){if(!editing)return;const p=projects.find(x=>x.id===editing);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==editing);if(active===editing)active=null;editing=null;persistP();renderProjects();closePmodal();}
+function deleteProject(id){const pid=id||editing;if(!pid)return;const p=projects.find(x=>x.id===pid);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==pid);if(active===pid)active=null;if(editing===pid)editing=null;persistP();renderProjects();closePmodal();}
 function closePmodal(){document.getElementById('pmodal').classList.remove('on');}
 function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.textContent='';}
 function lazyScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('falha ao carregar '+src));document.head.appendChild(s);});}
@@ -468,7 +481,7 @@ function pickM(m){let h=0;const s=(m&&m.id)||'x';for(let i=0;i<s.length;i++)h=(h
 function initials(m){const a=(m.autor||m.titulo||'?').trim().split(/\s+/);return ((a[0]||'')[0]||'')+((a[a.length-1]||'')[0]||'');}
 function reasonFor(m){let c=(m.convoque||'').replace(/^convoque para:?\s*/i,'').trim();let parts=c.split(/;|\.|—/).map(s=>s.trim()).filter(Boolean);let r=parts.slice(0,2).join('; ');if(r.length>135)r=r.slice(0,132).replace(/\s+\S*$/,'')+'…';return r||m.tese.slice(0,120);}
 function seed(btn){document.getElementById('opentext').value=btn.textContent.replace(/^[^:]+:\s*/,'');document.getElementById('opentext').focus();}
-function newSubject(){document.getElementById('convo').classList.remove('show');document.getElementById('opening').style.display='flex';mesa=[];thread=[];convoId=null;problem='';document.getElementById('opentext').value='';renderMemory();}
+function newSubject(){document.getElementById('convo').classList.remove('show');document.getElementById('opening').style.display='flex';mesa=[];thread=[];convoId=null;problem='';document.getElementById('opentext').value='';renderProjpill();}
 function isSubstantial(t){const s=(t||'').trim();if(s.length<15)return false;if(/^(oi+|ol[áa]+|opa+|e ?a[íi]+|blz|beleza|salve|fala+|hey|hello|h[íi]|tudo bem\??|tudo bom\??|bom dia|boa tarde|boa noite|teste?|test)[\s!.,\?]*$/i.test(s))return false;return true;}
 function convene(){const userTexts=thread.filter(m=>m.role==='user').map(m=>m.text);problem=userTexts.join(' · ');mesa=castCouncil(problem);renderMesaHead();thread.push({role:'curator'});renderThread();callCouncil();}
 function startFromOpening(){const t=document.getElementById('opentext').value.trim();if(!t){document.getElementById('opentext').focus();return;}mesa=[];thread=[];convoId=null;problem='';document.getElementById('opening').style.display='none';document.getElementById('convo').classList.add('show');renderMesaHead();thread.push({role:'user',text:t});if(isSubstantial(t)){convene();}else{thread.push({role:'host',text:'E aí! 👋 Me conta <b>no que você tá mexendo</b> — a ideia, o problema, a decisão ou a oferta que você quer botar na mesa. Aí eu chamo as mentes certas.'});renderThread();document.getElementById('reply').focus();}}
