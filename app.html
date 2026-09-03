@@ -168,11 +168,16 @@
   .dossie{white-space:pre-wrap;font-size:13px;line-height:1.6;color:#dcdce0}.dossie h3{font-size:16px}
   .backlink{color:var(--mut);font-size:12.5px;cursor:pointer;text-decoration:underline;display:inline-block;margin-bottom:14px}
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:60;align-items:center;justify-content:center;padding:20px}.modal.on{display:flex}
-  .card{background:var(--panel);border:1px solid var(--line2);border-radius:16px;width:min(460px,100%);padding:22px 24px}
-  .card h3{margin:0 0 4px;font-size:18px}.card .subh{font-size:12.5px;color:var(--mut);margin-bottom:16px}
-  .card label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px}
-  .card input,.card textarea{width:100%;background:var(--panel2);border:1px solid var(--line2);border-radius:9px;color:var(--txt);font:14px inherit;padding:9px 11px;outline:none}
-  .card .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+  .card{background:var(--panel);border:1px solid var(--line2);border-radius:18px;width:min(640px,100%);padding:28px 32px}
+  .card h3{margin:0 0 5px;font-size:20px}.card .subh{font-size:13px;color:var(--mut);margin-bottom:18px;line-height:1.5}
+  .card label{display:block;font-size:12.5px;color:var(--mut);margin:16px 0 6px}
+  .card input,.card textarea{width:100%;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;color:var(--txt);font:14.5px inherit;padding:11px 13px;outline:none}
+  .card input:focus,.card textarea:focus{border-color:#3a3b44}
+  .namewrap{position:relative}
+  #p_namechk{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--green);font-size:16px;font-weight:700;opacity:0;transition:opacity .15s}
+  .card .row{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+  @keyframes flashp{0%{border-color:var(--lime);box-shadow:0 0 0 2px rgba(231,249,154,.3)}100%{border-color:var(--line2);box-shadow:none}}
+  .pitem.flash{animation:flashp 1.1s ease-out}
   .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .mcard{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px 13px;cursor:pointer}.mcard:hover{border-color:var(--line2)}
   .mcard .mt{font-size:13.5px;font-weight:600;line-height:1.25}.mcard .ma{font-size:11.5px;color:var(--mut);margin-top:2px}.mcard .md{font-size:11px;color:var(--faint);margin-top:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -260,7 +265,7 @@
 <div class="modal" id="pmodal"><div class="card">
   <h3 id="pmtitle">Novo projeto</h3>
   <div class="subh">Cola texto ou anexa arquivos (DOC, MD, TXT, PDF) e clica <b>Criar projeto</b>. Se tiver muito texto, eu resumo sozinho num briefing enxuto. A mesa passa a falar sabendo disso.</div>
-  <label>Nome do negócio/projeto</label><input id="p_nome" placeholder="SUPERBAR">
+  <label>Nome do negócio/projeto</label><div class="namewrap"><input id="p_nome" placeholder="SUPERBAR"><span id="p_namechk">✓</span></div>
   <label>Em uma linha, o que é</label><input id="p_seed" placeholder="Sistema de gestão pra bar premium">
   <label>Contexto (cole texto, anexe arquivo ou resuma)</label><textarea id="p_ctx" rows="4" placeholder="Cole texto aqui — ou arraste arquivos (DOC, MD, TXT, PDF) direto pra cá. Depois 'Resumir com IA' deixa enxuto."></textarea>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
@@ -379,7 +384,7 @@ function closeSheet(){document.getElementById('ov').classList.remove('on');}
 function bookToMesa(idx,isMente){const b=BOOKS[idx];closeSheet();showView('conselheiros');newSubject();const t=isMente?`Quero a visão de ${b.autor} (${b.titulo}) sobre o que eu tô fazendo. `:`Sobre "${b.titulo}" de ${b.autor}: `;const ta=document.getElementById('opentext');ta.value=t;ta.focus();}
 
 /* ===== PROJETOS + MEMÓRIA ===== */
-let projects=[], active=null, mesa=[], thread=[], busy=false, problem='', convoId=null;
+let projects=[], active=null, mesa=[], thread=[], busy=false, problem='', convoId=null, justAdded=null;
 function loadP(){try{projects=JSON.parse(localStorage.getItem('slos_projects')||'[]')}catch(e){projects=[]}active=localStorage.getItem('slos_active')||null;projects.forEach(p=>{if(!p.convos)p.convos=[];});}
 function persistP(){try{localStorage.setItem('slos_projects',JSON.stringify(projects));localStorage.setItem('slos_active',active||'')}catch(e){}}
 function activeProj(){return projects.find(p=>p.id===active)||null;}
@@ -390,7 +395,7 @@ function renderProjects(){
   else el.innerHTML=projects.map(p=>{
     const on=p.id===active;
     const ctxInfo=(p.docs&&p.docs.length)?`<div class="cv">📄 ${p.docs.length} arquivo(s) · contexto</div>`:((p.ctx&&p.ctx.trim().length>40)?`<div class="cv">✓ contexto salvo</div>`:'');
-    const head=`<div class="pitem${on?' on':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div>${p.seed?`<div class="sd">${esc(p.seed)}</div>`:''}${ctxInfo}</div>`;
+    const head=`<div class="pitem${on?' on':''}${p.id===justAdded?' flash':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div>${p.seed?`<div class="sd">${esc(p.seed)}</div>`:''}${ctxInfo}</div>`;
     if(!on)return head;
     const convos=(p.convos||[]).slice().reverse();
     const cv=convos.length?convos.map(c=>`<div class="pconvo" onclick="resumeConvo('${c.id}')" title="${esc(c.problem)}"><span class="pcx">${esc(c.problem)}</span><button class="pcdel" onclick="deleteConvo('${c.id}',event)" title="Apagar conversa">🗑</button></div>`).join(''):'<div class="pnone">Sem conversas ainda.</div>';
@@ -402,14 +407,15 @@ function renderProjpill(){const el=document.getElementById('projpill');if(!el)re
 function selectProject(id){active=id;persistP();renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();}
 let editing=null;
-function newProject(){editing=null;pendingDocs=[];briefed=true;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
-function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();briefed=true;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
+function newProject(){editing=null;pendingDocs=[];briefed=true;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
+function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();briefed=true;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
 function deleteProject(id){const pid=id||editing;if(!pid)return;const p=projects.find(x=>x.id===pid);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==pid);if(active===pid)active=null;if(editing===pid)editing=null;persistP();renderProjects();closePmodal();}
 function closePmodal(){document.getElementById('pmodal').classList.remove('on');}
 function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.textContent='';}
+function syncNameChk(){const n=document.getElementById('p_nome'),c=document.getElementById('p_namechk');if(c)c.style.opacity=(n&&n.value.trim())?'1':'0';}
 let pendingDocs=[], briefed=true;
 function renderPendingDocs(){const el=document.getElementById('p_docs');if(!el)return;el.innerHTML=pendingDocs.map(d=>`<span class="docchip">📄 ${esc(d.name)} <span class="dz">${(d.chars/1000).toFixed(1)}k</span></span>`).join('');}
-function toast(msg){let t=document.getElementById('slostoast');if(!t){t=document.createElement('div');t.id='slostoast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel3);border:1px solid var(--line2);color:var(--txt);padding:11px 18px;border-radius:12px;font-size:13.5px;z-index:200;box-shadow:0 10px 34px rgba(0,0,0,.55);opacity:0;transition:opacity .2s';document.body.appendChild(t);}t.textContent=msg;requestAnimationFrame(()=>t.style.opacity='1');clearTimeout(window.__tt);window.__tt=setTimeout(()=>{t.style.opacity='0';},2800);}
+function toast(msg){let t=document.getElementById('slostoast');if(!t){t=document.createElement('div');t.id='slostoast';t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#14150e;border:1px solid #3a4020;color:#eef3d6;padding:14px 22px;border-radius:14px;font-size:14.5px;font-weight:500;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.6);opacity:0;transition:opacity .2s;display:flex;align-items:center;gap:10px;max-width:90vw;text-align:left';document.body.appendChild(t);}t.innerHTML='<span style="color:var(--lime);font-size:17px;flex:0 0 auto">✓</span><span>'+esc(msg)+'</span>';requestAnimationFrame(()=>t.style.opacity='1');clearTimeout(window.__tt);window.__tt=setTimeout(()=>{t.style.opacity='0';},3600);}
 function lazyScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('falha ao carregar '+src));document.head.appendChild(s);});}
 async function extractFileText(file){
   const name=(file.name||'').toLowerCase();
@@ -457,8 +463,8 @@ async function saveProject(){
     savebtn.disabled=false;savebtn.textContent=lbl;
   }
   if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.ctx=ctx;p.docs=docs;}
-  else{const id='p'+Date.now();projects.push({id,nome,seed,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;}
-  briefed=true;persistP();renderProjects();closePmodal();
+  else{const id='p'+Date.now();projects.push({id,nome,seed,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;justAdded=id;}
+  briefed=true;persistP();renderProjects();closePmodal();setTimeout(()=>{justAdded=null;},1400);
   const bits=[];if(docs.length)bits.push(docs.length+' arquivo(s)');if(ctx.length)bits.push(Math.round(ctx.length/100)/10+'k de contexto');
   toast('Projeto salvo'+(bits.length?' · '+bits.join(' · '):'')+'. A mesa já fala sabendo disso.');
 }
@@ -530,6 +536,7 @@ function mdToHtml(md){return esc(md).replace(/^# (.+)$/m,'<h3>$1</h3>').replace(
 /* ===== init ===== */
 document.getElementById('search').addEventListener('input',e=>{query=e.target.value;renderGrid();});
 document.getElementById('p_file').addEventListener('change',onProjFile);
+document.getElementById('p_nome').addEventListener('input',syncNameChk);
 (function(){const pctx=document.getElementById('p_ctx');['dragover','dragenter'].forEach(ev=>pctx.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();pctx.style.borderColor='var(--lime)';}));['dragleave','dragend'].forEach(ev=>pctx.addEventListener(ev,e=>{e.preventDefault();pctx.style.borderColor='';}));pctx.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();pctx.style.borderColor='';if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)handleFiles(e.dataTransfer.files);});})();
 document.getElementById('opentext').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();startFromOpening();}});
 const rep=document.getElementById('reply');rep.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendReply();}});rep.addEventListener('input',()=>{rep.style.height='auto';rep.style.height=Math.min(rep.scrollHeight,140)+'px';});
