@@ -621,7 +621,7 @@ async function convene(){
   thread.push({role:'casting'});renderThread();
   let picked;
   try{picked=await castCouncilAI(problem);}
-  catch(e){picked=castCouncil(problem);castMotivo={};castMeta=null;}
+  catch(e){try{await new Promise(r=>setTimeout(r,900));picked=await castCouncilAI(problem);}catch(e2){picked=castCouncil(problem);castMotivo={};castMeta=null;}}
   thread=thread.filter(m=>m.role!=='casting');
   mesa=picked;renderMesaHead();
   thread.push({role:'curator'});thread.push({role:'confirm'});
