@@ -253,7 +253,6 @@ select{appearance:none;-webkit-appearance:none;padding:10px 40px 10px 14px;borde
 <div class="head"><div class="titlewrap"><h1>Superlivros</h1><div class="stats" id="stats"></div></div>
 <div class="toolbar">
 <button id="favbtn" class="favtoggle" type="button" title="Mostrar só favoritos"><span class="mi">star</span>Favoritos</button>
-<button id="pautabtn" class="favtoggle pautatoggle" type="button" title="Mostrar só livros com pauta"><span class="mi">edit_note</span>Com pauta</button>
 <div class="seg" id="mode"><button data-m="categoria" class="on">Categoria</button><button data-m="autor">Autor</button></div>
 </div></div>
 <div class="chips" id="chips"></div>
@@ -304,7 +303,7 @@ const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"
 function card(b){
   const cover=b.cover?`<img class="cov" loading="lazy" src="${esc(b.cover)}" onerror="this.outerHTML='<div class=\\'fb\\' style=\\'background:${col(b.titulo)}\\'>'+this.alt+'</div>'" alt="${esc(b.titulo)}">`
     :`<div class="fb" style="background:${col(b.titulo)}">${esc(b.titulo)}</div>`;
-  const badge=(postsOf(b).length)?'<span class="badge">pauta</span>':'';
+  const badge='';
   const fav=FAVS[fkey(b)]?' on':'';
   return `<div class="card" data-i="${b._i}">${cover}${badge}<button class="fav${fav}" data-fav="${b._i}" title="Favoritar"><span class="mi">star</span></button><div class="meta"><p class="tt">${esc(b.titulo)}</p><p class="au">${esc(b.autor)||'—'}</p></div></div>`;
 }
@@ -396,7 +395,7 @@ function openBook(i){
     `<div class="rd-head">${cov}<div class="rd-hmeta"><p class="rd-t">${esc(b.titulo)}</p><p class="rd-a">${esc(b.autor)||'—'}</p><div class="rd-metarow"><span class="rd-cat">${esc(b.cat)}</span>${grounded}</div>${feeds}</div><div class="rd-hact">`+
       (b.txt?`<button class="rd-btn rd-ghost" onclick="var e=document.getElementById('rdexc');if(e){e.style.display=e.style.display==='none'?'block':'none';if(e.style.display!=='none')e.scrollIntoView({behavior:'smooth',block:'center'});}">ver trecho real</button>`:'')+
       `<button class="dfav rd-btn rd-ghost${FAVS[fkey(b)]?' on':''}" id="dfav" data-i="${i}" title="Favoritar"><span class="mi">star</span> favoritar</button></div></div>`+
-    `<div class="mbody rd-body">${exc}${about}${cov2}${mp}${posts}</div>`;
+    `<div class="mbody rd-body">${exc}${about}</div>`;
   modal.dataset.view='book';
   document.getElementById('mx').onclick=closeOv;
   modal.scrollTop=0;ov.classList.add('on');
@@ -759,7 +758,7 @@ renderChips();render();
 
   // botão no header
   var tb=document.querySelector('.toolbar');
-  if(tb){var btn=document.createElement('button');btn.id='studiobtn';btn.className='favtoggle';btn.type='button';btn.title='Estúdio de conteúdo';btn.innerHTML='<span class="mi">bolt</span>Estúdio<span class="qbadge" id="studiocount"></span>';tb.insertBefore(btn,tb.firstChild);btn.onclick=function(){openStudio();};}
+  if(false){var btn=document.createElement('button');btn.id='studiobtn';btn.className='favtoggle';btn.type='button';btn.title='Estúdio de conteúdo';btn.innerHTML='<span class="mi">bolt</span>Estúdio<span class="qbadge" id="studiocount"></span>';tb.insertBefore(btn,tb.firstChild);btn.onclick=function(){openStudio();};}
 
   function refreshCount(){var el=document.getElementById('studiocount');if(!el)return;var n=allPosts().filter(function(x){return x.st==='pronta';}).length;el.textContent=n?n:'';el.style.display=n?'':'none';}
 
