@@ -119,6 +119,8 @@
   .memcard .mp{font-size:13.5px;font-weight:600;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .memcard .mm{font-size:11.5px;color:var(--mut);margin-top:2px}
   .memcard .ar{color:var(--faint);font-size:16px}
+  .docchip{display:inline-flex;align-items:center;gap:6px;background:var(--panel3);border:1px solid var(--line2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--txt)}
+  .docchip .dz{color:var(--faint);font-size:11px}
   .memdel{background:transparent;border:0;color:var(--faint);font-size:13px;padding:4px 6px;border-radius:6px;flex:0 0 auto}
   .memdel:hover{color:var(--red);background:#2a1a1a}
   .convo{flex:1;display:none;flex-direction:column;overflow:hidden}.convo.show{display:flex}
@@ -271,6 +273,7 @@
     <button class="btn sm" id="p_briefbtn" type="button" onclick="briefCtx()">✨ Resumir com IA</button>
     <span id="p_fstatus" style="font-size:11.5px;color:var(--faint);flex:1;min-width:120px"></span>
   </div>
+  <div id="p_docs" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px"></div>
   <div class="row"><button class="btn" id="p_delbtn" onclick="deleteProject()" style="margin-right:auto;display:none;color:var(--red);border-color:#3a2323">Excluir projeto</button><button class="btn" onclick="closePmodal()">Cancelar</button><button class="btn lime" id="p_savebtn" onclick="saveProject()">Criar projeto</button></div>
 </div></div>
 
@@ -392,7 +395,8 @@ function renderProjects(){
   if(!projects.length){el.innerHTML='<div style="padding:12px 10px 8px;color:var(--faint);font-size:12.5px;line-height:1.5">Sem projetos ainda.<br>Cria um pra a mesa falar no contexto do teu negócio e guardar as conversas.</div><button class="btn lime sm" style="margin:2px 10px 6px;width:calc(100% - 20px);justify-content:center" onclick="newProject()">+ Criar projeto</button>';}
   else el.innerHTML=projects.map(p=>{
     const on=p.id===active;
-    const head=`<div class="pitem${on?' on':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div>${p.seed?`<div class="sd">${esc(p.seed)}</div>`:''}</div>`;
+    const ctxInfo=(p.docs&&p.docs.length)?`<div class="cv">📄 ${p.docs.length} arquivo(s) · contexto</div>`:((p.ctx&&p.ctx.trim().length>40)?`<div class="cv">✓ contexto salvo</div>`:'');
+    const head=`<div class="pitem${on?' on':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div>${p.seed?`<div class="sd">${esc(p.seed)}</div>`:''}${ctxInfo}</div>`;
     if(!on)return head;
     const convos=(p.convos||[]).slice().reverse();
     const cv=convos.length?convos.map(c=>`<div class="pconvo" onclick="resumeConvo('${c.id}')" title="${esc(c.problem)}"><span class="pcx">${esc(c.problem)}</span><button class="pcdel" onclick="deleteConvo('${c.id}',event)" title="Apagar conversa">🗑</button></div>`).join(''):'<div class="pnone">Sem conversas ainda.</div>';
@@ -404,11 +408,14 @@ function renderProjpill(){const el=document.getElementById('projpill');if(!el)re
 function selectProject(id){active=id;persistP();renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();}
 let editing=null;
-function newProject(){editing=null;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();}
-function editProject(){const p=activeProj();if(!p)return;editing=p.id;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();}
+function newProject(){editing=null;pendingDocs=[];document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
+function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();}
 function deleteProject(id){const pid=id||editing;if(!pid)return;const p=projects.find(x=>x.id===pid);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==pid);if(active===pid)active=null;if(editing===pid)editing=null;persistP();renderProjects();closePmodal();}
 function closePmodal(){document.getElementById('pmodal').classList.remove('on');}
 function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.textContent='';}
+let pendingDocs=[];
+function renderPendingDocs(){const el=document.getElementById('p_docs');if(!el)return;el.innerHTML=pendingDocs.map(d=>`<span class="docchip">📄 ${esc(d.name)} <span class="dz">${(d.chars/1000).toFixed(1)}k</span></span>`).join('');}
+function toast(msg){let t=document.getElementById('slostoast');if(!t){t=document.createElement('div');t.id='slostoast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel3);border:1px solid var(--line2);color:var(--txt);padding:11px 18px;border-radius:12px;font-size:13.5px;z-index:200;box-shadow:0 10px 34px rgba(0,0,0,.55);opacity:0;transition:opacity .2s';document.body.appendChild(t);}t.textContent=msg;requestAnimationFrame(()=>t.style.opacity='1');clearTimeout(window.__tt);window.__tt=setTimeout(()=>{t.style.opacity='0';},2800);}
 function lazyScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('falha ao carregar '+src));document.head.appendChild(s);});}
 async function extractFileText(file){
   const name=(file.name||'').toLowerCase();
@@ -427,9 +434,10 @@ async function handleFiles(files){
       if(!txt){st.innerHTML='<b>'+esc(f.name)+'</b>: sem texto extraível (PDF imagem/escaneado?). Pulei esse.';continue;}
       if(txt.length>28000)txt=txt.slice(0,28000);
       ta.value=(ta.value.trim()?ta.value.trim()+'\n\n':'')+'### '+f.name+'\n'+txt;added++;
+      pendingDocs.push({name:f.name,chars:txt.length});renderPendingDocs();
     }catch(err){st.textContent='erro em '+f.name+': '+(err.message||err);}
   }
-  if(added)st.innerHTML=added+' arquivo(s) lido(s). Clica <b>Resumir com IA</b> pra destilar num briefing enxuto.';
+  if(added)st.innerHTML='<b style="color:var(--lime)">'+added+' arquivo(s) lido(s) ✓</b> — dá pra <b>Resumir com IA</b> pra ficar enxuto, ou já salvar.';
 }
 function onProjFile(e){handleFiles(e.target.files);e.target.value='';}
 async function briefCtx(){
@@ -444,7 +452,7 @@ async function briefCtx(){
   }catch(e){st.textContent='erro ao resumir: '+(e.message||e);}
   btn.disabled=false;
 }
-function saveProject(){const nome=document.getElementById('p_nome').value.trim();if(!nome){alert('Dá um nome');return;}const seed=document.getElementById('p_seed').value.trim();const ctx=document.getElementById('p_ctx').value.trim();if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.ctx=ctx;}else{const id='p'+Date.now();projects.push({id,nome,seed,ctx,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;}persistP();renderProjects();closePmodal();}
+function saveProject(){const nome=document.getElementById('p_nome').value.trim();if(!nome){alert('Dá um nome');return;}const seed=document.getElementById('p_seed').value.trim();const ctx=document.getElementById('p_ctx').value.trim();const docs=pendingDocs.slice();if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.ctx=ctx;p.docs=docs;}else{const id='p'+Date.now();projects.push({id,nome,seed,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;}persistP();renderProjects();closePmodal();const bits=[];if(docs.length)bits.push(docs.length+' arquivo(s)');if(ctx.length)bits.push(ctx.length+' caracteres de contexto');toast('Projeto salvo'+(bits.length?' · '+bits.join(' · '):'')+'. A mesa já fala sabendo disso.');}
 
 /* salva a conversa atual dentro do projeto ativo */
 function saveConvo(){
