@@ -527,10 +527,10 @@ modeEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{
   renderChips();render();
 });
 const favbtn=document.getElementById('favbtn'),pautabtn=document.getElementById('pautabtn');
-function syncFav(){favbtn.classList.toggle('on',!!prefs.favonly);pautabtn.classList.toggle('on',!!prefs.pautaonly)}
+prefs.pautaonly=false;function syncFav(){favbtn.classList.toggle('on',!!prefs.favonly);if(pautabtn)pautabtn.classList.toggle('on',!!prefs.pautaonly)}
 syncFav();
 favbtn.onclick=()=>{prefs.favonly=!prefs.favonly;save();syncFav();render()};
-pautabtn.onclick=()=>{prefs.pautaonly=!prefs.pautaonly;save();syncFav();render()};
+if(pautabtn)pautabtn.onclick=()=>{prefs.pautaonly=!prefs.pautaonly;save();syncFav();render()};
 var _sb=document.getElementById('swipebtn');if(_sb)_sb.onclick=openSwipe;
 if(!_qraw){var SEED=[
   {t:'Design Is a Job',qs:['Você não faz design. Você vende design.','Se você não quer cobrar pelo seu trabalho, compra Design Is a Hobby, na prateleira de artesanato.','Quem não apresenta o próprio trabalho não é designer.']},
