@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Superlivros OS</title>
+<title>Superlivros</title>
 <style>
   :root{
     --bg:#0a0a0c;--panel:#131315;--panel2:#181819;--panel3:#1f1f23;--line:#26262b;--line2:#31323a;
@@ -64,6 +64,10 @@
   .search:focus{border-color:#3a3b44}
   .estbody{flex:1;overflow-y:auto;padding:20px 26px 60px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+  .catrow{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:28px 2px 14px;display:flex;align-items:center;gap:9px}
+  .catrow:first-child{margin-top:2px}
+  .catrow .crn{color:var(--faint);font-weight:500;font-size:11px}
+  .catrow.fav{color:var(--lime)}
   .bkwrap{position:relative}
   .bk{cursor:pointer;border-radius:12px;overflow:hidden;background:var(--panel);border:1px solid var(--line);transition:border-color .15s,transform .15s}
   .bk:hover{border-color:var(--line2);transform:translateY(-2px)}
@@ -175,7 +179,7 @@
   <div class="mbackdrop" id="mbackdrop" onclick="closeSidebar()"></div>
   <!-- SIDEBAR -->
   <aside class="side" id="side">
-    <div class="brand" onclick="goEstante()"><div class="lg">S</div><div><b>Superlivros OS</b><br><span>a estante que pensa</span></div></div>
+    <div class="brand" onclick="goEstante()"><div><b>Superlivros</b><br><span>a estante que pensa</span></div></div>
     <div class="nav">
       <div class="navitem on" id="nav-est" onclick="showView('estante')"><span class="ic">▦</span> Estante <span class="ct" id="bookcount"></span></div>
       <div class="navitem" id="nav-con" onclick="showView('conselheiros')"><span class="ic">✦</span> Conselheiros</div>
@@ -207,7 +211,7 @@
         </div>
         <input class="search" id="search" placeholder="Buscar por título, autor ou categoria…">
       </div>
-      <div class="estbody"><div id="grid" class="grid"></div></div>
+      <div class="estbody"><div id="grid"></div></div>
     </section>
 
     <!-- CONSELHEIROS -->
@@ -319,16 +323,25 @@ function filtered(){
     return true;
   });
 }
+function cardHTML(b){const idx=BOOKS.indexOf(b),star=favs[b.hash]?'★':'☆';return `<div class="bkwrap"><div class="bk" onclick="openBook(${idx})"><img class="cov" loading="lazy" src="${b.cover||''}" alt=""><div class="meta"><div class="bt">${esc(b.titulo)}</div><div class="ba">${esc(b.autor)}</div></div></div><div class="star" onclick="toggleFav('${b.hash}',event)">${star}</div></div>`;}
+function sectionHTML(label,bs,fav){return `<div class="catrow${fav?' fav':''}">${esc(label)} <span class="crn">${bs.length}</span></div><div class="grid">${bs.map(cardHTML).join('')}</div>`;}
 function renderGrid(){
   const list=filtered();
   document.getElementById('estsub').textContent=`· ${list.length} livro${list.length!==1?'s':''}`;
   document.getElementById('bookcount').textContent=BOOKS.length;
   const el=document.getElementById('grid');
   if(!list.length){el.innerHTML='<div class="empty">Nada encontrado.</div>';return;}
-  el.innerHTML=list.map(b=>{
-    const idx=BOOKS.indexOf(b),star=favs[b.hash]?'★':'☆';
-    return `<div class="bkwrap"><div class="bk" onclick="openBook(${idx})"><img class="cov" loading="lazy" src="${b.cover||''}" alt=""><div class="meta"><div class="bt">${esc(b.titulo)}</div><div class="ba">${esc(b.autor)}</div></div></div><div class="star" onclick="toggleFav('${b.hash}',event)">${star}</div></div>`;
-  }).join('');
+  // só favoritos
+  if(favOnly){el.innerHTML=sectionHTML('★ Favoritos',list,true);return;}
+  let html='';
+  const catsInView=[...new Set(list.map(b=>b.cat))];
+  const favBooks=list.filter(b=>favs[b.hash]);
+  // favoritos como primeira seção (quando há mais de uma categoria à vista)
+  if(favBooks.length && catsInView.length>1) html+=sectionHTML('★ Favoritos',favBooks,true);
+  // categorias em divisões, na ordem dos grupos
+  const ordered=[];GROUPS.forEach(g=>g.cats.forEach(c=>ordered.push(c)));
+  ordered.forEach(c=>{const bs=list.filter(b=>b.cat===c);if(bs.length)html+=sectionHTML(c,bs,false);});
+  el.innerHTML=html;
 }
 function menteForBook(b){const t=norm(b.titulo).slice(0,24);return MENTES.find(m=>norm(m.titulo).slice(0,24)===t||norm(m.titulo).includes(norm((b.titulo||'').split('-')[0].trim()).slice(0,18)));}
 function bookByTitle(t){const n=norm(t);return BOOKS.findIndex(b=>norm(b.titulo)===n||norm(b.titulo).slice(0,26)===n.slice(0,26));}
@@ -354,7 +367,7 @@ function persistP(){try{localStorage.setItem('slos_projects',JSON.stringify(proj
 function activeProj(){return projects.find(p=>p.id===active)||null;}
 function renderProjects(){
   const el=document.getElementById('plist');
-  if(!projects.length){el.innerHTML='<div style="padding:12px 10px;color:var(--faint);font-size:12.5px;line-height:1.5">Sem projetos. Cria um pra a mesa falar no contexto do teu negócio — e guardar as conversas.</div>';}
+  if(!projects.length){el.innerHTML='<div style="padding:12px 10px 8px;color:var(--faint);font-size:12.5px;line-height:1.5">Sem projetos ainda.<br>Cria um pra a mesa falar no contexto do teu negócio e guardar as conversas.</div><button class="btn lime sm" style="margin:2px 10px 6px;width:calc(100% - 20px);justify-content:center" onclick="newProject()">+ Criar projeto</button>';}
   else el.innerHTML=projects.map(p=>`<div class="pitem${p.id===active?' on':''}" onclick="selectProject('${p.id}')"><div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}</div><div class="sd">${esc(p.seed||'')}</div>${(p.convos&&p.convos.length)?`<div class="cv">${p.convos.length} conversa${p.convos.length!==1?'s':''} salva${p.convos.length!==1?'s':''}</div>`:''}</div>`).join('');
   renderOctx();renderMemory();
 }
