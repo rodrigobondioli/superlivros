@@ -585,7 +585,7 @@ function renderProjects(){
   renderProjpill();
 }
 function renderProjpill(){const el=document.getElementById('projpill');if(!el)return;const w=el.closest('.ppwrap');const ap=activeProj();if(!ap){if(w)w.style.display='';el.innerHTML=`conversa avulsa <span style="color:var(--faint)">· sem projeto, não fica salva</span>`;return;}if(w)w.style.display='';el.innerHTML=`<span class="dot" style="background:${ap.color}"></span>conversa em <b>${esc(ap.nome)}</b> <a onclick="clearActive()">tirar projeto</a>`;}
-function selectProject(id){active=id;persistP();renderProjects();}
+function selectProject(id){if(id===active){renderProjects();return;}if(activeProj()&&thread.length)saveConvo();active=id;persistP();newSubject();showView('conselheiros');renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();renderProjpill();}
 function novaAvulsa(){active=null;persistP();newSubject();showView('conselheiros');renderProjects();document.getElementById('opentext').focus();}
 function doneCompromisso(pid,idx,ev){if(ev)ev.stopPropagation();const p=projects.find(x=>x.id===pid);if(!p||!p.compromissos||!p.compromissos[idx])return;p.compromissos[idx].done=true;persistP();renderProjects();toast('Compromisso marcado como feito. 👊');}
@@ -646,9 +646,11 @@ async function saveProject(){
     try{const r=await fetch(BRIEF_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:ctx})});const j=await r.json();if(j.brief&&j.brief.length>40){ctx=j.brief;}}catch(e){}
     savebtn.disabled=false;savebtn.textContent=lbl;
   }
+  const wasNew=!editing;
   if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.objetivo=objetivo;p.ctx=ctx;p.docs=docs;}
   else{const id='p'+Date.now();projects.push({id,nome,seed,objetivo,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;justAdded=id;}
   briefed=true;persistP();renderProjects();closePmodal();setTimeout(()=>{justAdded=null;},1400);
+  if(wasNew){newSubject();showView('conselheiros');}
   const bits=[];if(docs.length)bits.push(docs.length+' arquivo(s)');if(ctx.length)bits.push(Math.round(ctx.length/100)/10+'k de contexto');
   toast('Projeto salvo'+(bits.length?' · '+bits.join(' · '):'')+'. A mesa já fala sabendo disso.');
 }
