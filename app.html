@@ -23,6 +23,11 @@
   .nav{padding:12px 10px 6px;display:flex;flex-direction:column;gap:3px}
   .navitem{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--mut);border:1px solid transparent;font-size:14.5px;font-weight:600}
   .navsub{display:flex;align-items:center;gap:7px;padding:6px 12px 6px 14px;margin:-2px 0 2px;border-radius:8px;color:var(--faint);font-size:12.5px;cursor:pointer}.navsub:hover{color:var(--lime)}.navsub .hintx{color:#4a4a52;font-size:11px}
+  .pinchips{display:flex;flex-wrap:wrap;gap:8px}
+  .pinchip{display:inline-flex;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;transition:border-color .15s,background .15s}
+  .pinchip:hover{border-color:var(--mut)}
+  .pinchip.on{background:#12160a;border-color:#3a4020;color:var(--lime)}
+  .pinchip .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
   .pcomp{display:flex;align-items:flex-start;gap:6px;padding:6px 8px;border-radius:7px;background:#12160a;border:1px solid #2a3a1a;margin-bottom:4px}
   .pcomp .pcx{flex:1;font-size:11.5px;color:#c9d6ab;line-height:1.4}
   .pcomp .pcdone{border:0;background:transparent;color:var(--faint);cursor:pointer;font-size:10.5px;white-space:nowrap;padding:1px 3px}.pcomp .pcdone:hover{color:var(--green)}
@@ -468,9 +473,14 @@ function renderGrid(){
   el.innerHTML=html;
 }
 function menteForBook(b){const t=norm(b.titulo).slice(0,24);return MENTES.find(m=>norm(m.titulo).slice(0,24)===t||norm(m.titulo).includes(norm((b.titulo||'').split('-')[0].trim()).slice(0,18)));}
-function isPinned(id){const ap=activeProj();return !!(ap&&ap.pinned&&ap.pinned.indexOf(id)>=0);}
 function mergePinned(list){const ap=activeProj();if(!ap||!ap.pinned||!ap.pinned.length)return list;const pins=ap.pinned.map(id=>MENTES.find(m=>m.id===id)).filter(Boolean);const seen=new Set();const out=[];[...pins,...list].forEach(m=>{if(m&&!seen.has(m.id)){seen.add(m.id);out.push(m);}});return out;}
-function pinBook(){const b=BOOKS[curBookIdx];const mente=menteForBook(b);const ap=activeProj();if(!mente){toast('Esse livro ainda não tem mente.');return;}if(!ap){toast('Escolhe um projeto na lateral primeiro.');return;}if(!ap.pinned)ap.pinned=[];const id=mente.id;const i=ap.pinned.indexOf(id);if(i>=0){ap.pinned.splice(i,1);toast('Desafixado de '+ap.nome+'.');}else{ap.pinned.push(id);toast('📌 Fixado em '+ap.nome+' — sempre na mesa desse projeto.');if(mesa.length&&!mesa.some(m=>m.id===id)){mesa.push(mente);renderMesaHead();renderThread();}}persistP();renderBookSheet();renderProjects();}
+function pinSectionHTML(id){
+  if(!projects.length)return '<div class="seclab">Fixar num projeto</div><div class="bqempty" style="padding:6px 0">Crie um projeto na aba Conselheiros pra fixar este livro nele.</div>';
+  const chips=projects.map(p=>{const on=(p.pinned||[]).indexOf(id)>=0;return `<button class="pinchip${on?' on':''}" onclick="pinToggle('${esc(id)}','${p.id}')"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}${on?' 📌':''}</button>`;}).join('');
+  return `<div class="seclab">Fixar num projeto <span style="text-transform:none;letter-spacing:0;color:var(--faint);font-weight:400">— vira conselheiro fixo da mesa dele</span></div><div class="pinchips">${chips}</div>`;
+}
+function unpin(pid,id,ev){if(ev)ev.stopPropagation();const p=projects.find(x=>x.id===pid);if(!p||!p.pinned)return;p.pinned=p.pinned.filter(x=>x!==id);persistP();renderProjects();if(document.getElementById('ov').classList.contains('on'))renderBookSheet();}
+function pinToggle(id,pid){const p=projects.find(x=>x.id===pid);const mente=MENTES.find(m=>m.id===id);if(!p||!mente)return;if(!p.pinned)p.pinned=[];const i=p.pinned.indexOf(id);if(i>=0){p.pinned.splice(i,1);toast('Desafixado de '+p.nome+'.');}else{p.pinned.push(id);toast('📌 Fixado em '+p.nome+' — sempre na mesa desse projeto.');if(active===pid&&mesa.length&&!mesa.some(m=>m.id===id)){mesa.push(mente);renderMesaHead();renderThread();}}persistP();renderBookSheet();renderProjects();}
 function bookByTitle(t){const n=norm(t);return BOOKS.findIndex(b=>norm(b.titulo)===n||norm(b.titulo).slice(0,26)===n.slice(0,26));}
 let curBookIdx=null, bookBusy2=false;
 function bookChats(){try{return JSON.parse(localStorage.getItem('slos_bookchat')||'{}')}catch(e){return {}}}
@@ -495,7 +505,8 @@ function renderBookSheet(){
   const notesHTML=notes.length?notes.map((n,i)=>`<div class="bnote"><div class="bnt">${esc(n.text)}</div><button class="bndel" onclick="delNote(${i})" title="Apagar">🗑</button></div>`).join(''):'<div class="bqempty" style="padding:10px 0">Nenhuma anotação ainda. Escreve teus insights, frases-chave, o que aplicar — fica salvo aqui.</div>';
   s.innerHTML=`<button class="x" onclick="closeSheet()">✕</button>
     <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><span class="catg">${esc(b.cat)}</span></div></div>
-    <div class="sheetcta">${mente?`<button class="btn lime" onclick="bookToMesa(${idx},true)">Chamar essa mente pra mesa →</button>`:`<button class="btn" onclick="bookToMesa(${idx},false)">Levar pra mesa →</button>`}${(mente&&activeProj())?(isPinned(mente.id)?`<button class="btn" onclick="pinBook()" style="color:var(--lime);border-color:#3a4020">📌 Fixado em ${esc(activeProj().nome)} · desafixar</button>`:`<button class="btn" onclick="pinBook()">📌 Fixar no projeto ${esc(activeProj().nome)}</button>`):''}</div>
+    <div class="sheetcta">${mente?`<button class="btn lime" onclick="bookToMesa(${idx},true)">Chamar essa mente pra mesa →</button>`:`<button class="btn" onclick="bookToMesa(${idx},false)">Levar pra mesa →</button>`}</div>
+    ${mente?pinSectionHTML(mente.id):''}
     <div class="seclab">Perguntar a este livro</div>
     <div class="bqthread" id="bqthread">${chatHTML}</div>
     <div class="bqbar"><textarea id="bqinput" rows="1" placeholder="Pergunte a ${esc(primeiro)}… (Enter envia)"></textarea><button class="sendb" id="bqsend" onclick="askBook()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
@@ -590,9 +601,11 @@ function renderProjects(){
     if(!on)return head;
     const convos=(p.convos||[]).slice().reverse();
     const cv=convos.length?convos.map(c=>`<div class="pconvo" onclick="resumeConvo('${c.id}')" title="${esc(c.problem)}"><span class="pcx">${esc(c.problem)}</span><button class="pcdel" onclick="deleteConvo('${c.id}',event)" title="Apagar conversa">🗑</button></div>`).join(''):'<div class="pnone">Sem conversas ainda.</div>';
+    const pins=(p.pinned||[]).map(id=>MENTES.find(m=>m.id===id)).filter(Boolean);
+    const pinBox=pins.length?`<div class="pnesthd" style="margin-top:12px">📌 Conselheiros fixos</div>${pins.map(m=>`<div class="pcomp"><span class="pcx">${esc(m.autor)} <span style="color:var(--faint)">·</span> ${esc(m.titulo)}</span><button class="pcdone" onclick="unpin('${p.id}','${esc(m.id)}',event)" title="Desafixar">✕</button></div>`).join('')}`:'';
     const open=(p.compromissos||[]).map((c,idx)=>({c,idx})).filter(x=>!x.c.done).slice(-3);
     const comp=open.length?`<div class="pnesthd" style="margin-top:12px">Compromissos</div>${open.map(x=>`<div class="pcomp"><span class="pcx">🤝 ${esc((x.c.passo||x.c.recomendacao||'').slice(0,90))}</span><button class="pcdone" onclick="doneCompromisso('${p.id}',${x.idx},event)" title="Marcar como feito">✓ feito</button></div>`).join('')}`:'';
-    return head+`<div class="pnest">${comp}<div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
+    return head+`<div class="pnest">${pinBox}${comp}<div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
   }).join('');
   renderProjpill();
 }
