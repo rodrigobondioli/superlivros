@@ -606,7 +606,7 @@ function renderProjects(){
     const pinBox=pins.length?`<div class="pnesthd" style="margin-top:12px">📌 Conselheiros fixos</div>${pins.map(m=>`<div class="pcomp"><span class="pcx">${esc(m.autor)} <span style="color:var(--faint)">·</span> ${esc(m.titulo)}</span><button class="pcdone" onclick="unpin('${p.id}','${esc(m.id)}',event)" title="Desafixar">✕</button></div>`).join('')}`:'';
     const open=(p.compromissos||[]).map((c,idx)=>({c,idx})).filter(x=>!x.c.done).slice(-3);
     const comp=open.length?`<div class="pnesthd" style="margin-top:12px">Compromissos</div>${open.map(x=>`<div class="pcomp"><span class="pcx">🤝 ${esc((x.c.passo||x.c.recomendacao||'').slice(0,90))}</span><button class="pcdone" onclick="doneCompromisso('${p.id}',${x.idx},event)" title="Marcar como feito">✓ feito</button></div>`).join('')}`:'';
-    return head+`<div class="pnest">${pinBox}${comp}<div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
+    return head+`<div class="pnest">${comp}<div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
   }).join('');
   renderProjpill();
 }
