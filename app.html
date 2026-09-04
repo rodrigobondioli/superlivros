@@ -22,6 +22,10 @@
   .brand span{font-size:10px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase}
   .nav{padding:12px 10px 6px;display:flex;flex-direction:column;gap:3px}
   .navitem{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--mut);border:1px solid transparent;font-size:14.5px;font-weight:600}
+  .navsub{display:flex;align-items:center;gap:7px;padding:6px 12px 6px 14px;margin:-2px 0 2px;border-radius:8px;color:var(--faint);font-size:12.5px;cursor:pointer}.navsub:hover{color:var(--lime)}.navsub .hintx{color:#4a4a52;font-size:11px}
+  .pcomp{display:flex;align-items:flex-start;gap:6px;padding:6px 8px;border-radius:7px;background:#12160a;border:1px solid #2a3a1a;margin-bottom:4px}
+  .pcomp .pcx{flex:1;font-size:11.5px;color:#c9d6ab;line-height:1.4}
+  .pcomp .pcdone{border:0;background:transparent;color:var(--faint);cursor:pointer;font-size:10.5px;white-space:nowrap;padding:1px 3px}.pcomp .pcdone:hover{color:var(--green)}
   .navitem .ic{width:18px;text-align:center;font-size:15px}
   .navitem:hover{background:var(--panel2);color:var(--txt)}
   .navitem.on{background:var(--panel3);border-color:var(--line2);color:var(--txt)}
@@ -249,6 +253,7 @@
     <div class="nav">
       <div class="navitem on" id="nav-est" onclick="showView('estante')"><span class="ic">▦</span> Estante <span class="ct" id="bookcount"></span></div>
       <div class="navitem" id="nav-con" onclick="showView('conselheiros')"><span class="ic">✦</span> Conselheiros</div>
+      <div class="navsub" onclick="novaAvulsa()">＋ conversa avulsa <span class="hintx">sem projeto</span></div>
     </div>
     <div class="ctx" id="ctx-est">
       <div class="ctxhd">Categorias</div>
@@ -508,7 +513,7 @@ let projects=[], active=null, mesa=[], thread=[], busy=false, problem='', convoI
 function loadP(){try{projects=JSON.parse(localStorage.getItem('slos_projects')||'[]')}catch(e){projects=[]}active=localStorage.getItem('slos_active')||null;projects.forEach(p=>{if(!p.convos)p.convos=[];});}
 function persistP(){try{localStorage.setItem('slos_projects',JSON.stringify(projects));localStorage.setItem('slos_active',active||'')}catch(e){}}
 function activeProj(){return projects.find(p=>p.id===active)||null;}
-function projForMotor(){const ap=activeProj();if(!ap)return null;const obj=(ap.objetivo||'').trim();const ctx=(obj?('OBJETIVO (puxe TODA resposta pra cá): '+obj+'\n\n'):'')+(ap.ctx||'');return {nome:ap.nome,seed:ap.seed,objetivo:obj,ctx};}
+function projForMotor(){const ap=activeProj();if(!ap)return null;const obj=(ap.objetivo||'').trim();const comp=(ap.compromissos||[]).filter(c=>!c.done).slice(-2);const compStr=comp.length?('\n\nCOMPROMISSOS EM ABERTO (a mesa PROMETEU cobrar isto — pergunte se ele avançou e não passe pano se ele enrolou): '+comp.map(c=>'"'+(c.passo||c.recomendacao||'')+'" (definido em '+new Date(c.ts).toLocaleDateString('pt-BR')+')').join(' | ')):'';const ctx=(obj?('OBJETIVO (puxe TODA resposta pra cá): '+obj+'\n\n'):'')+(ap.ctx||'')+compStr;return {nome:ap.nome,seed:ap.seed,objetivo:obj,ctx};}
 function renderProjects(){
   const el=document.getElementById('plist');
   const pc=document.getElementById('pcount');if(pc)pc.textContent=projects.length;
@@ -520,13 +525,17 @@ function renderProjects(){
     if(!on)return head;
     const convos=(p.convos||[]).slice().reverse();
     const cv=convos.length?convos.map(c=>`<div class="pconvo" onclick="resumeConvo('${c.id}')" title="${esc(c.problem)}"><span class="pcx">${esc(c.problem)}</span><button class="pcdel" onclick="deleteConvo('${c.id}',event)" title="Apagar conversa">🗑</button></div>`).join(''):'<div class="pnone">Sem conversas ainda.</div>';
-    return head+`<div class="pnest"><div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
+    const open=(p.compromissos||[]).map((c,idx)=>({c,idx})).filter(x=>!x.c.done).slice(-3);
+    const comp=open.length?`<div class="pnesthd" style="margin-top:12px">Compromissos</div>${open.map(x=>`<div class="pcomp"><span class="pcx">🤝 ${esc((x.c.passo||x.c.recomendacao||'').slice(0,90))}</span><button class="pcdone" onclick="doneCompromisso('${p.id}',${x.idx},event)" title="Marcar como feito">✓ feito</button></div>`).join('')}`:'';
+    return head+`<div class="pnest">${comp}<div class="pnesthd">Conversas</div>${cv}<div class="pactions"><a onclick="editProject()">editar</a><a class="del" onclick="deleteProject('${p.id}')">excluir</a></div></div>`;
   }).join('');
   renderProjpill();
 }
-function renderProjpill(){const el=document.getElementById('projpill');if(!el)return;const w=el.closest('.ppwrap');const ap=activeProj();if(!ap){if(w)w.style.display='none';el.innerHTML='';return;}if(w)w.style.display='';el.innerHTML=`<span class="dot" style="background:${ap.color}"></span>nova conversa em <b>${esc(ap.nome)}</b> <a onclick="clearActive()">tirar</a>`;}
+function renderProjpill(){const el=document.getElementById('projpill');if(!el)return;const w=el.closest('.ppwrap');const ap=activeProj();if(!ap){if(w)w.style.display='';el.innerHTML=`conversa avulsa <span style="color:var(--faint)">· sem projeto, não fica salva</span>`;return;}if(w)w.style.display='';el.innerHTML=`<span class="dot" style="background:${ap.color}"></span>conversa em <b>${esc(ap.nome)}</b> <a onclick="clearActive()">tirar projeto</a>`;}
 function selectProject(id){active=id;persistP();renderProjects();}
-function clearActive(){active=null;persistP();renderProjects();}
+function clearActive(){active=null;persistP();renderProjects();renderProjpill();}
+function novaAvulsa(){active=null;persistP();newSubject();showView('conselheiros');renderProjects();document.getElementById('opentext').focus();}
+function doneCompromisso(pid,idx,ev){if(ev)ev.stopPropagation();const p=projects.find(x=>x.id===pid);if(!p||!p.compromissos||!p.compromissos[idx])return;p.compromissos[idx].done=true;persistP();renderProjects();toast('Compromisso marcado como feito. 👊');}
 let editing=null;
 function newProject(){editing=null;pendingDocs=[];briefed=true;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_objetivo').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
 function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();briefed=true;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_objetivo').value=p.objetivo||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
@@ -669,7 +678,9 @@ function pickCaminho(txt){if(busy)return;const ta=document.getElementById('reply
 async function fecharMesa(){if(busy)return;busy=true;document.getElementById('sendb').disabled=true;showTyping(true);
   const payload={problem,project:projForMotor(),mentes:mesa.map(m=>({autor:m.autor,titulo:m.titulo,dossie:m.md})),history:thread.filter(m=>m.role==='user'||m.role==='mente').map(m=>({role:m.role,autor:m.autor||null,text:stripTags(m.text)}))};
   try{const r=await fetch(VERDICT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json();showTyping(false);
-    thread=thread.filter(m=>m.role!=='verdict');thread.push({role:'verdict',v:j});renderThread();saveConvo();
+    thread=thread.filter(m=>m.role!=='verdict');thread.push({role:'verdict',v:j});renderThread();
+    const ap=activeProj();if(ap&&(j.recomendacao||j.primeiro_passo)){if(!ap.compromissos)ap.compromissos=[];ap.compromissos.push({recomendacao:stripTags(j.recomendacao||''),passo:stripTags(j.primeiro_passo||''),ts:Date.now(),done:false});ap.compromissos=ap.compromissos.slice(-4);persistP();renderProjects();toast('Veredito salvo como compromisso — a mesa vai te cobrar isso na próxima. 🤝');}
+    saveConvo();
   }catch(e){showTyping(false);thread.push({role:'sys',text:'<b>Não consegui fechar agora.</b> Tenta de novo em instantes ('+esc(String(e.message||e))+').'});renderThread();}
   busy=false;document.getElementById('sendb').disabled=false;}
 function removeMente(id){if(mesaLocked)return;mesa=mesa.filter(m=>m.id!==id);renderMesaHead();renderThread();}
