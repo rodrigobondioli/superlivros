@@ -142,7 +142,11 @@
   .sugg .sh{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:7px}
   .sugg .ssub{font-size:12px;color:var(--faint);margin-bottom:12px}
   .sugg .sb{display:flex;gap:11px;padding:10px 0;border-top:1px solid #20281440}.sugg .sb:first-of-type{border-top:0}
-  .sugg .sb .sc{width:34px;height:46px;border-radius:5px;background:#1a2110;border:1px solid #2f3d1c;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:16px}
+  .sugg .sb .sc{width:34px;height:46px;border-radius:5px;background:#1a2110;border:1px solid #2f3d1c;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:18px;cursor:pointer;transition:background .15s,transform .1s}.sugg .sb .sc:hover{background:var(--lime);color:#0f0f10}.sugg .sb .sc:active{transform:scale(.92)}
+  .wishwrap{display:flex;flex-direction:column;gap:10px}
+  .wishc{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;flex-wrap:wrap}
+  .wishc .wi{flex:1;min-width:200px}.wishc .wt{font-weight:700;font-size:14.5px}.wishc .wa{font-size:12.5px;color:var(--mut);margin:1px 0 5px}.wishc .wp{font-size:12.5px;color:#b9c99a;line-height:1.5}
+  .wishc .wact{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .sugg .sb .si{flex:1;min-width:0}
   .sugg .sb .st{font-weight:700;font-size:14px;color:var(--txt)}.sugg .sb .sa{font-size:12px;color:var(--mut);margin:1px 0 5px}
   .sugg .sb .sp{font-size:12.5px;color:#b9c99a;line-height:1.5}
@@ -269,7 +273,7 @@
         <div class="esttop">
           <h1>Estante <span id="estsub"></span></h1>
           <div class="sp"></div>
-          <div class="seg"><button id="seg-all" class="on" onclick="setFav(false)">Todos</button><button id="seg-fav" onclick="setFav(true)">★ Favoritos</button></div>
+          <div class="seg"><button id="seg-all" class="on" onclick="setView('all')">Todos</button><button id="seg-fav" onclick="setView('fav')">★ Favoritos</button><button id="seg-wish" onclick="setView('wish')">🎯 Desejados <span id="wishct"></span></button></div>
           <button class="addbk" onclick="openBookModal()">+ livro</button>
         </div>
         <input class="search" id="search" placeholder="Buscar por título, autor ou categoria…">
@@ -371,11 +375,19 @@ function openSidebar(){document.getElementById('side').classList.add('open');doc
 function closeSidebar(){document.getElementById('side').classList.remove('open');document.getElementById('mbackdrop').classList.remove('on');}
 
 /* ===== ESTANTE ===== */
-let favs={}, favOnly=false, query='', sel={type:'all'}, expanded={};
+let favs={}, favOnly=false, wishOnly=false, query='', sel={type:'all'}, expanded={}, wishlist=[];
 function loadFavs(){try{favs=JSON.parse(localStorage.getItem('slos_favs')||'{}')}catch(e){favs={}}}
 function saveFavs(){try{localStorage.setItem('slos_favs',JSON.stringify(favs))}catch(e){}}
 function toggleFav(hash,ev){ev.stopPropagation();favs[hash]=!favs[hash];if(!favs[hash])delete favs[hash];saveFavs();renderGrid();}
-function setFav(v){favOnly=v;document.getElementById('seg-all').classList.toggle('on',!v);document.getElementById('seg-fav').classList.toggle('on',v);renderGrid();}
+function setFav(v){setView(v?'fav':'all');}
+function setView(m){favOnly=(m==='fav');wishOnly=(m==='wish');document.getElementById('seg-all').classList.toggle('on',m==='all');document.getElementById('seg-fav').classList.toggle('on',m==='fav');document.getElementById('seg-wish').classList.toggle('on',m==='wish');renderGrid();}
+function loadWishlist(){try{wishlist=JSON.parse(localStorage.getItem('slos_wishlist')||'[]')}catch(e){wishlist=[]}updWishCt();}
+function saveWishlist(){try{localStorage.setItem('slos_wishlist',JSON.stringify(wishlist))}catch(e){}updWishCt();}
+function updWishCt(){const el=document.getElementById('wishct');if(el)el.textContent=wishlist.length?'('+wishlist.length+')':'';}
+function addWish(titulo,autor,porque){titulo=(titulo||'').trim();if(!titulo)return;if(haveTitle(titulo)){toast('“'+titulo+'” já tá na sua estante.');return;}if(wishlist.some(w=>norm(w.titulo)===norm(titulo))){toast('“'+titulo+'” já tá na sua lista de desejos.');return;}wishlist.unshift({titulo,autor:autor||'',porque:porque||'',ts:Date.now()});saveWishlist();toast('“'+titulo+'” salvo na lista de desejos 🎯');}
+function removeWish(t){wishlist=wishlist.filter(w=>norm(w.titulo)!==norm(t));saveWishlist();renderGrid();}
+function wishToBook(t,a){setView('all');openBookModal();const ti=document.getElementById('b_titulo'),au=document.getElementById('b_autor');if(ti)ti.value=t||'';if(au)au.value=a||'';document.getElementById('bstatus').innerHTML='<b style="color:var(--lime)">Joga o arquivo de “'+esc(t||'')+'”</b> que eu viro mente e tiro da lista de desejos.';}
+function renderWishlist(){const el=document.getElementById('grid');document.getElementById('estsub').textContent=`· ${wishlist.length} desejado${wishlist.length!==1?'s':''}`;if(!wishlist.length){el.innerHTML='<div class="empty">Sua lista de desejos tá vazia. Quando a mesa sugerir um livro que você não tem, clique no <b>+</b> pra guardar aqui.</div>';return;}el.innerHTML=`<div class="catrow fav">🎯 A mesa recomendou <span class="crn">${wishlist.length}</span></div><div class="wishwrap">${wishlist.map(w=>`<div class="wishc"><div class="wi"><div class="wt">${esc(w.titulo)}</div><div class="wa">${esc(w.autor||'')}</div>${w.porque?`<div class="wp">${esc(w.porque)}</div>`:''}</div><div class="wact"><button class="btn sm lime" onclick="wishToBook('${esc(w.titulo).replace(/'/g,"\\'")}','${esc(w.autor||'').replace(/'/g,"\\'")}')">Tenho o arquivo → virar mente</button><button class="btn sm" onclick="removeWish('${esc(w.titulo).replace(/'/g,"\\'")}')" style="color:var(--faint)">remover</button></div></div>`).join('')}</div>`;}
 function catCount(c){return BOOKS.filter(b=>b.cat===c).length;}
 function groupCount(g){return g.cats.reduce((s,c)=>s+catCount(c),0);}
 function renderCats(){
@@ -406,6 +418,7 @@ function filtered(){
 function cardHTML(b){const idx=BOOKS.indexOf(b),star=favs[b.hash]?'★':'☆';const badge=b._user?'<div class="ubadge">novo</div>':'';return `<div class="bkwrap">${badge}<div class="bk" onclick="openBook(${idx})"><img class="cov" loading="lazy" src="${b.cover||''}" alt=""><div class="meta"><div class="bt">${esc(b.titulo)}</div><div class="ba">${esc(b.autor)}</div></div></div><div class="star" onclick="toggleFav('${b.hash}',event)">${star}</div></div>`;}
 function sectionHTML(label,bs,fav){return `<div class="catrow${fav?' fav':''}">${esc(label)} <span class="crn">${bs.length}</span></div><div class="grid">${bs.map(cardHTML).join('')}</div>`;}
 function renderGrid(){
+  if(wishOnly){renderWishlist();return;}
   const list=filtered();
   document.getElementById('estsub').textContent=`· ${list.length} livro${list.length!==1?'s':''}`;
   document.getElementById('bookcount').textContent=BOOKS.length;
@@ -673,7 +686,7 @@ function linkBooks(html){
   return html.replace(/"([^"]{6,60})"/g,(full,t)=>{const i=bookByTitle(t);return i>=0?`<a class="blink" onclick="openBook(${i})">"${esc(t)}"</a>`:full;});
 }
 function haveTitle(t){return bookByTitle(t)>-1;}
-function suggestHTML(books){if(!books||!books.length)return '';return `<div class="sugg"><div class="sh">📚 Livros que fortaleceriam a mesa</div><div class="ssub">Perspectivas que faltam na sua estante pra esse problema — pra crescer o conselho.</div>${books.map(b=>`<div class="sb"><div class="sc">＋</div><div class="si"><div class="st">${esc(b.titulo)}</div><div class="sa">${esc(b.autor||'')}</div><div class="sp">${esc(b.porque||'')}</div></div></div>`).join('')}</div>`;}
+function suggestHTML(books){if(!books||!books.length)return '';return `<div class="sugg"><div class="sh">📚 Livros que fortaleceriam a mesa</div><div class="ssub">Perspectivas que faltam na sua estante pra esse problema — pra crescer o conselho.</div>${books.map(b=>`<div class="sb"><button class="sc" title="Salvar na lista de desejos" onclick="addWish('${esc(b.titulo).replace(/'/g,"\\'")}','${esc(b.autor||'').replace(/'/g,"\\'")}','${esc(b.porque||'').replace(/'/g,"\\'")}')">＋</button><div class="si"><div class="st">${esc(b.titulo)}</div><div class="sa">${esc(b.autor||'')}</div><div class="sp">${esc(b.porque||'')}</div></div></div>`).join('')}</div>`;}
 function renderThread(){const el=document.getElementById('tinner');el.innerHTML=thread.map(m=>{if(m.role==='curator')return curatorHTML();if(m.role==='casting')return castingHTML();if(m.role==='confirm')return confirmHTML();if(m.role==='orient')return orientHTML(m);if(m.role==='verdict')return verdictHTML(m.v);if(m.role==='suggest')return suggestHTML(m.books);if(m.role==='user')return `<div class="msg user"><div class="ubub">${esc(m.text)}</div></div>`;if(m.role==='sys')return `<div class="msg sys"><div class="bd">${m.text}</div></div>`;if(m.role==='host')return `<div class="msg"><div class="av" style="background:var(--lime)">✦</div><div class="bd"><div class="who"><span class="nm">Mesa</span></div><div class="tx">${m.text}</div></div></div>`;return `<div class="msg"><div class="av" style="background:${pickM({id:m.autor||'x'})}">${esc(initials({autor:m.autor,titulo:m.livro}))}</div><div class="bd"><div class="who"><span class="nm">${esc(m.autor)}</span><span class="bk2">${esc(m.livro||'')}</span></div><div class="tx">${m.text}</div>${m.quote?`<div class="qt">${esc(m.quote)}</div>`:''}</div></div>`;}).join('');const th=document.getElementById('thread');th.scrollTop=th.scrollHeight;}
 function showTyping(on){const el=document.getElementById('tinner');let t=document.getElementById('typingrow');if(on){if(!t){const d=document.createElement('div');d.id='typingrow';d.className='msg';d.innerHTML=`<div class="av" style="background:var(--panel3);color:var(--mut)">···</div><div class="bd"><div class="typing"><span class="d"></span><span class="d"></span><span class="d"></span> a mesa tá pensando…</div></div>`;el.appendChild(d);}}else if(t)t.remove();const th=document.getElementById('thread');th.scrollTop=th.scrollHeight;}
 function sendReply(){if(busy)return;const ta=document.getElementById('reply');const t=ta.value.trim();if(!t)return;ta.value='';ta.style.height='auto';thread.push({role:'user',text:t});
@@ -704,7 +717,7 @@ document.getElementById('b_file').addEventListener('change',onBookFile);
 (function(){const bd=document.getElementById('bdrop');['dragover','dragenter'].forEach(ev=>bd.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();bd.classList.add('hot');}));['dragleave','dragend'].forEach(ev=>bd.addEventListener(ev,e=>{e.preventDefault();bd.classList.remove('hot');}));bd.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();bd.classList.remove('hot');if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)setBookFile(e.dataTransfer.files[0]);});})();
 loadUserLib();
 (function(){const mc=document.getElementById('menteCount');if(mc)mc.textContent=MENTES.length;})();
-loadFavs();renderCats();renderGrid();loadP();renderProjects();
+loadFavs();loadWishlist();renderCats();renderGrid();loadP();renderProjects();
 try{const v=localStorage.getItem('slos_view');if(v==='conselheiros')showView('conselheiros');}catch(e){}
 </script>
 </body>
