@@ -297,7 +297,7 @@
       <section class="convo" id="convo">
         <div class="mesahead" id="mesahead"></div>
         <div class="thread" id="thread"><div class="tinner" id="tinner"></div></div>
-        <div class="replybar"><div class="replywrap"><textarea class="reply" id="reply" placeholder="Responde, discorda, empurra… (Enter envia)"></textarea><button class="sendb" id="sendb" onclick="sendReply()">↑</button></div></div>
+        <div class="replybar"><div class="replywrap"><textarea class="reply" id="reply" placeholder="Responde, discorda, empurra… (Enter envia)"></textarea><button class="sendb" id="sendb" onclick="sendReply()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>
       </section>
     </section>
   </main>
@@ -536,7 +536,7 @@ function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.text
 function syncNameChk(){const n=document.getElementById('p_nome'),c=document.getElementById('p_namechk');if(c)c.style.opacity=(n&&n.value.trim())?'1':'0';}
 let pendingDocs=[], briefed=true;
 function renderPendingDocs(){const el=document.getElementById('p_docs');if(!el)return;el.innerHTML=pendingDocs.map(d=>`<span class="docchip">📄 ${esc(d.name)} <span class="dz">${(d.chars/1000).toFixed(1)}k</span></span>`).join('');}
-function toast(msg){let t=document.getElementById('slostoast');if(!t){t=document.createElement('div');t.id='slostoast';t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#14150e;border:1px solid #3a4020;color:#eef3d6;padding:14px 22px;border-radius:14px;font-size:14.5px;font-weight:500;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.6);opacity:0;transition:opacity .2s;display:flex;align-items:center;gap:10px;max-width:90vw;text-align:left';document.body.appendChild(t);}t.innerHTML='<span style="color:var(--lime);font-size:17px;flex:0 0 auto">✓</span><span>'+esc(msg)+'</span>';requestAnimationFrame(()=>t.style.opacity='1');clearTimeout(window.__tt);window.__tt=setTimeout(()=>{t.style.opacity='0';},3600);}
+function toast(msg){let t=document.getElementById('slostoast');if(!t){t=document.createElement('div');t.id='slostoast';t.style.cssText='position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:#14150e;border:1px solid #3a4020;color:#eef3d6;padding:14px 22px;border-radius:14px;font-size:14.5px;font-weight:500;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.6);opacity:0;transition:opacity .2s;display:flex;align-items:center;gap:10px;max-width:90vw;text-align:left;pointer-events:none';document.body.appendChild(t);}t.innerHTML='<span style="color:var(--lime);font-size:17px;flex:0 0 auto">✓</span><span>'+esc(msg)+'</span>';requestAnimationFrame(()=>t.style.opacity='1');clearTimeout(window.__tt);window.__tt=setTimeout(()=>{t.style.opacity='0';},3600);}
 function lazyScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('falha ao carregar '+src));document.head.appendChild(s);});}
 async function extractFileText(file){
   const name=(file.name||'').toLowerCase();
