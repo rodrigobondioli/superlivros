@@ -604,7 +604,7 @@ async function saveProject(){
 function saveConvo(){
   const ap=activeProj();if(!ap||!thread.length)return;
   if(!convoId)convoId='c'+Date.now();
-  const rec={id:convoId,problem:problem||stripTags((thread.find(m=>m.role==='user')||{}).text||'Conversa'),mesa:mesa.map(m=>m.id),thread:thread.filter(m=>m.role==='user'||m.role==='mente'),ts:Date.now()};
+  const rec={id:convoId,problem:problem||stripTags((thread.find(m=>m.role==='user')||{}).text||'Conversa'),mesa:mesa.map(m=>m.id),thread:thread.filter(m=>['user','mente','verdict','suggest','orient','host','sys'].includes(m.role)),ts:Date.now()};
   const i=ap.convos.findIndex(c=>c.id===convoId);
   if(i>=0)ap.convos[i]=rec;else ap.convos.push(rec);
   persistP();renderProjects();
