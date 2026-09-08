@@ -84,7 +84,33 @@
   .seg{display:inline-flex;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:2px}
   .seg button{background:transparent;border:0;color:var(--mut);font-size:12.5px;padding:6px 12px;border-radius:8px}
   .seg button.on{background:var(--panel3);color:var(--txt);font-weight:600}
-  .search{margin-top:13px;width:100%;background:var(--panel);border:1px solid var(--line2);border-radius:12px;color:var(--txt);font:15px inherit;padding:12px 15px;outline:none}
+  .searchwrap{margin-top:13px;display:flex;gap:9px;align-items:stretch}
+  .search{flex:1;width:100%;background:var(--panel);border:1px solid var(--line2);border-radius:12px;color:var(--txt);font:15px inherit;padding:12px 15px;outline:none}
+  .search:focus{border-color:var(--lime)}
+  .askbtn{flex:none;border:1px solid var(--lime);background:var(--lime);color:#0f0f10;font-weight:800;font-size:13.5px;padding:0 18px;border-radius:12px;cursor:pointer;white-space:nowrap;transition:filter .12s}
+  .askbtn:hover{filter:brightness(1.06)}
+  .askbtn:disabled{opacity:.55;cursor:default}
+  .libwrap{padding:4px 2px 8px}
+  .libback{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);color:var(--mut);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:9px;cursor:pointer;margin-bottom:14px}
+  .libback:hover{color:var(--txt);border-color:var(--line2)}
+  .libq{font-size:13px;color:var(--faint);margin:0 0 4px}
+  .libintro{font-size:16.5px;font-weight:700;letter-spacing:-.01em;line-height:1.4;margin:0 0 16px;color:var(--txt)}
+  .libcard{display:flex;gap:15px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-bottom:11px;transition:border-color .12s}
+  .libcard:hover{border-color:var(--line2)}
+  .librank{flex:none;width:24px;height:24px;border-radius:7px;background:var(--lime);color:#0f0f10;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .libcov{flex:none;width:52px;height:74px;object-fit:cover;border-radius:6px;background:var(--panel3);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  .libmid{flex:1;min-width:0}
+  .libtt{font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--txt);cursor:pointer;line-height:1.3}
+  .libtt:hover{color:var(--lime)}
+  .libau{font-size:12.5px;color:var(--mut);margin:1px 0 7px}
+  .libmot{font-size:13.5px;color:var(--txt);line-height:1.5;opacity:.92}
+  .libact{flex:none;display:flex;flex-direction:column;gap:6px;align-self:center}
+  .libbtn{border:1px solid var(--line2);background:var(--panel2);color:var(--txt);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .libbtn:hover{border-color:var(--lime);color:var(--lime)}
+  .libload{display:flex;align-items:center;gap:11px;color:var(--mut);font-size:14px;padding:30px 6px}
+  .libspin{width:18px;height:18px;border:2.5px solid var(--line2);border-top-color:var(--lime);border-radius:50%;animation:libsp .7s linear infinite}
+  @keyframes libsp{to{transform:rotate(360deg)}}
+  .liberr{color:var(--mut);font-size:14px;padding:22px 6px;line-height:1.5}
   .search:focus{border-color:#3a3b44}
   .estbody{flex:1;overflow-y:auto;padding:20px 26px 60px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
@@ -308,7 +334,10 @@
           <div class="seg"><button id="seg-all" class="on" onclick="setView('all')">Todos</button><button id="seg-fav" onclick="setView('fav')">★ Favoritos</button><button id="seg-wish" onclick="setView('wish')">🎯 Desejados <span id="wishct"></span></button></div>
           <button class="addbk" onclick="openBookModal()">+ livro</button>
         </div>
-        <input class="search" id="search" placeholder="Buscar por título, autor ou categoria…">
+        <div class="searchwrap">
+          <input class="search" id="search" placeholder="Buscar… ou pergunte: “quero melhorar o hook de um post, que livro me ajuda?”" onkeydown="if(event.key==='Enter'){event.preventDefault();askLibrarian();}">
+          <button class="askbtn" id="askbtn" onclick="askLibrarian()" title="Pergunte o que você quer fazer — o bibliotecário indica os livros">✨ Perguntar</button>
+        </div>
       </div>
       <div class="estbody"><div id="grid"></div></div>
     </section>
@@ -377,6 +406,7 @@ const CAST_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/cast';
 const ORIENT_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/orient';
 const VERDICT_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/verdict';
 const ASK_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/ask';
+const LIBRARIAN_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/librarian';
 const GROUPS=[
   {name:'Negócio & Estratégia', cats:['Negócios & Estratégia','Growth & Aquisição','One Person Business','Founder-led Growth']},
   {name:'Produto & Design', cats:['Design','UX, UI & Produto']},
@@ -474,6 +504,37 @@ function renderGrid(){
   el.innerHTML=html;
 }
 function menteForBook(b){const t=norm(b.titulo).slice(0,24);return MENTES.find(m=>norm(m.titulo).slice(0,24)===t||norm(m.titulo).includes(norm((b.titulo||'').split('-')[0].trim()).slice(0,18)));}
+let libBusy=false, libActive=false;
+async function askLibrarian(){
+  const inp=document.getElementById('search');const q=(inp.value||'').trim();
+  if(q.length<6){toast('Escreve o que você quer fazer — ex: “melhorar o hook de um post”.');inp.focus();return;}
+  if(libBusy)return;libBusy=true;libActive=true;
+  const btn=document.getElementById('askbtn');if(btn){btn.disabled=true;btn.textContent='✨ Pensando…';}
+  const el=document.getElementById('grid');
+  el.innerHTML='<div class="libload"><div class="libspin"></div>O bibliotecário tá lendo a estante pra te indicar os certos…</div>';
+  const roster=BOOKS.map((b,i)=>{const m=menteForBook(b);return {i,autor:b.autor||'',titulo:b.titulo||'',dominio:(m&&m.dominio)||'',tese:(m&&m.tese)||(b.desc||'')};});
+  let data=null,lastErr='';
+  for(let attempt=0;attempt<2;attempt++){
+    try{
+      if(attempt)await new Promise(r=>setTimeout(r,1000));
+      const r=await fetch(LIBRARIAN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,roster})});
+      if(!r.ok){lastErr='http '+r.status;if(r.status>=500&&attempt<1)continue;throw new Error(lastErr);}
+      const jj=await r.json();
+      if(!jj.picks||!jj.picks.length){lastErr=jj.error||'vazio';if(attempt<1)continue;throw new Error(lastErr);}
+      data=jj;break;
+    }catch(e){lastErr=String(e.message||e);}
+  }
+  libBusy=false;if(btn){btn.disabled=false;btn.textContent='✨ Perguntar';}
+  if(!data){el.innerHTML='<div class="liberr">Não consegui consultar agora ('+esc(lastErr)+'). Tenta de novo em instantes — ou usa a busca normal por palavra.</div>';return;}
+  renderLibResults(q,data.intro||'',data.picks);
+}
+function renderLibResults(q,intro,picks){
+  const el=document.getElementById('grid');
+  const cards=picks.map((p,n)=>{const b=BOOKS[p.i];if(!b)return '';return `<div class="libcard"><div class="librank">${n+1}</div><img class="libcov" loading="lazy" src="${b.cover||''}" alt="" onclick="openBook(${p.i})"><div class="libmid"><div class="libtt" onclick="openBook(${p.i})">${esc(b.titulo)}</div><div class="libau">${esc(b.autor||'')}</div><div class="libmot">${esc(p.motivo||'')}</div></div><div class="libact"><button class="libbtn" onclick="openBook(${p.i})">📖 abrir</button></div></div>`;}).join('');
+  el.innerHTML=`<div class="libwrap"><button class="libback" onclick="backToEstante()">← estante</button><div class="libq">Você perguntou: “${esc(q)}”</div>${intro?`<div class="libintro">${esc(intro)}</div>`:''}${cards}</div>`;
+  document.getElementById('estsub').textContent='· o bibliotecário indica';
+}
+function backToEstante(){libActive=false;const inp=document.getElementById('search');if(inp)inp.value='';query='';renderGrid();}
 function mergePinned(list){const ap=activeProj();if(!ap||!ap.pinned||!ap.pinned.length)return list;const pins=ap.pinned.map(id=>MENTES.find(m=>m.id===id)).filter(Boolean);const seen=new Set();const out=[];[...pins,...list].forEach(m=>{if(m&&!seen.has(m.id)){seen.add(m.id);out.push(m);}});return out;}
 function pinSectionHTML(id){
   if(!projects.length)return '<div class="seclab">Fixar num projeto</div><div class="bqempty" style="padding:6px 0">Crie um projeto na aba Conselheiros pra fixar este livro nele.</div>';
