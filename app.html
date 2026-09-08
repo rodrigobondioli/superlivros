@@ -238,20 +238,25 @@
   .msg.user .uimgnote{font-size:12px;color:#8fa6bd;margin-bottom:3px}
   /* SHEET */
   .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:50}.ov.on{display:block}
-  .sheet{position:absolute;right:0;top:0;bottom:0;width:min(94vw,max(560px,40vw));background:var(--panel);border-left:1px solid var(--line2);overflow-y:auto;padding:22px 24px}
+  .sheet{position:absolute;right:0;top:0;bottom:0;width:min(94vw,max(560px,40vw));background:var(--panel);border-left:1px solid var(--line2);overflow-y:auto;padding:30px 34px 46px}
+  .sheet>*{max-width:680px}
   .sheet .x{position:absolute;top:16px;right:18px;background:var(--panel2);border:1px solid var(--line2);color:var(--mut);width:30px;height:30px;border-radius:8px;z-index:2}
-  .bkhero{display:flex;gap:16px;margin-bottom:18px}
-  .bkhero img{width:96px;border-radius:8px;flex:0 0 auto;background:var(--panel3)}
-  .bkhero .h2{font-size:19px;font-weight:800;line-height:1.15;letter-spacing:-.01em}
-  .bkhero .au{font-size:13px;color:var(--mut);margin-top:4px}
-  .bkhero .catg{display:inline-block;margin-top:9px;font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:3px 9px}
-  .seclab{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:18px 0 7px}
-  .ptext{font-size:14px;line-height:1.6;color:#dcdce0}
+  .bkhero{display:flex;gap:20px;margin-bottom:22px;align-items:flex-start}
+  .bkhero img{width:104px;border-radius:9px;flex:0 0 auto;background:var(--panel3);box-shadow:0 4px 16px rgba(0,0,0,.4)}
+  .bkhero .h2{font-size:23px;font-weight:800;line-height:1.12;letter-spacing:-.02em}
+  .bkhero .au{font-size:14px;color:var(--mut);margin-top:6px}
+  .bkhero .catg{display:inline-block;margin-top:12px;font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:3px 10px}
+  .seclab{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0 0 11px;padding-top:26px;border-top:1px solid var(--line)}
+  .seclab.nb{border-top:0;padding-top:0}
+  .ptext{font-size:14.5px;line-height:1.62;color:#dcdce0;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
+  .ptext .pline{margin-bottom:9px}.ptext .pline:last-child{margin-bottom:0}
+  .ptext b{color:#fff}
   .ganchos{display:flex;flex-wrap:wrap;gap:7px}.gch{font-size:12.5px;color:#d8d8dc;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
   .trecho{font-size:13px;line-height:1.62;color:#c9c9cf;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;max-height:280px;overflow-y:auto;white-space:pre-wrap}
-  .sheetcta{margin:18px 0 6px;display:flex;gap:9px;flex-wrap:wrap}
-  .bqthread{display:flex;flex-direction:column;gap:11px;max-height:340px;overflow-y:auto;padding:4px 2px}
-  .bqempty{font-size:13px;line-height:1.55;color:var(--faint)}.bqempty b{color:var(--mut)}
+  .sheetcta{margin:0 0 22px;display:flex;gap:9px;flex-wrap:wrap}
+  .sheetcta .btn{font-size:14px;padding:12px 18px}
+  .bqthread{display:flex;flex-direction:column;gap:13px;max-height:360px;overflow-y:auto;padding:2px 2px 4px}
+  .bqempty{font-size:13.5px;line-height:1.6;color:var(--faint)}.bqempty b{color:var(--mut)}
   .bqmsg{display:flex;gap:9px}.bqmsg.user{justify-content:flex-end}
   .bqmsg .bqav{width:26px;height:26px;border-radius:8px;flex:0 0 auto;background:var(--panel3);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700}
   .bqmsg .bqb{font-size:13.5px;line-height:1.55}.bqmsg .bqb.a{color:#e6e8ea}.bqmsg .bqb.a b{color:#fff}
@@ -559,7 +564,7 @@ function renderBookSheet(){
   if(mente&&mente.tese)richParts.push('<b>Tese:</b> '+esc(mente.tese));
   if(mente&&mente.convoque)richParts.push('<b>Convoque para:</b> '+esc(mente.convoque.replace(/^convoque para:?\s*/i,'')));
   if(b.muda)richParts.push('<b>O que muda em você:</b> '+esc(b.muda));
-  const rich=richParts.length?`<div class="seclab">Em resumo</div><div class="ptext">${richParts.join('<br>')}</div>`:'';
+  const rich=richParts.length?`<div class="seclab">Em resumo</div><div class="ptext">${richParts.map(p=>`<div class="pline">${p}</div>`).join('')}</div>`:'';
   const chatHTML=chats.length?chats.map(m=>m.role==='user'
     ?`<div class="bqmsg user"><div class="bqb">${esc(m.text)}</div></div>`
     :`<div class="bqmsg"><div class="bqav">${esc(initials({autor:b.autor,titulo:b.titulo}))}</div><div class="bqb a">${m.text}</div></div>`).join('')
@@ -569,10 +574,10 @@ function renderBookSheet(){
     <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><span class="catg">${esc(b.cat)}</span></div></div>
     <div class="sheetcta">${mente?`<button class="btn lime" onclick="bookToMesa(${idx},true)">Chamar essa mente pra mesa →</button>`:`<button class="btn" onclick="bookToMesa(${idx},false)">Levar pra mesa →</button>`}</div>
     ${mente?pinSectionHTML(mente.id):''}
+    ${rich}
     <div class="seclab">Perguntar a este livro</div>
     <div class="bqthread" id="bqthread">${chatHTML}</div>
     <div class="bqbar"><textarea id="bqinput" rows="1" placeholder="Pergunte a ${esc(primeiro)}… (Enter envia)"></textarea><button class="sendb" id="bqsend" onclick="askBook()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
-    ${rich}
     <div class="seclab">Minhas anotações</div>
     <div class="bnbar"><textarea id="bninput" rows="2" placeholder="Escreve uma anotação sobre este livro… (Enter salva)"></textarea><button class="btn sm lime" onclick="addNote()">Salvar</button></div>
     <div class="bnotes">${notesHTML}</div>`;
