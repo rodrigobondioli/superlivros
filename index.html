@@ -257,6 +257,11 @@
   .callbtn{margin:0 0 2px}
   .seclab{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:24px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
   .seclab.nb{border-top:0;padding-top:0;margin-top:0}
+  .acc-h{cursor:pointer;display:flex;align-items:center;user-select:none;transition:color .12s}
+  .acc-h:hover{color:var(--mut)}
+  .accarrow{margin-left:auto;font-size:11px;color:var(--faint);transition:transform .2s}
+  .acc-h.acc-open .accarrow{transform:rotate(180deg)}
+  .acc-body{margin-top:-2px}
   .ptext{font-size:14.5px;line-height:1.62;color:#dcdce0;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
   .ptext .pline{margin-bottom:9px}.ptext .pline:last-child{margin-bottom:0}
   .ptext b{color:#fff}
@@ -264,7 +269,7 @@
   .trecho{font-size:13px;line-height:1.62;color:#c9c9cf;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;max-height:280px;overflow-y:auto;white-space:pre-wrap}
   .sheetcta{margin:0 0 22px;display:flex;gap:9px;flex-wrap:wrap}
   .sheetcta .btn{font-size:14px;padding:12px 18px}
-  .bqthread{display:flex;flex-direction:column;gap:14px;padding:4px 2px 2px}
+  .bqthread{display:flex;flex-direction:column;gap:14px;padding:4px 2px 2px;min-height:180px}
   .bqempty{font-size:13.5px;line-height:1.6;color:var(--faint)}.bqempty b{color:var(--mut)}
   .bqmsg{display:flex;gap:9px}.bqmsg.user{justify-content:flex-end}
   .bqmsg .bqav{width:26px;height:26px;border-radius:8px;flex:0 0 auto;background:var(--panel3);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700}
@@ -559,12 +564,13 @@ function pinSectionHTML(id){
 function unpin(pid,id,ev){if(ev)ev.stopPropagation();const p=projects.find(x=>x.id===pid);if(!p||!p.pinned)return;p.pinned=p.pinned.filter(x=>x!==id);persistP();renderProjects();if(document.getElementById('ov').classList.contains('on'))renderBookSheet();}
 function pinToggle(id,pid){const p=projects.find(x=>x.id===pid);const mente=MENTES.find(m=>m.id===id);if(!p||!mente)return;if(!p.pinned)p.pinned=[];const i=p.pinned.indexOf(id);if(i>=0){p.pinned.splice(i,1);toast('Desafixado de '+p.nome+'.');}else{p.pinned.push(id);toast('📌 Fixado em '+p.nome+' — sempre na mesa desse projeto.');if(active===pid&&mesa.length&&!mesa.some(m=>m.id===id)){mesa.push(mente);renderMesaHead();renderThread();}}persistP();renderBookSheet();renderProjects();}
 function bookByTitle(t){const n=norm(t);return BOOKS.findIndex(b=>norm(b.titulo)===n||norm(b.titulo).slice(0,26)===n.slice(0,26));}
-let curBookIdx=null, bookBusy2=false;
+let curBookIdx=null, bookBusy2=false, resumoOpen=false;
+function toggleResumo(){resumoOpen=!resumoOpen;const b=document.getElementById('accResumoBody');const h=document.getElementById('accResumoHead');if(b)b.hidden=!resumoOpen;if(h)h.classList.toggle('acc-open',resumoOpen);}
 function bookChats(){try{return JSON.parse(localStorage.getItem('slos_bookchat')||'{}')}catch(e){return {}}}
 function saveBookChats(o){try{localStorage.setItem('slos_bookchat',JSON.stringify(o))}catch(e){}}
 function bookNotes(){try{return JSON.parse(localStorage.getItem('slos_booknotes')||'{}')}catch(e){return {}}}
 function saveBookNotes(o){try{localStorage.setItem('slos_booknotes',JSON.stringify(o))}catch(e){}}
-function openBook(idx){curBookIdx=idx;renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
+function openBook(idx){curBookIdx=idx;resumoOpen=false;renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
 function renderBookSheet(){
   const idx=curBookIdx,b=BOOKS[idx],s=document.getElementById('sheet');const mente=menteForBook(b);
   const chats=bookChats()[b.hash]||[];
@@ -574,7 +580,7 @@ function renderBookSheet(){
   if(mente&&mente.tese)richParts.push('<b>Tese:</b> '+esc(mente.tese));
   if(mente&&mente.convoque)richParts.push('<b>Convoque para:</b> '+esc(mente.convoque.replace(/^convoque para:?\s*/i,'')));
   if(b.muda)richParts.push('<b>O que muda em você:</b> '+esc(b.muda));
-  const rich=richParts.length?`<div class="seclab">Em resumo</div><div class="ptext">${richParts.map(p=>`<div class="pline">${p}</div>`).join('')}</div>`:'';
+  const rich=richParts.length?`<div class="seclab acc-h${resumoOpen?' acc-open':''}" id="accResumoHead" onclick="toggleResumo()">Em resumo <span class="accarrow">▾</span></div><div class="acc-body" id="accResumoBody"${resumoOpen?'':' hidden'}><div class="ptext">${richParts.map(p=>`<div class="pline">${p}</div>`).join('')}</div></div>`:'';
   const chatHTML=chats.length?chats.map(m=>m.role==='user'
     ?`<div class="bqmsg user"><div class="bqb">${esc(m.text)}</div></div>`
     :`<div class="bqmsg"><div class="bqav">${esc(initials({autor:b.autor,titulo:b.titulo}))}</div><div class="bqb a">${m.text}</div></div>`).join('')
