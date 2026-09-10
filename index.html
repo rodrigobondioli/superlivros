@@ -277,6 +277,11 @@
   .bqmsg.user .bqb{background:#1e2733;border:1px solid #27333f;color:#eaf1f7;border-radius:12px 12px 4px 12px;padding:9px 13px;max-width:82%}
   .bqbar{display:flex;gap:10px;align-items:center;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:10px 10px 10px 15px}
   .bqbar textarea{flex:1;background:transparent;border:0;color:var(--txt);font:14px inherit;line-height:1.5;resize:none;outline:none;min-height:60px;max-height:180px;padding:6px 2px}
+  .bqattach{flex:0 0 auto;width:34px;height:34px;border:0;background:transparent;color:var(--mut);font-size:16px;cursor:pointer;border-radius:8px}
+  .bqattach:hover{background:var(--panel3);color:var(--txt)}
+  .bqstrip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .bqimgs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+  .bqimgs img{max-width:150px;max-height:150px;border-radius:8px;border:1px solid rgba(255,255,255,.12)}
   .bqbar .sendb{width:34px;height:34px}
   .bnbar{display:flex;gap:8px;align-items:flex-end}.bnbar textarea{flex:1;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;color:var(--txt);font:13.5px inherit;resize:vertical;outline:none;padding:9px 11px;min-height:44px}
   .bnotes{display:flex;flex-direction:column;gap:7px;margin-top:10px}
@@ -569,7 +574,7 @@ function bookChats(){try{return JSON.parse(localStorage.getItem('slos_bookchat')
 function saveBookChats(o){try{localStorage.setItem('slos_bookchat',JSON.stringify(o))}catch(e){}}
 function bookNotes(){try{return JSON.parse(localStorage.getItem('slos_booknotes')||'{}')}catch(e){return {}}}
 function saveBookNotes(o){try{localStorage.setItem('slos_booknotes',JSON.stringify(o))}catch(e){}}
-function openBook(idx){curBookIdx=idx;resumoOpen=false;renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
+function openBook(idx){curBookIdx=idx;resumoOpen=false;bqImgs=[];renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
 function renderBookSheet(){
   const idx=curBookIdx,b=BOOKS[idx],s=document.getElementById('sheet');const mente=menteForBook(b);
   const chats=bookChats()[b.hash]||[];
@@ -581,7 +586,7 @@ function renderBookSheet(){
   if(b.muda)richParts.push('<b>O que muda em você:</b> '+esc(b.muda));
   const rich=richParts.length?`<div class="seclab acc-h${resumoOpen?' acc-open':''}" id="accResumoHead" onclick="toggleResumo()">Em resumo <span class="accarrow">▾</span></div><div class="acc-body" id="accResumoBody"${resumoOpen?'':' hidden'}><div class="ptext">${richParts.map(p=>`<div class="pline">${p}</div>`).join('')}</div></div>`:'';
   const chatHTML=chats.length?chats.map(m=>m.role==='user'
-    ?`<div class="bqmsg user"><div class="bqb">${esc(m.text)}</div></div>`
+    ?`<div class="bqmsg user"><div class="bqb">${m.imgs&&m.imgs.length?`<div class="bqimgs">${m.imgs.map(im=>`<img src="data:${im.mime};base64,${im.data}" alt="">`).join('')}</div>`:''}${m.text?esc(m.text):''}</div></div>`
     :`<div class="bqmsg"><div class="bqav">${esc(initials({autor:b.autor,titulo:b.titulo}))}</div><div class="bqb a">${m.text}</div></div>`).join('')
     :`<div class="bqempty">Pergunte direto a <b>${esc(primeiro)}</b> — ele responde na voz dele, fundado no texto real do livro. Ex: "como aplico isso no meu negócio?", "qual o primeiro passo?", "resume em 3 pontos".</div>`;
   s.innerHTML=`<button class="x" onclick="closeSheet()">✕</button>
@@ -593,19 +598,22 @@ function renderBookSheet(){
       <div class="bqthread" id="bqthread">${chatHTML}</div>
     </div></div>
     <div class="sheetfoot"><div class="sheetin">
-      <div class="bqbar"><textarea id="bqinput" rows="1" placeholder="Pergunte a ${esc(primeiro)}… (Enter envia)"></textarea><button class="sendb" id="bqsend" onclick="askBook()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg></button></div>
+      <div class="bqstrip" id="bqstrip" style="display:none"></div>
+      <div class="bqbar"><button class="bqattach" onclick="document.getElementById('bqfile').click()" title="Anexar imagem">📎</button><textarea id="bqinput" rows="1" placeholder="Pergunte a ${esc(primeiro)}… (Enter envia · cola print)"></textarea><button class="sendb" id="bqsend" onclick="askBook()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg></button></div>
+      <input type="file" id="bqfile" accept="image/*" multiple style="display:none" onchange="bqPickFiles(event)">
     </div></div>`;
   const sc=document.getElementById('sheetscroll');if(sc&&chats.length)sc.scrollTop=sc.scrollHeight;
-  const inp=document.getElementById('bqinput');if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askBook();}});
+  const inp=document.getElementById('bqinput');if(inp){inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askBook();}});inp.addEventListener('paste',bqPaste);}
+  bqRenderStrip();
 }
 async function askBook(){
-  if(bookBusy2)return;const b=BOOKS[curBookIdx];const inp=document.getElementById('bqinput');const q=(inp.value||'').trim();if(!q)return;
-  const all=bookChats();const arr=all[b.hash]||[];arr.push({role:'user',text:q});all[b.hash]=arr;saveBookChats(all);inp.value='';
+  if(bookBusy2)return;const b=BOOKS[curBookIdx];const inp=document.getElementById('bqinput');const q=(inp.value||'').trim();const imgs=bqImgs.slice();if(!q&&!imgs.length)return;
+  const all=bookChats();const arr=all[b.hash]||[];arr.push({role:'user',text:q,imgs:imgs.map(im=>({mime:im.mime,data:im.data}))});all[b.hash]=arr;saveBookChats(all);inp.value='';bqImgs=[];
   bookBusy2=true;const sb=document.getElementById('bqsend');if(sb)sb.disabled=true;renderBookSheet();
   const bq=document.getElementById('bqthread');if(bq)bq.insertAdjacentHTML('beforeend','<div class="bqmsg" id="bqtyping"><div class="bqav">···</div><div class="bqb a" style="color:var(--faint)">pensando…</div></div>');const sc2=document.getElementById('sheetscroll');if(sc2)sc2.scrollTop=sc2.scrollHeight;
   const mente=menteForBook(b);
   try{
-    const r=await fetch(ASK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({titulo:b.titulo,autor:b.autor,dossie:mente?mente.md:('Tese: '+(b.desc||'')),txt:b.txt||'',question:q,history:arr.slice(-8)})});
+    const r=await fetch(ASK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({titulo:b.titulo,autor:b.autor,dossie:mente?mente.md:('Tese: '+(b.desc||'')),txt:b.txt||'',question:q||'(veja a imagem)',images:imgs.map(im=>({mime:im.mime,data:im.data})),history:arr.slice(-8).map(h=>({role:h.role,text:h.text}))})});
     if(!r.ok)throw new Error('http '+r.status);const j=await r.json();if(!j.resposta)throw new Error('vazio');
     const all2=bookChats();const arr2=all2[b.hash]||[];arr2.push({role:'a',text:linkBooks(j.resposta)});all2[b.hash]=arr2;saveBookChats(all2);
   }catch(e){const all2=bookChats();const arr2=all2[b.hash]||[];arr2.push({role:'a',text:'<span style="color:var(--faint)">Não consegui responder agora ('+esc(String(e.message||e))+'). Tenta de novo.</span>'});all2[b.hash]=arr2;saveBookChats(all2);}
@@ -818,6 +826,12 @@ function renderImgStrip(){document.querySelectorAll('.imgstrip').forEach(el=>{el
 function rmImg(i){pendingImgs.splice(i,1);renderImgStrip();}
 function clearImgs(){pendingImgs=[];renderImgStrip();}
 function takeImgs(){const a=pendingImgs.slice();pendingImgs=[];renderImgStrip();return a;}
+let bqImgs=[];
+async function bqAddImgs(files){const list=[...files].filter(f=>/^image\//.test(f.type));for(const f of list){if(bqImgs.length>=4){toast('Máximo 4 imagens.');break;}try{bqImgs.push(await fileToImg(f));}catch(e){}}bqRenderStrip();}
+function bqRenderStrip(){const el=document.getElementById('bqstrip');if(!el)return;el.innerHTML=bqImgs.map((im,i)=>`<div class="ithumb"><img src="${im.url}"><button onclick="bqRmImg(${i})" title="Remover">✕</button></div>`).join('');el.style.display=bqImgs.length?'flex':'none';}
+function bqRmImg(i){bqImgs.splice(i,1);bqRenderStrip();}
+function bqPaste(e){const items=(e.clipboardData||{}).items||[];const files=[];for(const it of items){if(it.type&&it.type.indexOf('image')===0){const f=it.getAsFile();if(f)files.push(f);}}if(files.length){e.preventDefault();bqAddImgs(files);}}
+function bqPickFiles(e){if(e.target.files&&e.target.files.length)bqAddImgs(e.target.files);e.target.value='';}
 function isSubstantial(t){const s=(t||'').trim();if(s.length<15)return false;if(/^(oi+|ol[áa]+|opa+|e ?a[íi]+|blz|beleza|salve|fala+|hey|hello|h[íi]|tudo bem\??|tudo bom\??|bom dia|boa tarde|boa noite|teste?|test)[\s!.,\?]*$/i.test(s))return false;return true;}
 async function convene(){
   if(busy)return;
