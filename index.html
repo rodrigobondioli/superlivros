@@ -249,7 +249,10 @@
   .bkhero img{width:104px;border-radius:9px;flex:0 0 auto;background:var(--panel3);box-shadow:0 4px 16px rgba(0,0,0,.4)}
   .bkhero .h2{font-size:23px;font-weight:800;line-height:1.12;letter-spacing:-.02em}
   .bkhero .au{font-size:14px;color:var(--mut);margin-top:6px}
-  .bkhero .catg{display:inline-block;margin-top:12px;font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:3px 10px}
+  .bkhero .catg{display:inline-block;font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:3px 10px}
+  .herorow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .herorow .btn.sm{font-size:12.5px;padding:8px 14px}
+  .microhint{font-size:11.5px;color:var(--faint)}
   .seclab{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0 0 11px;padding-top:26px;border-top:1px solid var(--line)}
   .seclab.nb{border-top:0;padding-top:0}
   .ptext{font-size:14.5px;line-height:1.62;color:#dcdce0;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
@@ -549,7 +552,7 @@ function mergePinned(list){const ap=activeProj();if(!ap||!ap.pinned||!ap.pinned.
 function pinSectionHTML(id){
   if(!projects.length)return '<div class="seclab">Fixar num projeto</div><div class="bqempty" style="padding:6px 0">Crie um projeto na aba Conselheiros pra fixar este livro nele.</div>';
   const chips=projects.map(p=>{const on=(p.pinned||[]).indexOf(id)>=0;return `<button class="pinchip${on?' on':''}" onclick="pinToggle('${esc(id)}','${p.id}')"><span class="dot" style="background:${p.color}"></span>${esc(p.nome)}${on?' 📌':''}</button>`;}).join('');
-  return `<div class="seclab">Fixar num projeto <span style="text-transform:none;letter-spacing:0;color:var(--faint);font-weight:400">— vira conselheiro fixo da mesa dele</span></div><div class="pinchips">${chips}</div>`;
+  return `<div class="seclab">Fixar num projeto <span style="text-transform:none;letter-spacing:0;color:var(--faint);font-weight:400">— fica sempre na mesa dele, em toda conversa</span></div><div class="pinchips">${chips}</div>`;
 }
 function unpin(pid,id,ev){if(ev)ev.stopPropagation();const p=projects.find(x=>x.id===pid);if(!p||!p.pinned)return;p.pinned=p.pinned.filter(x=>x!==id);persistP();renderProjects();if(document.getElementById('ov').classList.contains('on'))renderBookSheet();}
 function pinToggle(id,pid){const p=projects.find(x=>x.id===pid);const mente=MENTES.find(m=>m.id===id);if(!p||!mente)return;if(!p.pinned)p.pinned=[];const i=p.pinned.indexOf(id);if(i>=0){p.pinned.splice(i,1);toast('Desafixado de '+p.nome+'.');}else{p.pinned.push(id);toast('📌 Fixado em '+p.nome+' — sempre na mesa desse projeto.');if(active===pid&&mesa.length&&!mesa.some(m=>m.id===id)){mesa.push(mente);renderMesaHead();renderThread();}}persistP();renderBookSheet();renderProjects();}
@@ -576,8 +579,7 @@ function renderBookSheet(){
     :`<div class="bqempty">Pergunte direto a <b>${esc(primeiro)}</b> — ele responde na voz dele, fundado no texto real do livro. Ex: "como aplico isso no meu negócio?", "qual o primeiro passo?", "resume em 3 pontos".</div>`;
   s.innerHTML=`<button class="x" onclick="closeSheet()">✕</button>
     <div class="sheetscroll" id="sheetscroll"><div class="sheetin">
-      <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><span class="catg">${esc(b.cat)}</span></div></div>
-      <div class="sheetcta">${mente?`<button class="btn lime" onclick="bookToMesa(${idx},true)">Chamar essa mente pra mesa →</button>`:`<button class="btn" onclick="bookToMesa(${idx},false)">Levar pra mesa →</button>`}</div>
+      <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><div class="herorow"><span class="catg">${esc(b.cat)}</span>${mente?`<button class="btn lime sm" onclick="bookToMesa(${idx},true)">Chamar pra mesa →</button>`:`<button class="btn sm" onclick="bookToMesa(${idx},false)">Levar pra mesa →</button>`}<span class="microhint">só nesta conversa</span></div></div></div>
       ${mente?pinSectionHTML(mente.id):''}
       <div class="rule"></div>
       ${rich}
