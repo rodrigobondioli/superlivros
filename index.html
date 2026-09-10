@@ -249,10 +249,11 @@
   .bkhero img{width:104px;border-radius:9px;flex:0 0 auto;background:var(--panel3);box-shadow:0 4px 16px rgba(0,0,0,.4)}
   .bkhero .h2{font-size:23px;font-weight:800;line-height:1.12;letter-spacing:-.02em}
   .bkhero .au{font-size:14px;color:var(--mut);margin-top:6px}
-  .bkhero .catg{display:inline-block;font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:3px 10px}
-  .herorow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
-  .herorow .btn.sm{font-size:12.5px;padding:8px 14px}
-  .microhint{font-size:11.5px;color:var(--faint)}
+  .bkhero .catg{display:inline-block;margin-top:12px;font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:3px 10px}
+  .ghostlime{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--lime);background:transparent;color:var(--lime);font-weight:700;font-size:13px;padding:9px 16px;border-radius:10px;cursor:pointer;transition:background .14s,color .14s}
+  .ghostlime:hover{background:var(--lime);color:#0f0f10}
+  .ghostlime b{font-weight:800}
+  .callbtn{margin:0 0 2px}
   .seclab{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0 0 11px;padding-top:26px;border-top:1px solid var(--line)}
   .seclab.nb{border-top:0;padding-top:0}
   .ptext{font-size:14.5px;line-height:1.62;color:#dcdce0;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
@@ -579,7 +580,9 @@ function renderBookSheet(){
     :`<div class="bqempty">Pergunte direto a <b>${esc(primeiro)}</b> — ele responde na voz dele, fundado no texto real do livro. Ex: "como aplico isso no meu negócio?", "qual o primeiro passo?", "resume em 3 pontos".</div>`;
   s.innerHTML=`<button class="x" onclick="closeSheet()">✕</button>
     <div class="sheetscroll" id="sheetscroll"><div class="sheetin">
-      <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><div class="herorow"><span class="catg">${esc(b.cat)}</span>${mente?`<button class="btn lime sm" onclick="bookToMesa(${idx},true)">Chamar pra mesa →</button>`:`<button class="btn sm" onclick="bookToMesa(${idx},false)">Levar pra mesa →</button>`}<span class="microhint">só nesta conversa</span></div></div></div>
+      <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><span class="catg">${esc(b.cat)}</span></div></div>
+      <div class="rule"></div>
+      <button class="ghostlime callbtn" onclick="bookToMesa(${idx},${mente?'true':'false'})">Chamar pra mesa <b>agora</b> →</button>
       ${mente?pinSectionHTML(mente.id):''}
       <div class="rule"></div>
       ${rich}
