@@ -583,7 +583,6 @@ function renderBookSheet(){
     <div class="sheetscroll" id="sheetscroll"><div class="sheetin">
       <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><span class="catg">${esc(b.cat)}</span></div></div>
       <div class="rule"></div>
-      <button class="ghostlime callbtn" onclick="bookToMesa(${idx},${mente?'true':'false'})">Chamar pra mesa <b>agora</b> →</button>
       ${mente?pinSectionHTML(mente.id):''}
       <div class="rule"></div>
       ${rich}
