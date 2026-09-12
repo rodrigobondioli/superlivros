@@ -1,0 +1,19 @@
+# Configuracao do motor do Superlivros (Cloudflare Worker).
+# Existe pra ligar o deploy automatico: com o repo conectado em
+# Workers & Pages > broad-heart-33a0 > Settings > Builds, cada push
+# na main publica o motor sozinho — igual a Vercel ja faz com o site.
+#
+# Valores lidos do painel da Cloudflare em 12/09/2026.
+# O GEMINI_API_KEY NAO entra aqui: e um Secret, fica guardado na
+# Cloudflare e sobrevive a qualquer deploy.
+
+name = "broad-heart-33a0"
+main = "worker/worker.js"
+compatibility_date = "2026-08-16"
+
+# Precisa estar declarado: o deploy substitui os bindings pelo que
+# estiver neste arquivo. Sem esta secao, o motor subiria sem banco.
+[[d1_databases]]
+binding = "DB"
+database_name = "superlivros-db"
+database_id = "ffcc1e5d-792c-4393-ab01-aafb53efc3f5"
