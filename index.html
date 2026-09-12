@@ -326,6 +326,9 @@
   .repbtn{border:1px solid var(--line2);background:transparent;color:var(--mut);font-size:11.5px;padding:3px 11px;border-radius:999px;cursor:pointer;font-family:inherit;letter-spacing:.01em}
   .repbtn:hover{border-color:var(--lime);color:var(--lime)}
   .ubub .mnt{color:var(--lime);font-weight:600}
+  .backupbar{margin-top:auto;display:flex;gap:6px;padding:10px 8px;border-top:1px solid var(--line)}
+  .backupbar button,.backupbar label{flex:1;border:1px solid var(--line2);background:transparent;color:var(--mut);font-size:11px;font-family:inherit;padding:6px 4px;border-radius:8px;cursor:pointer;text-align:center;margin:0}
+  .backupbar button:hover,.backupbar label:hover{border-color:var(--lime);color:var(--lime)}
   .msg .qt .qorig{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.5;color:var(--faint)}
   .replywrap{position:relative}
   .mmenu{position:absolute;left:0;right:0;bottom:calc(100% + 9px);background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:5px;max-height:262px;overflow:auto;z-index:40;box-shadow:0 14px 34px rgba(0,0,0,.55)}
@@ -356,6 +359,10 @@
       <div class="ctxhd"><span>Projetos <span id="pcount" style="color:var(--faint);font-weight:400;letter-spacing:0;text-transform:none;margin-left:1px">0</span></span><button id="pnovobtn" onclick="newProject()">+ novo</button></div>
       <div id="plist"></div>
       <div style="padding:12px 8px;font-size:11.5px;color:var(--faint);border-top:1px solid var(--line);margin-top:8px"><b style="color:var(--mut)"><span id="menteCount">37</span> mentes</b> · <a onclick="openMentes()" style="color:var(--mut);cursor:pointer;text-decoration:underline">ver conselho</a></div>
+    </div>
+    <div class="backupbar">
+      <button onclick="exportState()" title="Baixa um arquivo com seus projetos, conversas, favoritos, anotacoes e livros adicionados">⬇ backup</button>
+      <label title="Restaura de um arquivo de backup">⬆ restaurar<input type="file" id="impfile" accept=".json,application/json" style="display:none"></label>
     </div>
   </aside>
 
@@ -473,7 +480,7 @@ function showView(v){
   document.getElementById('ctx-est').style.display=v==='estante'?'':'none';
   document.getElementById('ctx-con').style.display=v==='conselheiros'?'':'none';
   closeSidebar();
-  try{localStorage.setItem('slos_view',v)}catch(e){}
+  lsSet('slos_view',v);
 }
 function goEstante(){showView('estante');}
 function openSidebar(){document.getElementById('side').classList.add('open');document.getElementById('mbackdrop').classList.add('on');}
@@ -481,13 +488,46 @@ function closeSidebar(){document.getElementById('side').classList.remove('open')
 
 /* ===== ESTANTE ===== */
 let favs={}, favOnly=false, wishOnly=false, query='', sel={type:'all'}, expanded={}, wishlist=[];
+/* ===== gravacao local: avisa quando a cota do navegador estoura ===== */
+const LS_KEYS=['slos_projects','slos_active','slos_favs','slos_wishlist','slos_userlib','slos_bookchat','slos_booknotes','slos_view'];
+let lsAvisou=false;
+function lsSet(k,v){
+  try{localStorage.setItem(k,v);return true;}
+  catch(e){
+    if(!lsAvisou){lsAvisou=true;toast('\u26a0 Nao consegui salvar \u2014 o armazenamento do navegador encheu. Faz um backup (\u2b07 na lateral) e apaga conversas antigas.');}
+    return false;
+  }
+}
+function exportState(){
+  const d={_app:'superlivros',_v:1,_ts:Date.now(),dados:{}};
+  LS_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v!=null)d.dados[k]=v;});
+  const blob=new Blob([JSON.stringify(d)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download='superlivros-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  toast('Backup baixado. Guarda esse arquivo em algum lugar seguro.');
+}
+async function importState(f){
+  if(!f)return;
+  let d;
+  try{d=JSON.parse(await f.text());}catch(e){toast('Arquivo ilegivel \u2014 nao e um JSON valido.');return;}
+  if(!d||d._app!=='superlivros'||!d.dados){toast('Esse arquivo nao e um backup do Superlivros.');return;}
+  const quando=d._ts?new Date(d._ts).toLocaleDateString('pt-BR'):'data desconhecida';
+  if(!confirm('Restaurar o backup de '+quando+'?\n\nIsso SUBSTITUI os projetos, conversas, favoritos, anotacoes e livros adicionados desta maquina.'))return;
+  let falhou=false;
+  LS_KEYS.forEach(k=>{if(d.dados[k]!=null&&!lsSet(k,d.dados[k]))falhou=true;});
+  if(falhou){toast('Restaurou so em parte \u2014 o armazenamento encheu.');return;}
+  location.reload();
+}
 function loadFavs(){try{favs=JSON.parse(localStorage.getItem('slos_favs')||'{}')}catch(e){favs={}}}
-function saveFavs(){try{localStorage.setItem('slos_favs',JSON.stringify(favs))}catch(e){}}
+function saveFavs(){lsSet('slos_favs',JSON.stringify(favs));}
 function toggleFav(hash,ev){ev.stopPropagation();favs[hash]=!favs[hash];if(!favs[hash])delete favs[hash];saveFavs();renderGrid();}
 function setFav(v){setView(v?'fav':'all');}
 function setView(m){favOnly=(m==='fav');wishOnly=(m==='wish');document.getElementById('seg-all').classList.toggle('on',m==='all');document.getElementById('seg-fav').classList.toggle('on',m==='fav');document.getElementById('seg-wish').classList.toggle('on',m==='wish');renderGrid();}
 function loadWishlist(){try{wishlist=JSON.parse(localStorage.getItem('slos_wishlist')||'[]')}catch(e){wishlist=[]}updWishCt();}
-function saveWishlist(){try{localStorage.setItem('slos_wishlist',JSON.stringify(wishlist))}catch(e){}updWishCt();}
+function saveWishlist(){lsSet('slos_wishlist',JSON.stringify(wishlist));updWishCt();}
 function updWishCt(){const el=document.getElementById('wishct');if(el)el.textContent=wishlist.length?'('+wishlist.length+')':'';}
 function addWish(titulo,autor,porque){titulo=(titulo||'').trim();if(!titulo)return;if(ownsBook(titulo,autor)){toast('“'+titulo+'” já tá na sua estante.');return;}if(wishlist.some(w=>norm(w.titulo)===norm(titulo))){toast('“'+titulo+'” já tá na sua lista de desejos.');return;}wishlist.unshift({titulo,autor:autor||'',porque:porque||'',ts:Date.now()});saveWishlist();toast('“'+titulo+'” salvo na lista de desejos 🎯');}
 function removeWish(t){wishlist=wishlist.filter(w=>norm(w.titulo)!==norm(t));saveWishlist();renderGrid();}
@@ -587,9 +627,9 @@ function bookByTitle(t){const n=norm(t);return BOOKS.findIndex(b=>norm(b.titulo)
 let curBookIdx=null, bookBusy2=false, resumoOpen=false;
 function toggleResumo(){resumoOpen=!resumoOpen;const b=document.getElementById('accResumoBody');const h=document.getElementById('accResumoHead');if(b)b.hidden=!resumoOpen;if(h)h.classList.toggle('acc-open',resumoOpen);}
 function bookChats(){try{return JSON.parse(localStorage.getItem('slos_bookchat')||'{}')}catch(e){return {}}}
-function saveBookChats(o){try{localStorage.setItem('slos_bookchat',JSON.stringify(o))}catch(e){}}
+function saveBookChats(o){lsSet('slos_bookchat',JSON.stringify(o));}
 function bookNotes(){try{return JSON.parse(localStorage.getItem('slos_booknotes')||'{}')}catch(e){return {}}}
-function saveBookNotes(o){try{localStorage.setItem('slos_booknotes',JSON.stringify(o))}catch(e){}}
+function saveBookNotes(o){lsSet('slos_booknotes',JSON.stringify(o));}
 function openBook(idx){curBookIdx=idx;resumoOpen=false;bqImgs=[];renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
 function renderBookSheet(){
   const idx=curBookIdx,b=BOOKS[idx],s=document.getElementById('sheet');const mente=menteForBook(b);
@@ -645,7 +685,7 @@ let userLib=[], bookFile=null, bookBusy=false;
 function knownCats(){const c=[];GROUPS.forEach(g=>g.cats.forEach(x=>c.push(x)));return c;}
 function genCover(titulo,seed){const bg=pickM({id:(seed||titulo||'x')});const t=esc((titulo||'Livro').slice(0,60));const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='300' height='420'><rect width='300' height='420' fill='${bg}'/><rect x='0' y='0' width='8' height='420' fill='rgba(0,0,0,.22)'/><foreignObject x='22' y='26' width='256' height='368'><div xmlns='http://www.w3.org/1999/xhtml' style="font-family:Georgia,serif;font-weight:700;font-size:26px;line-height:1.2;color:#0f0f10">${t}</div></foreignObject></svg>`;return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);}
 function loadUserLib(){try{userLib=JSON.parse(localStorage.getItem('slos_userlib')||'[]')}catch(e){userLib=[]}mergeUserLib();}
-function saveUserLib(){try{localStorage.setItem('slos_userlib',JSON.stringify(userLib))}catch(e){}}
+function saveUserLib(){lsSet('slos_userlib',JSON.stringify(userLib));}
 function mergeUserLib(){
   const repl=new Set(userLib.map(e=>e.replaces).filter(Boolean));
   if(repl.size){for(let i=BOOKS.length-1;i>=0;i--){if(repl.has(BOOKS[i].hash))BOOKS.splice(i,1);}
@@ -691,7 +731,7 @@ async function addBook(){
 /* ===== PROJETOS + MEMÓRIA ===== */
 let projects=[], active=null, mesa=[], thread=[], busy=false, problem='', convoId=null, justAdded=null;
 function loadP(){try{projects=JSON.parse(localStorage.getItem('slos_projects')||'[]')}catch(e){projects=[]}active=localStorage.getItem('slos_active')||null;projects.forEach(p=>{if(!p.convos)p.convos=[];});}
-function persistP(){try{localStorage.setItem('slos_projects',JSON.stringify(projects));localStorage.setItem('slos_active',active||'')}catch(e){}}
+function persistP(){lsSet('slos_projects',JSON.stringify(projects));lsSet('slos_active',active||'');}
 function activeProj(){return projects.find(p=>p.id===active)||null;}
 function projForMotor(){const ap=activeProj();if(!ap)return null;const obj=(ap.objetivo||'').trim();const comp=(ap.compromissos||[]).filter(c=>!c.done).slice(-2);const compStr=comp.length?('\n\nCOMPROMISSOS EM ABERTO (a mesa PROMETEU cobrar isto — pergunte se ele avançou e não passe pano se ele enrolou): '+comp.map(c=>'"'+(c.passo||c.recomendacao||'')+'" (definido em '+new Date(c.ts).toLocaleDateString('pt-BR')+')').join(' | ')):'';const ctx=(obj?('OBJETIVO (puxe TODA resposta pra cá): '+obj+'\n\n'):'')+(ap.ctx||'')+compStr;return {nome:ap.nome,seed:ap.seed,objetivo:obj,ctx};}
 function renderProjects(){
@@ -945,6 +985,7 @@ document.getElementById('imgfile').addEventListener('change',e=>{addImgs(e.targe
 function pasteImgs(e){const items=(e.clipboardData||{}).items||[];const files=[];for(const it of items){if(it.type&&it.type.indexOf('image')===0){const f=it.getAsFile();if(f)files.push(f);}}if(files.length){e.preventDefault();addImgs(files);}}
 rep.addEventListener('paste',pasteImgs);document.getElementById('opentext').addEventListener('paste',pasteImgs);
 document.getElementById('b_file').addEventListener('change',onBookFile);
+document.getElementById('impfile').addEventListener('change',e=>{importState(e.target.files[0]);e.target.value='';});
 (function(){const bd=document.getElementById('bdrop');['dragover','dragenter'].forEach(ev=>bd.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();bd.classList.add('hot');}));['dragleave','dragend'].forEach(ev=>bd.addEventListener(ev,e=>{e.preventDefault();bd.classList.remove('hot');}));bd.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();bd.classList.remove('hot');if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)setBookFile(e.dataTransfer.files[0]);});})();
 loadUserLib();
 (function(){const mc=document.getElementById('menteCount');if(mc)mc.textContent=MENTES.length;})();
