@@ -557,16 +557,22 @@ function renderCats(){
   let h=`<button class="catchip grp${sel.type==='all'?' on':''}" onclick="selAll()">Todas <span class="n">${BOOKS.length}</span></button>`;
   GROUPS.forEach((g,gi)=>{
     const on=(sel.type==='group'&&sel.gi===gi);
-    const open=!!expanded[gi]||(sel.type!=='all'&&sel.gi===gi);
+    const open=!!expanded[gi];
     h+=`<button class="catchip grp${on?' on':''}" onclick="selGroup(${gi})"><span class="tw" onclick="toggleExp(${gi},event)">${open?'▾':'▸'}</span>${esc(g.name)} <span class="n">${groupCount(g)}</span></button>`;
     if(open) h+=g.cats.map(c=>`<button class="catchip sub${(sel.type==='sub'&&sel.cat===c)?' on':''}" onclick="selSub(${gi},'${esc(c).replace(/'/g,"\\'")}')">${esc(c)} <span class="n">${catCount(c)}</span></button>`).join('');
   });
   el.innerHTML=h;
 }
-function selAll(){sel={type:'all'};renderCats();renderGrid();}
-function selGroup(gi){sel={type:'group',gi};expanded[gi]=true;renderCats();renderGrid();}
-function selSub(gi,cat){sel={type:'sub',gi,cat};renderCats();renderGrid();}
-function toggleExp(gi,ev){ev.stopPropagation();expanded[gi]=!expanded[gi];renderCats();}
+function selAll(){sel={type:'all'};expanded={};renderCats();renderGrid();}
+function abrirSo(gi){expanded={};if(gi!=null)expanded[gi]=true;}
+function selGroup(gi){
+  const jaAberta=!!expanded[gi], jaSelecionada=(sel.type!=='all'&&sel.gi===gi);
+  if(jaAberta&&jaSelecionada)abrirSo(null);   // clicou na que ja estava aberta: fecha o submenu
+  else abrirSo(gi);                           // abre esta e fecha as outras
+  sel={type:'group',gi};renderCats();renderGrid();
+}
+function selSub(gi,cat){sel={type:'sub',gi,cat};abrirSo(gi);renderCats();renderGrid();}
+function toggleExp(gi,ev){ev.stopPropagation();const aberta=!!expanded[gi];abrirSo(aberta?null:gi);renderCats();}
 function allowedCats(){if(sel.type==='all')return null;if(sel.type==='group')return new Set(GROUPS[sel.gi].cats);return new Set([sel.cat]);}
 function filtered(){
   const q=norm(query),ac=allowedCats();
