@@ -329,6 +329,13 @@
   .backupbar{margin-top:auto;display:flex;gap:6px;padding:10px 8px;border-top:1px solid var(--line)}
   .backupbar button,.backupbar label{flex:1;border:1px solid var(--line2);background:transparent;color:var(--mut);font-size:11px;font-family:inherit;padding:6px 4px;border-radius:8px;cursor:pointer;text-align:center;margin:0}
   .backupbar button:hover,.backupbar label:hover{border-color:var(--lime);color:var(--lime)}
+  .conselho{font-size:14px;line-height:1.68;color:#e6e6ea}
+  .conselho b:first-child{display:block;color:var(--lime);font-size:16px;line-height:1.4;margin-bottom:12px}
+  .conswait{font-size:12.5px;color:var(--faint);font-style:italic}
+  .conserr{font-size:12.5px;color:var(--red)}
+  .consredo{margin-top:12px}
+  .consredo a{font-size:11.5px;color:var(--faint);cursor:pointer;text-decoration:underline}
+  .consredo a:hover{color:var(--lime)}
   .msg .qt .qorig{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.5;color:var(--faint)}
   .replywrap{position:relative}
   .mmenu{position:absolute;left:0;right:0;bottom:calc(100% + 9px);background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:5px;max-height:262px;overflow:auto;z-index:40;box-shadow:0 14px 34px rgba(0,0,0,.55)}
@@ -489,7 +496,7 @@ function closeSidebar(){document.getElementById('side').classList.remove('open')
 /* ===== ESTANTE ===== */
 let favs={}, favOnly=false, wishOnly=false, query='', sel={type:'all'}, expanded={}, wishlist=[];
 /* ===== gravacao local: avisa quando a cota do navegador estoura ===== */
-const LS_KEYS=['slos_projects','slos_active','slos_favs','slos_wishlist','slos_userlib','slos_bookchat','slos_booknotes','slos_view'];
+const LS_KEYS=['slos_projects','slos_active','slos_favs','slos_wishlist','slos_userlib','slos_bookchat','slos_booknotes','slos_conselho','slos_view'];
 let lsAvisou=false;
 function lsSet(k,v){
   try{localStorage.setItem(k,v);return true;}
@@ -626,11 +633,39 @@ function pinToggle(id,pid){const p=projects.find(x=>x.id===pid);const mente=MENT
 function bookByTitle(t){const n=norm(t);return BOOKS.findIndex(b=>norm(b.titulo)===n||norm(b.titulo).slice(0,26)===n.slice(0,26));}
 let curBookIdx=null, bookBusy2=false, resumoOpen=false;
 function toggleResumo(){resumoOpen=!resumoOpen;const b=document.getElementById('accResumoBody');const h=document.getElementById('accResumoHead');if(b)b.hidden=!resumoOpen;if(h)h.classList.toggle('acc-open',resumoOpen);}
+/* ===== o melhor conselho do autor (sanfona da gaveta) ===== */
+let conselhoOpen=false, conselhoBusy=false, conselhoErro='';
+const PERGUNTA_CONSELHO='Se voce so pudesse deixar UM conselho — o da sua vida inteira, aquele que voce defenderia ate o fim, o que resume por que o seu livro existe — qual seria?\n\nResponda exatamente neste formato:\n1) Comece com o conselho em UMA frase curta e cortante, inteira dentro de <b></b>. Sem rodeio, sem "e importante que", sem clichê de autoajuda.\n2) Depois, 2 ou 3 paragrafos curtos: por que e esse e nao outro, e o que muda na pratica pra quem seguir.\n3) Termine com uma linha comecando por "Se for fazer uma coisa so:" seguida do primeiro passo concreto.\n\nFala do seu jeito, na sua voz. Isso e conselho, nao resenha do livro.';
+function bookConselhos(){try{return JSON.parse(localStorage.getItem('slos_conselho')||'{}')}catch(e){return {}}}
+function saveBookConselhos(o){lsSet('slos_conselho',JSON.stringify(o));}
+function toggleConselho(){
+  conselhoOpen=!conselhoOpen;
+  const bd=document.getElementById('accConsBody'),hd=document.getElementById('accConsHead');
+  if(bd)bd.hidden=!conselhoOpen;
+  if(hd)hd.classList.toggle('acc-open',conselhoOpen);
+  const b=BOOKS[curBookIdx];
+  if(conselhoOpen&&b&&!bookConselhos()[b.hash]&&!conselhoBusy)fetchConselho(false);
+}
+async function fetchConselho(forcar){
+  const b=BOOKS[curBookIdx];
+  if(!b||conselhoBusy)return;
+  if(forcar){const all=bookConselhos();delete all[b.hash];saveBookConselhos(all);}
+  conselhoBusy=true;conselhoErro='';renderBookSheet();
+  const mente=menteForBook(b);
+  try{
+    const r=await fetch(ASK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({titulo:b.titulo,autor:b.autor,dossie:mente?mente.md:('Tese: '+(b.desc||'')),txt:b.txt||'',question:PERGUNTA_CONSELHO,history:[]})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.resposta)throw new Error(j.error||('http '+r.status));
+    const html=linkBooks(j.resposta).replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
+    const all=bookConselhos();all[b.hash]={txt:html,ts:Date.now()};saveBookConselhos(all);
+  }catch(e){conselhoErro=String(e.message||e);}
+  conselhoBusy=false;renderBookSheet();
+}
 function bookChats(){try{return JSON.parse(localStorage.getItem('slos_bookchat')||'{}')}catch(e){return {}}}
 function saveBookChats(o){lsSet('slos_bookchat',JSON.stringify(o));}
 function bookNotes(){try{return JSON.parse(localStorage.getItem('slos_booknotes')||'{}')}catch(e){return {}}}
 function saveBookNotes(o){lsSet('slos_booknotes',JSON.stringify(o));}
-function openBook(idx){curBookIdx=idx;resumoOpen=false;bqImgs=[];renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
+function openBook(idx){curBookIdx=idx;resumoOpen=false;conselhoOpen=false;conselhoBusy=false;conselhoErro='';bqImgs=[];renderBookSheet();document.getElementById('ov').classList.add('on');document.getElementById('sheet').scrollTop=0;}
 function renderBookSheet(){
   const idx=curBookIdx,b=BOOKS[idx],s=document.getElementById('sheet');const mente=menteForBook(b);
   const chats=bookChats()[b.hash]||[];
@@ -641,6 +676,15 @@ function renderBookSheet(){
   if(mente&&mente.convoque)richParts.push('<b>Convoque para:</b> '+esc(mente.convoque.replace(/^convoque para:?\s*/i,'')));
   if(b.muda)richParts.push('<b>O que muda em você:</b> '+esc(b.muda));
   const rich=richParts.length?`<div class="seclab acc-h${resumoOpen?' acc-open':''}" id="accResumoHead" onclick="toggleResumo()">Em resumo <span class="accarrow">▾</span></div><div class="acc-body" id="accResumoBody"${resumoOpen?'':' hidden'}><div class="ptext">${richParts.map(p=>`<div class="pline">${p}</div>`).join('')}</div></div>`:'';
+  const cons=bookConselhos()[b.hash];
+  const consBody=cons
+    ? `<div class="conselho">${cons.txt}</div><div class="consredo"><a onclick="fetchConselho(true)">pedir outro</a></div>`
+    : (conselhoBusy
+        ? `<div class="conswait">${esc(primeiro)} está pensando no conselho da vida dele…</div>`
+        : (conselhoErro
+            ? `<div class="conserr">Não consegui buscar agora (${esc(conselhoErro)}). <a onclick="fetchConselho(true)" style="color:var(--lime);cursor:pointer">tentar de novo</a></div>`
+            : `<div class="conswait">Abrindo…</div>`));
+  const consHTML=`<div class="seclab acc-h${conselhoOpen?' acc-open':''}" id="accConsHead" onclick="toggleConselho()">O melhor conselho de ${esc(primeiro)} <span class="accarrow">▾</span></div><div class="acc-body" id="accConsBody"${conselhoOpen?'':' hidden'}>${consBody}</div>`;
   const chatHTML=chats.length?chats.map(m=>m.role==='user'
     ?`<div class="bqmsg user"><div class="bqb">${m.imgs&&m.imgs.length?`<div class="bqimgs">${m.imgs.map(im=>`<img src="data:${im.mime};base64,${im.data}" alt="">`).join('')}</div>`:''}${m.text?esc(m.text):''}</div></div>`
     :`<div class="bqmsg"><div class="bqav">${esc(initials({autor:b.autor,titulo:b.titulo}))}</div><div class="bqb a">${m.text}</div></div>`).join('')
@@ -650,6 +694,7 @@ function renderBookSheet(){
       <div class="bkhero"><img src="${b.cover||''}" alt=""><div><div class="h2">${esc(b.titulo)}</div><div class="au">${esc(b.autor)}</div><span class="catg">${esc(b.cat)}</span></div></div>
       ${mente?pinSectionHTML(mente.id):''}
       ${rich}
+      ${consHTML}
       <div class="seclab">Conversar com ${esc(primeiro)}</div>
       <div class="bqthread" id="bqthread">${chatHTML}</div>
     </div></div>
