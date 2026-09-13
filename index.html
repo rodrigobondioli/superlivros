@@ -76,18 +76,24 @@
   .view{flex:1;display:none;flex-direction:column;overflow:hidden}
   .view.on{display:flex}
   /* ESTANTE */
-  .esthead{padding:20px 26px 14px;border-bottom:1px solid var(--line);background:var(--bg)}
-  .esttop{display:flex;align-items:center;gap:12px;margin-bottom:0}
-  .esttop h1{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0}
+  .esthead{padding:0;border-bottom:1px solid var(--line);background:var(--bg)}
+  .esttop{display:flex;align-items:center;flex-wrap:wrap;gap:26px;row-gap:12px;margin:0;padding:17px 26px;border-bottom:1px solid var(--line)}
+  .esttop h1{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0;display:flex;align-items:baseline;gap:10px}
+  .esttop h1 #estsub{font-size:14px;font-weight:400;color:var(--mut);letter-spacing:0}
   .esttop h1 span{color:var(--faint);font-weight:500;font-size:14px;margin-left:8px}
   .esttop .sp{margin-left:auto}
-  .seg{display:inline-flex;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:2px}
-  .seg button{background:transparent;border:0;color:var(--mut);font-size:12.5px;padding:6px 12px;border-radius:8px}
-  .seg button.on{background:var(--panel3);color:var(--txt);font-weight:600}
-  .searchwrap{margin-top:13px;display:flex;gap:9px;align-items:stretch}
-  .search{flex:1;width:100%;background:var(--panel);border:1px solid var(--line2);border-radius:12px;color:var(--txt);font:15px inherit;padding:12px 15px;outline:none}
+  .seg{display:inline-flex;align-items:center;gap:26px;background:transparent;border:0;border-radius:0;padding:0}
+  .seg button{background:transparent;border:0;color:var(--mut);font:14px inherit;padding:0;border-radius:0;cursor:pointer;white-space:nowrap;transition:color .12s}
+  .seg button:hover{color:var(--txt)}
+  .seg button.on{background:transparent;color:var(--txt);font-weight:600}
+  .searchwrap{margin:0;padding:9px 16px 9px 26px;display:flex;gap:8px;align-items:center}
+  .search{flex:1;min-width:0;width:100%;background:transparent;border:0;border-radius:0;color:var(--txt);font:16px inherit;padding:11px 0;outline:none}
+  .search::placeholder{color:var(--faint)}
+  .searchx{flex:none;border:0;background:transparent;color:var(--faint);font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;padding:0}
+  .searchx:hover{background:var(--panel2);color:var(--txt)}
+  .searchx.on{display:flex}
   .search:focus{border-color:var(--lime)}
-  .askbtn{flex:none;border:1px solid var(--lime);background:var(--lime);color:#0f0f10;font-weight:800;font-size:13.5px;padding:0 18px;border-radius:12px;cursor:pointer;white-space:nowrap;transition:filter .12s}
+  .askbtn{flex:none;border:0;background:var(--lime);color:#0f0f10;font-weight:700;font-size:14px;padding:11px 22px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:filter .12s}
   .askbtn:hover{filter:brightness(1.06)}
   .askbtn:disabled{opacity:.55;cursor:default}
   .libwrap{padding:4px 2px 8px}
@@ -185,7 +191,8 @@
   .sugg .sb .si{flex:1;min-width:0}
   .sugg .sb .st{font-weight:700;font-size:14px;color:var(--txt)}.sugg .sb .sa{font-size:12px;color:var(--mut);margin:1px 0 5px}
   .sugg .sb .sp{font-size:12.5px;color:#b9c99a;line-height:1.5}
-  .addbk{border:1px solid var(--lime);background:transparent;color:var(--lime);font-weight:700;font-size:12.5px;padding:7px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}.addbk:hover{background:var(--lime);color:#0f0f10}
+  .addbk{border:1px solid var(--line2);background:transparent;color:var(--txt);font-weight:600;font-size:13.5px;padding:9px 17px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:border-color .12s,color .12s}
+  .addbk:hover{border-color:var(--lime);color:var(--lime)}.addbk:hover{background:var(--lime);color:#0f0f10}
   #bmodal .card{max-width:560px}
   #bdrop{border:1.5px dashed var(--line2);border-radius:12px;padding:22px 16px;text-align:center;color:var(--mut);font-size:13px;cursor:pointer;transition:border-color .15s,background .15s;margin-top:4px}
   #bdrop.hot{border-color:var(--lime);background:#12160a}
@@ -316,7 +323,9 @@
     .mtop .mseg button{background:transparent;border:0;color:var(--mut);font-size:13px;padding:7px 13px;border-radius:7px}
     .mtop .mseg button.on{background:var(--panel3);color:var(--txt);font-weight:600}
     .mgrid{grid-template-columns:1fr}
-    .esthead{padding:14px 16px 12px}.estbody{padding:16px 16px 60px}
+    .esttop{padding:14px 16px;gap:18px}
+  .searchwrap{padding:6px 8px 6px 16px}
+  .seg{gap:18px}.estbody{padding:16px 16px 60px}
     .grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
   }
 
@@ -385,12 +394,13 @@
         <div class="esttop">
           <h1>Estante <span id="estsub"></span></h1>
           <div class="sp"></div>
-          <div class="seg"><button id="seg-all" class="on" onclick="setView('all')">Todos</button><button id="seg-fav" onclick="setView('fav')">★ Favoritos</button><button id="seg-wish" onclick="setView('wish')">🎯 Desejados <span id="wishct"></span></button></div>
+          <div class="seg"><button id="seg-all" class="on" onclick="setView('all')">Todos</button><button id="seg-fav" onclick="setView('fav')">Favoritos</button><button id="seg-wish" onclick="setView('wish')">Desejados <span id="wishct"></span></button></div>
           <button class="addbk" onclick="openBookModal()">+ livro</button>
         </div>
         <div class="searchwrap">
-          <input class="search" id="search" placeholder="Buscar… ou pergunte: “quero melhorar o hook de um post, que livro me ajuda?”" onkeydown="if(event.key==='Enter'){event.preventDefault();askLibrarian();}">
-          <button class="askbtn" id="askbtn" onclick="askLibrarian()" title="Pergunte o que você quer fazer — o bibliotecário indica os livros">✨ Perguntar</button>
+          <input class="search" id="search" placeholder="Buscar ou pergunte…" onkeydown="if(event.key==='Enter'){event.preventDefault();askLibrarian();}else if(event.key==='Escape'){event.preventDefault();clearSearch();}">
+          <button class="searchx" id="searchx" onclick="clearSearch()" title="Limpar (Esc)" aria-label="Limpar busca">✕</button>
+          <button class="askbtn" id="askbtn" onclick="askLibrarian()" title="Pergunte o que você quer fazer — o bibliotecário indica os livros">Perguntar</button>
         </div>
       </div>
       <div class="estbody"><div id="grid"></div></div>
@@ -539,7 +549,7 @@ function updWishCt(){const el=document.getElementById('wishct');if(el)el.textCon
 function addWish(titulo,autor,porque){titulo=(titulo||'').trim();if(!titulo)return;if(ownsBook(titulo,autor)){toast('“'+titulo+'” já tá na sua estante.');return;}if(wishlist.some(w=>norm(w.titulo)===norm(titulo))){toast('“'+titulo+'” já tá na sua lista de desejos.');return;}wishlist.unshift({titulo,autor:autor||'',porque:porque||'',ts:Date.now()});saveWishlist();toast('“'+titulo+'” salvo na lista de desejos 🎯');}
 function removeWish(t){wishlist=wishlist.filter(w=>norm(w.titulo)!==norm(t));saveWishlist();renderGrid();}
 function wishToBook(t,a){setView('all');openBookModal();const ti=document.getElementById('b_titulo'),au=document.getElementById('b_autor');if(ti)ti.value=t||'';if(au)au.value=a||'';document.getElementById('bstatus').innerHTML='<b style="color:var(--lime)">Joga o arquivo de “'+esc(t||'')+'”</b> que eu viro mente e tiro da lista de desejos.';}
-function renderWishlist(){const el=document.getElementById('grid');document.getElementById('estsub').textContent=`· ${wishlist.length} desejado${wishlist.length!==1?'s':''}`;if(!wishlist.length){el.innerHTML='<div class="empty">Sua lista de desejos tá vazia. Quando a mesa sugerir um livro que você não tem, clique no <b>+</b> pra guardar aqui.</div>';return;}el.innerHTML=`<div class="catrow fav">🎯 A mesa recomendou <span class="crn">${wishlist.length}</span></div><div class="wishwrap">${wishlist.map(w=>`<div class="wishc"><div class="wi"><div class="wt">${esc(w.titulo)}</div><div class="wa">${esc(w.autor||'')}</div>${w.porque?`<div class="wp">${esc(w.porque)}</div>`:''}</div><div class="wact"><button class="btn sm lime" onclick="wishToBook('${esc(w.titulo).replace(/'/g,"\\'")}','${esc(w.autor||'').replace(/'/g,"\\'")}')">Tenho o arquivo → virar mente</button><button class="btn sm" onclick="removeWish('${esc(w.titulo).replace(/'/g,"\\'")}')" style="color:var(--faint)">remover</button></div></div>`).join('')}</div>`;}
+function renderWishlist(){const el=document.getElementById('grid');document.getElementById('estsub').textContent=`${wishlist.length} desejado${wishlist.length!==1?'s':''}`;if(!wishlist.length){el.innerHTML='<div class="empty">Sua lista de desejos tá vazia. Quando a mesa sugerir um livro que você não tem, clique no <b>+</b> pra guardar aqui.</div>';return;}el.innerHTML=`<div class="catrow fav">🎯 A mesa recomendou <span class="crn">${wishlist.length}</span></div><div class="wishwrap">${wishlist.map(w=>`<div class="wishc"><div class="wi"><div class="wt">${esc(w.titulo)}</div><div class="wa">${esc(w.autor||'')}</div>${w.porque?`<div class="wp">${esc(w.porque)}</div>`:''}</div><div class="wact"><button class="btn sm lime" onclick="wishToBook('${esc(w.titulo).replace(/'/g,"\\'")}','${esc(w.autor||'').replace(/'/g,"\\'")}')">Tenho o arquivo → virar mente</button><button class="btn sm" onclick="removeWish('${esc(w.titulo).replace(/'/g,"\\'")}')" style="color:var(--faint)">remover</button></div></div>`).join('')}</div>`;}
 function catCount(c){return BOOKS.filter(b=>b.cat===c).length;}
 function groupCount(g){return g.cats.reduce((s,c)=>s+catCount(c),0);}
 function renderCats(){
@@ -572,7 +582,7 @@ function sectionHTML(label,bs,fav){return `<div class="catrow${fav?' fav':''}">$
 function renderGrid(){
   if(wishOnly){renderWishlist();return;}
   const list=filtered();
-  document.getElementById('estsub').textContent=`· ${list.length} livro${list.length!==1?'s':''}`;
+  document.getElementById('estsub').textContent=`${list.length} livro${list.length!==1?'s':''}`;
   document.getElementById('bookcount').textContent=BOOKS.length;
   const el=document.getElementById('grid');
   if(!list.length){el.innerHTML='<div class="empty">Nada encontrado.</div>';return;}
@@ -619,9 +629,11 @@ function renderLibResults(q,intro,picks){
   const el=document.getElementById('grid');
   const cards=picks.map((p,n)=>{const b=BOOKS[p.i];if(!b)return '';return `<div class="libcard"><div class="librank">${n+1}</div><img class="libcov" loading="lazy" src="${b.cover||''}" alt="" onclick="openBook(${p.i})"><div class="libmid"><div class="libtt" onclick="openBook(${p.i})">${esc(b.titulo)}</div><div class="libau">${esc(b.autor||'')}</div><div class="libmot">${esc(p.motivo||'')}</div></div><div class="libact"><button class="libbtn" onclick="openBook(${p.i})">📖 abrir</button></div></div>`;}).join('');
   el.innerHTML=`<div class="libwrap"><button class="libback" onclick="backToEstante()">← estante</button><div class="libq">Você perguntou: “${esc(q)}”</div>${intro?`<div class="libintro">${esc(intro)}</div>`:''}${cards}</div>`;
-  document.getElementById('estsub').textContent='· o bibliotecário indica';
+  document.getElementById('estsub').textContent='o bibliotecário indica';
 }
-function backToEstante(){libActive=false;const inp=document.getElementById('search');if(inp)inp.value='';query='';renderGrid();}
+function syncSearchX(){const x=document.getElementById('searchx'),inp=document.getElementById('search');if(x&&inp)x.classList.toggle('on',!!inp.value);}
+function clearSearch(){const inp=document.getElementById('search');if(inp){inp.value='';inp.focus();}libActive=false;query='';syncSearchX();renderGrid();}
+function backToEstante(){libActive=false;const inp=document.getElementById('search');if(inp)inp.value='';query='';syncSearchX();renderGrid();}
 function mergePinned(list){const ap=activeProj();if(!ap||!ap.pinned||!ap.pinned.length)return list;const pins=ap.pinned.map(id=>MENTES.find(m=>m.id===id)).filter(Boolean);const seen=new Set();const out=[];[...pins,...list].forEach(m=>{if(m&&!seen.has(m.id)){seen.add(m.id);out.push(m);}});return out;}
 function pinSectionHTML(id){
   if(!projects.length)return '<div class="seclab">Fixar num projeto</div><div class="bqempty" style="padding:6px 0">Crie um projeto na aba Conselheiros pra fixar este livro nele.</div>';
@@ -1020,7 +1032,7 @@ function openDossie(i){const m=MENTES[i];const s=document.getElementById('sheet'
 function mdToHtml(md){return esc(md).replace(/^# (.+)$/m,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');}
 
 /* ===== init ===== */
-document.getElementById('search').addEventListener('input',e=>{query=e.target.value;renderGrid();});
+document.getElementById('search').addEventListener('input',e=>{query=e.target.value;syncSearchX();renderGrid();});
 document.getElementById('p_file').addEventListener('change',onProjFile);
 document.getElementById('p_nome').addEventListener('input',syncNameChk);
 (function(){const pctx=document.getElementById('p_ctx');['dragover','dragenter'].forEach(ev=>pctx.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();pctx.style.borderColor='var(--lime)';}));['dragleave','dragend'].forEach(ev=>pctx.addEventListener(ev,e=>{e.preventDefault();pctx.style.borderColor='';}));pctx.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();pctx.style.borderColor='';if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)handleFiles(e.dataTransfer.files);});})();
