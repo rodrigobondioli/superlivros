@@ -59,6 +59,16 @@
   .projpill{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--mut)}
   .projpill b{color:var(--txt)}
   .projpill a{color:var(--faint);cursor:pointer;text-decoration:underline;margin-left:2px}
+  .projpill a.sv{color:var(--lime);text-decoration:none;font-weight:600;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;margin-left:8px}
+  .projpill a.sv:hover{background:var(--panel3)}
+  .svmenu{position:absolute;top:calc(100% + 8px);left:0;min-width:262px;max-width:340px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:5px;max-height:300px;overflow:auto;z-index:60;box-shadow:0 14px 34px rgba(0,0,0,.55)}
+  .svmenu .hd{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:7px 10px 6px}
+  .svmenu .si{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--txt)}
+  .svmenu .si:hover{background:var(--panel3)}
+  .svmenu .si .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .svmenu .si .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .svmenu .sep{height:1px;background:var(--line2);margin:5px 8px}
+  .svmenu .si.novo{color:var(--lime);font-weight:600}
   .catchip{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:9px;background:transparent;border:0;color:var(--mut);font-size:13px;margin-bottom:3px;line-height:1.35}
   .catchip:hover{background:var(--panel2);color:var(--txt)}
   .catchip.on{background:var(--panel3);color:var(--txt);font-weight:600}
@@ -816,16 +826,43 @@ function renderProjects(){
   }).join('');
   renderProjpill();
 }
-function renderProjpill(){const el=document.getElementById('projpill');if(!el)return;const w=el.closest('.ppwrap');const ap=activeProj();if(!ap){if(w)w.style.display='';el.innerHTML=`conversa avulsa <span style="color:var(--faint)">· sem projeto, não fica salva</span>`;return;}if(w)w.style.display='';el.innerHTML=`<span class="dot" style="background:${ap.color}"></span>conversa em <b>${esc(ap.nome)}</b> <a onclick="clearActive()">tirar projeto</a>`;}
+function renderProjpill(){const el=document.getElementById('projpill');if(!el)return;const w=el.closest('.ppwrap');const ap=activeProj();if(!ap){if(w)w.style.display='';el.innerHTML=`conversa avulsa <span style="color:var(--faint)">· sem projeto, não fica salva</span>`+(thread.length?` <a class="sv" onclick="abrirSalvar(event)">salvar num projeto</a>`:'');return;}if(w)w.style.display='';el.innerHTML=`<span class="dot" style="background:${ap.color}"></span>conversa em <b>${esc(ap.nome)}</b> <a onclick="clearActive()">tirar projeto</a>`;}
 function selectProject(id){if(id===active){renderProjects();return;}if(activeProj()&&thread.length)saveConvo();active=id;persistP();newSubject();showView('conselheiros');renderProjects();}
 function clearActive(){active=null;persistP();renderProjects();renderProjpill();}
+/* ---- adotar uma conversa avulsa dentro de um projeto ---- */
+let adotarConvo=false, svEl=null;
+function fecharSalvar(){if(svEl){svEl.remove();svEl=null;document.removeEventListener('mousedown',svFora,true);document.removeEventListener('keydown',svEsc,true);}}
+function svFora(e){if(svEl&&!svEl.contains(e.target)&&!(e.target.closest&&e.target.closest('.projpill a.sv')))fecharSalvar();}
+function svEsc(e){if(e.key==='Escape'){e.preventDefault();fecharSalvar();}}
+function abrirSalvar(ev){
+  if(ev){ev.stopPropagation();}
+  if(svEl){fecharSalvar();return;}
+  const w=document.querySelector('.ppwrap');if(!w)return;
+  const d=document.createElement('div');d.className='svmenu';
+  const lista=projects.map(p=>`<div class="si" onclick="salvarConvoEm('${p.id}')"><span class="dot" style="background:${p.color}"></span><span class="n">${esc(p.nome)}</span></div>`).join('');
+  d.innerHTML=(projects.length?`<div class="hd">Salvar esta conversa em</div>${lista}<div class="sep"></div>`:'')+`<div class="si novo" onclick="novoProjComConvo()">+ Criar um projeto com esta mesa</div>`;
+  w.appendChild(d);svEl=d;
+  setTimeout(()=>{document.addEventListener('mousedown',svFora,true);document.addEventListener('keydown',svEsc,true);},0);
+}
+function salvarConvoEm(pid){
+  const p=projects.find(x=>x.id===pid);if(!p||!thread.length)return;
+  fecharSalvar();
+  active=pid;persistP();saveConvo();renderProjects();renderProjpill();
+  toast('Conversa salva em "'+p.nome+'". A mesa fica guardada com ela.');
+}
+function novoProjComConvo(){
+  if(!thread.length)return;
+  fecharSalvar();newProject();adotarConvo=true;
+  document.getElementById('pmtitle').textContent='Novo projeto com esta mesa';
+  document.getElementById('p_savebtn').textContent='Criar e salvar a conversa';
+}
 function novaAvulsa(){active=null;persistP();newSubject();showView('conselheiros');renderProjects();document.getElementById('opentext').focus();}
 function doneCompromisso(pid,idx,ev){if(ev)ev.stopPropagation();const p=projects.find(x=>x.id===pid);if(!p||!p.compromissos||!p.compromissos[idx])return;p.compromissos[idx].done=true;persistP();renderProjects();toast('Compromisso marcado como feito. 👊');}
 let editing=null;
-function newProject(){editing=null;pendingDocs=[];briefed=true;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_objetivo').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
-function editProject(){const p=activeProj();if(!p)return;editing=p.id;pendingDocs=(p.docs||[]).slice();briefed=true;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_objetivo').value=p.objetivo||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
+function newProject(){editing=null;adotarConvo=false;pendingDocs=[];briefed=true;document.getElementById('pmtitle').textContent='Novo projeto';document.getElementById('p_nome').value='';document.getElementById('p_seed').value='';document.getElementById('p_objetivo').value='';document.getElementById('p_ctx').value='';document.getElementById('p_delbtn').style.display='none';document.getElementById('p_savebtn').textContent='Criar projeto';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
+function editProject(){const p=activeProj();if(!p)return;adotarConvo=false;editing=p.id;pendingDocs=(p.docs||[]).slice();briefed=true;document.getElementById('pmtitle').textContent='Editar projeto';document.getElementById('p_nome').value=p.nome;document.getElementById('p_seed').value=p.seed||'';document.getElementById('p_objetivo').value=p.objetivo||'';document.getElementById('p_ctx').value=p.ctx||'';document.getElementById('p_delbtn').style.display='';document.getElementById('p_savebtn').textContent='Salvar';document.getElementById('pmodal').classList.add('on');resetFstatus();renderPendingDocs();syncNameChk();}
 function deleteProject(id){const pid=id||editing;if(!pid)return;const p=projects.find(x=>x.id===pid);if(!p)return;const nc=(p.convos||[]).length;if(!confirm('Excluir o projeto "'+p.nome+'"'+(nc?' e as '+nc+' conversa(s) dele':'')+'? Não dá pra desfazer.'))return;projects=projects.filter(x=>x.id!==pid);if(active===pid)active=null;if(editing===pid)editing=null;persistP();renderProjects();closePmodal();}
-function closePmodal(){document.getElementById('pmodal').classList.remove('on');}
+function closePmodal(){adotarConvo=false;document.getElementById('pmodal').classList.remove('on');}
 function resetFstatus(){const s=document.getElementById('p_fstatus');if(s)s.textContent='';}
 function syncNameChk(){const n=document.getElementById('p_nome'),c=document.getElementById('p_namechk');if(c)c.style.opacity=(n&&n.value.trim())?'1':'0';}
 let pendingDocs=[], briefed=true;
@@ -881,8 +918,10 @@ async function saveProject(){
   const wasNew=!editing;
   if(editing){const p=projects.find(x=>x.id===editing);p.nome=nome;p.seed=seed;p.objetivo=objetivo;p.ctx=ctx;p.docs=docs;}
   else{const id='p'+Date.now();projects.push({id,nome,seed,objetivo,ctx,docs,color:COLORS[projects.length%COLORS.length],convos:[]});active=id;justAdded=id;}
+  const adotar=wasNew&&adotarConvo&&thread.length;
   briefed=true;persistP();renderProjects();closePmodal();setTimeout(()=>{justAdded=null;},1400);
-  if(wasNew){newSubject();showView('conselheiros');}
+  if(adotar){saveConvo();renderProjects();renderProjpill();showView('conselheiros');}
+  else if(wasNew){newSubject();showView('conselheiros');}
   const bits=[];if(docs.length)bits.push(docs.length+' arquivo(s)');if(ctx.length)bits.push(Math.round(ctx.length/100)/10+'k de contexto');
   toast('Projeto salvo'+(bits.length?' · '+bits.join(' · '):'')+'. A mesa já fala sabendo disso.');
 }
