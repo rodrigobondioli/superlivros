@@ -243,6 +243,9 @@
   .svanchor{position:relative;display:inline-block}
   .rt .svbtn{border-color:#3a4020!important;color:var(--lime)!important}
   .svmenu.dir{left:auto;right:0}
+  .svmenu.up{top:auto;bottom:calc(100% + 8px)}
+  .camino.livre{border-color:#3a4020}
+  .camino.livre .cr{color:var(--lime)}
   .verdict{background:linear-gradient(180deg,#0f1408,#0c0f07);border:1px solid #34451f;border-radius:14px;padding:16px 18px;margin:6px 0 18px}
   .verdict .vh{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:11px}
   .verdict .vrow{display:flex;gap:12px;padding:9px 0;border-top:1px solid #202814;font-size:13.5px;line-height:1.55}.verdict .vrow:first-of-type{border-top:0}
@@ -1085,6 +1088,12 @@ async function callOrient(){busy=true;document.getElementById('sendb').disabled=
     thread.push({role:'orient',abertura:j.abertura||'',caminhos:j.caminhos||[],pergunta:j.pergunta||'Por onde quer começar?'});renderThread();saveConvo();
   }catch(e){showTyping(false);thread.push({role:'host',text:'Manda a primeira pergunta ou o ângulo que você quer atacar, que a mesa entra.'});renderThread();}
   busy=false;document.getElementById('sendb').disabled=false;}
+function perguntaPropria(){
+  const ta=document.getElementById('reply');if(!ta)return;
+  ta.focus();
+  const th=document.getElementById('thread');if(th)th.scrollTop=th.scrollHeight;
+  toast('Manda a sua — pode colar o texto inteiro.');
+}
 function pickCaminho(txt){if(busy)return;const ta=document.getElementById('reply');if(ta)ta.value='';thread.push({role:'user',text:txt});renderThread();callCouncil();}
 async function fecharMesa(){if(busy)return;busy=true;document.getElementById('sendb').disabled=true;showTyping(true);
   const payload={problem,project:projForMotor(),mentes:mesa.map(m=>({autor:m.autor,titulo:m.titulo,dossie:m.md})),history:thread.filter(m=>m.role==='user'||m.role==='mente').map(m=>({role:m.role,autor:m.autor||null,text:stripTags(m.text)}))};
@@ -1138,6 +1147,7 @@ function addMente(id){
   if(mesa.some(x=>norm(x.autor)===norm(m.autor))){fecharAdd();toast(esc(m.autor)+' já está na mesa.');return;}
   dispensados.delete(id);
   mesa.push(m);fecharAdd();renderMesaHead();
+  if(!mesaLocked&&thread.some(x=>x.role==='confirm')){renderThread();toast(m.autor+' entrou na mesa.');return;}
   thread.push({role:'sys',text:`Chamei <b>${esc(m.autor)}</b> — ${esc(reasonFor(m))}.`});
   renderThread();
 }
@@ -1147,18 +1157,21 @@ function abrirAdd(ev){
   const alvo=(ev&&ev.target&&ev.target.closest)?ev.target.closest('.svanchor'):null;
   const w=alvo||document.querySelector('.mesahead .rt');if(!w)return;
   addPag=0;
-  const d=document.createElement('div');d.className='svmenu wide dir';
+  const noHeader=!!(w.closest&&w.closest('.mesahead'));
+  const d=document.createElement('div');d.className='svmenu wide'+(noHeader?' dir':'');
   d.innerHTML=`<input class="sbusca" id="addq" placeholder="buscar por autor ou livro" autocomplete="off"><div id="addcorpo"></div>`;
   w.appendChild(d);addEl=d;
   d.querySelector('#addq').addEventListener('input',addRender);
   addRender();
+  const cx=d.getBoundingClientRect();
+  if(cx.bottom>window.innerHeight-8&&cx.top>window.innerHeight/2)d.classList.add('up');
   setTimeout(()=>{const i=document.getElementById('addq');if(i)i.focus();document.addEventListener('mousedown',addFora,true);document.addEventListener('keydown',addEsc,true);},0);
 }
 function reshuffle(){const all=castCouncil(problem+' '+thread.filter(m=>m.role==='user').map(m=>m.text).join(' '));const have=new Set(mesa.map(m=>m.id));for(const m of all){if(!have.has(m.id)){mesa.push(m);renderMesaHead();thread.push({role:'sys',text:`Chamei <b>${esc(m.autor)}</b> — ${esc(reasonFor(m))}.`});renderThread();return;}}thread.push({role:'sys',text:'Já chamei as mentes mais fortes. Manda mais contexto.'});renderThread();}
 function curatorHTML(){const ap=activeProj();const ctx=ap?` no contexto de <b>${esc(ap.nome)}</b>`:'';const mem=(ap&&ap.convos&&ap.convos.filter(c=>c.id!==convoId).length)?` <span style="color:var(--mut)">(lembrando de ${ap.convos.filter(c=>c.id!==convoId).length} conversa${ap.convos.filter(c=>c.id!==convoId).length!==1?'s':''} anterior${ap.convos.filter(c=>c.id!==convoId).length!==1?'es':''})</span>`:'';const ang=(castMeta&&castMeta.angulos)?`<div class="cang">${esc(castMeta.angulos)}</div>`:'';const falta=(castMeta&&castMeta.falta)?`<div class="cfalta">⚠ Ângulo que ficou fraco na estante: ${esc(castMeta.falta)}</div>`:'';const obj=(ap&&(ap.objetivo||'').trim())?`<div class="cobj">🎯 Puxando tudo pro seu objetivo: <b>${esc(ap.objetivo.trim())}</b></div>`:'';return `<div class="curator"><div class="ch">${herdadaAtiva?'Mesma mesa':'Montando a mesa'}</div>${obj}<div class="cq">${herdadaAtiva?`Mantive a mesa${mesaHerdadaNome?` de <b>${esc(mesaHerdadaNome)}</b>`:''} — <b>${mesa.length} mentes</b>, sem remontar:`:`Pra isso${ctx}, li o que você trouxe e chamei <b>${mesa.length} mentes</b> — cada uma por um motivo:`}${mem}</div>${mesa.map(m=>`<div class="why"><div class="av" style="background:${pickM(m)}">${esc(initials(m))}</div><div class="wt"><span class="n">${esc(m.autor)}</span> <span class="b">${esc(m.titulo)}</span><span class="r">${esc(castMotivo[m.id]||reasonFor(m))}</span></div>${mesaLocked?'':`<button class="whyx" title="Tirar da mesa" onclick="removeMente('${esc(m.id)}')">✕</button>`}</div>`).join('')}${ang}${falta}</div>`;}
 function castingHTML(){return `<div class="curator casting"><div class="ch">Montando a mesa</div><div class="cq"><span class="pulse"></span> Lendo o que você trouxe e escolhendo, com critério, quem tem algo real a acrescentar…</div></div>`;}
-function confirmHTML(){return `<div class="confirmbar"><div class="ct">Essa é a mesa. Passa o mouse numa mente e clica no <b>✕</b> pra tirar, ou <b>+ mente</b> (na barra “Na mesa”) pra trazer mais.</div><button class="btn lime" onclick="startDebate()">Abrir a mesa →</button></div>`;}
-function orientHTML(o){const cam=(o.caminhos||[]).map(c=>`<button class="camino" onclick="pickCaminho('${esc((c.rotulo||'')+ (c.desc?' — '+c.desc:'')).replace(/'/g,"\\'")}')"><span class="cr">${esc(c.rotulo||'')}</span>${c.desc?`<span class="cd">${esc(c.desc)}</span>`:''}</button>`).join('');return `<div class="msg"><div class="av" style="background:var(--lime)">✦</div><div class="bd"><div class="who"><span class="nm">Mesa</span></div>${o.abertura?`<div class="tx">${esc(o.abertura)}</div>`:''}<div class="caminos">${cam}</div><div class="tx" style="margin-top:9px;color:var(--lime)">${esc(o.pergunta||'')}</div></div></div>`;}
+function confirmHTML(){return `<div class="confirmbar"><div class="ct">Essa é a mesa. Passa o mouse numa mente e clica no <b>✕</b> pra tirar.</div><span class="svanchor"><button class="btn" onclick="abrirAdd(event)">+ chamar outro</button></span><button class="btn lime" onclick="startDebate()">Abrir a mesa →</button></div>`;}
+function orientHTML(o){const cam=(o.caminhos||[]).map(c=>`<button class="camino" onclick="pickCaminho('${esc((c.rotulo||'')+ (c.desc?' — '+c.desc:'')).replace(/'/g,"\\'")}')"><span class="cr">${esc(c.rotulo||'')}</span>${c.desc?`<span class="cd">${esc(c.desc)}</span>`:''}</button>`).join('');return `<div class="msg"><div class="av" style="background:var(--lime)">✦</div><div class="bd"><div class="who"><span class="nm">Mesa</span></div>${o.abertura?`<div class="tx">${esc(o.abertura)}</div>`:''}<div class="caminos">${cam}<button class="camino livre" onclick="perguntaPropria()"><span class="cr">✎ Escrever a minha pergunta</span><span class="cd">Nenhuma dessas — quero colar ou digitar outra coisa.</span></button></div><div class="tx" style="margin-top:9px;color:var(--lime)">${esc(o.pergunta||'')}</div></div></div>`;}
 function verdictHTML(v){const alt=(v.alternativa&&v.alternativa.trim())?`<div class="vrow"><span class="vk">Se empatar</span><div class="vv">${v.alternativa}</div></div>`:'';return `<div class="verdict"><div class="vh">⚖ Veredito da mesa</div>${v.sintese?`<div class="vrow"><span class="vk">Síntese</span><div class="vv">${v.sintese}</div></div>`:''}${v.tradeoff?`<div class="vrow"><span class="vk">Trade-off</span><div class="vv">${v.tradeoff}</div></div>`:''}${v.recomendacao?`<div class="vrow rec"><span class="vk">Recomendação</span><div class="vv">${v.recomendacao}</div></div>`:''}${v.primeiro_passo?`<div class="vrow"><span class="vk">1º passo (esta semana)</span><div class="vv">${v.primeiro_passo}</div></div>`:''}${alt}</div>`;}
 function linkBooks(html){
   // linka títulos citados entre aspas pros livros da estante
