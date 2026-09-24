@@ -53,14 +53,17 @@ async function registra(env, d) {
   } catch (e) {}
 }
 
-async function askGeminiModel(env, model, prompt, images) {
+async function askGeminiModel(env, model, prompt, images, maxTokens) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`;
-  const parts = [{ text: prompt }]; if (Array.isArray(images)) images.forEach(function (im) { if (im && im.data) parts.push({ inline_data: { mime_type: im.mime || "image/jpeg", data: im.data } }); }); const body = { contents: [{ role: "user", parts: parts }], generationConfig: { temperature: 0.85, topP: 0.95, maxOutputTokens: 3072, responseMimeType: "application/json" } };
+  const parts = [{ text: prompt }]; if (Array.isArray(images)) images.forEach(function (im) { if (im && im.data) parts.push({ inline_data: { mime_type: im.mime || "image/jpeg", data: im.data } }); }); const body = { contents: [{ role: "user", parts: parts }], generationConfig: { temperature: 0.85, topP: 0.95, maxOutputTokens: maxTokens || 3072, responseMimeType: "application/json" } };
   const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json();
   if (!r.ok) throw { code: "gemini_error", status: r.status, detail: (j && j.error && j.error.message) || "" };
+  let fim = ""; try { fim = j.candidates[0].finishReason || ""; } catch (e) {}
   let txt = ""; try { txt = j.candidates[0].content.parts.map(function (p) { return p.text || ""; }).join(""); } catch (e) {}
-  try { return JSON.parse(txt); } catch (e) { const m = txt.match(/\{[\s\S]*\}/); if (m) { try { return JSON.parse(m[0]); } catch (e2) {} } throw { code: "parse", raw: txt.slice(0, 300) }; }
+  try { return JSON.parse(txt); } catch (e) { const m = txt.match(/\{[\s\S]*\}/); if (m) { try { return JSON.parse(m[0]); } catch (e2) {} } }
+  if (fim === "MAX_TOKENS") throw { code: "muito_longo", detail: "a resposta passou do teto de " + (maxTokens || 3072) + " tokens e veio cortada" };
+  throw { code: "parse", raw: txt.slice(0, 300) };
 }
 
 function councilPrompt(p) {
@@ -119,7 +122,7 @@ async function council(req, env, cors) {
   const mentes = b.mentes || [];
   if (!mentes.length) return json({ error: "no_mentes" }, 400, cors);
   let parsed;
-  try { parsed = await askGeminiModel(env, COUNCIL_MODEL, councilPrompt({ problem: (b.problem || "") + (Array.isArray(b.images) && b.images.length ? "\n\n[O usuario anexou " + b.images.length + " imagem(ns). Analise o conteudo delas (prints, telas, fotos) e considere no conselho.]" : ""), project: b.project || null, memory: b.memory || null, mentes: mentes, history: b.history || [], to: b.to || "" }), b.images); }
+  try { parsed = await askGeminiModel(env, COUNCIL_MODEL, councilPrompt({ problem: (b.problem || "") + (Array.isArray(b.images) && b.images.length ? "\n\n[O usuario anexou " + b.images.length + " imagem(ns). Analise o conteudo delas (prints, telas, fotos) e considere no conselho.]" : ""), project: b.project || null, memory: b.memory || null, mentes: mentes, history: b.history || [], to: b.to || "" }), b.images, 8192); }
   catch (e) { return json({ error: e.code || "council", detail: e.detail || e.raw || "" }, 502, cors); }
   const replies = normReplies(parsed, mentes);
   if (!replies.length) return json({ error: "empty", raw: JSON.stringify(parsed).slice(0, 200) }, 502, cors);
