@@ -143,6 +143,14 @@ Pontos que já morderam:
 - A linha "a mesa tá pensando" é anexada fora da `thread` — **qualquer `renderThread()` apaga ela**.
 - `callCouncil` tem timeout de 90s com `AbortController`, tenta no máximo 2 vezes, e distingue timeout de erro real na mensagem.
 
+**A mesa aprende** (`aprenderMesa()` em `startDebate`): compara a mesa que o curador montou (`castIds`) com a que o usuário abriu. Quem ele tirou soma em `tira`, quem ele chamou soma em `chama` — no `localStorage.slos_gosto` (peso 1) e no projeto ativo `ap.gosto` (peso 2). Só vai pro `/cast` quem soma 2 ou mais (`gostoParaCast()`). O cartão do curador mostra o que levou em conta, com "esquecer". Mesa herdada e fixos (📌) não ensinam nada.
+
+**Troca por assunto:** o `/council` devolve `deriva` (tema novo que ninguém da mesa cobre) e `deriva_ids` (livros parecidos, quando o retrieval está ligado; sem ele o front usa `rankMentes`). Vira um cartão `role:'deriva'` com até 3 mentes pra chamar ou "deixa assim". Cartão usado fica `done:true` (não some da thread), pra não oferecer o mesmo tema de novo. Mensagem com @ não gera cartão.
+
+## Banco de teste — rode antes e depois de mexer no motor
+
+`node docs/evals/rodar.mjs <rotulo>` roda os 18 casos de `docs/evals/perguntas.json` contra o motor publicado (~US$ 1,50, ~6 min) e grava `docs/evals/<rotulo>/resultados.json`. `node docs/evals/comparar.mjs <a> <b>` gera um HTML lado a lado. Mede acerto da curadoria contra a mesa que o Rodrigo realmente usou (casos `real`), citações literais (a frase existe no dossiê/trechos) e tempo. **O VM do Cowork não alcança o `workers.dev`** — isso roda no Terminal do Mac.
+
 ## Adicionar livro novo
 
 Dois caminhos, propósitos diferentes — ver `docs/pipeline-livros.md`.
@@ -150,8 +158,8 @@ Dois caminhos, propósitos diferentes — ver `docs/pipeline-livros.md`.
 ## Pendências conhecidas
 
 1. `/ask` não aceita `images[]` — o front já manda, o Worker precisa do patch.
-2. **Retrieval com Vectorize** — a decisão estruturante. Hoje `/cast` manda 112 mil chars de roster a cada convocação. Funciona com 307 livros, quebra em 600. Ver `docs/auditoria-2026-09.md`.
+2. **Retrieval com Vectorize** — código pronto e testado, trechos extraídos; falta o Rodrigo ligar (`docs/plano-retrieval.md`, bloco "Estado").
 3. Saída do modelo entra no DOM sem sanitização (é proposital para permitir `<b>`, mas é HTML livre).
 4. Custo por turno cresce sem controle: `/council` remonta dossiês + histórico inteiros a cada turno, sem cache.
-5. **Não existe avaliação.** Com 306 mentes e um motor feito de prompt, não dá para saber se uma mudança melhorou ou piorou.
+5. ~~Não existe avaliação~~ → `docs/evals/` (ver "Banco de teste"). O baseline precisa ser rodado no Mac antes de ligar o retrieval.
 6. `classic.html` (9,5 MB) — decidir se fica.

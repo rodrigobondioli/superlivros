@@ -39,6 +39,8 @@ Também dá para disparar isso de dentro de uma conversa: o card "Livros que for
 
 5. **Verificar** — `node --check` no JS extraído + Playwright: busca acha o livro, gaveta abre, capa renderiza, contagens subiram.
 
+6. **Indexar o texto (retrieval)** — depois do retrieval ligado, livro novo só usa o texto inteiro se for indexado: `python3 docs/scripts/trechos.py --pdfs "<pasta Livros em PDF>"` (só processa o que falta) e, no Terminal do Mac, `node docs/scripts/indexar.mjs` (só manda os trechos novos).
+
 **Antes de ingerir, cheque duplicata por autor.** "O Mito do Empreendedor" foi recusado porque é a tradução de "The E-Myth Revisited", que já estava lá — e como a mesa deduplica por autor, a segunda entrada nunca seria convocada.
 
 ## Esquema do hash — inconsistência histórica

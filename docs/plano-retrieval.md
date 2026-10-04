@@ -4,6 +4,13 @@
 
 Leia `CLAUDE.md` antes. Este plano não muda nenhuma regra de lá.
 
+> **Estado em 04/10/2026 — código pronto, falta ligar.**
+> - **Passo 0 ✅** `docs/evals/` (perguntas.json com 6 conversas reais + 12 escritas, `rodar.mjs`, `comparar.mjs`).
+> - **Passos 2-6 ✅ no código, com fallback:** sem os bindings `AI`/`VEC`, ou se a busca falhar/demorar mais de 6s, o motor responde exatamente como antes. Testado com AI e Vectorize simulados (34 testes em `/council`, `/cast` e `/indexar`).
+> - **Passo 3 ✅ rodado:** `.indice/trechos.ndjson` (fora do git) tem **82.002 trechos de 305 livros**. Ficaram de fora 4 escaneados (Do the F*cking Work, Design Is Storytelling, Grid Systems, How to Be a Graphic Designer…) e 1 sem PDF (Não Me Faça Pensar). Lista em `.indice/relatorio.txt`.
+> - **Falta (Rodrigo, no Terminal):** confirmar Workers Paid → `bash docs/scripts/ativar-retrieval.sh` → `node docs/scripts/indexar.mjs` → Passo 7.
+> - Detalhes do que foi feito: `/cast` com índice monta uma lista curta (40 livros pelo texto + 15 por palavra + quem o usuário costuma chamar + mentes locais) e roda a curadoria no **Pro**; sem índice, roster inteiro no Flash como hoje. `/council` busca 4 trechos por mente (filtro `livro`) e exige `quote_orig` literal. `/indexar` só aceita o cabeçalho `X-Index-Key` (segredo `INDEX_KEY`), fora do portão de origem e do limite por IP.
+
 ---
 
 ## Números medidos (04/10/2026)

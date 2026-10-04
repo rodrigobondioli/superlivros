@@ -1,0 +1,218 @@
+{
+ "sobre": "Banco de teste da mesa. 'real' = conversa salva no app (mesa_real = a mesa final que o Rodrigo usou, depois de tirar e pôr gente). As demais foram escritas a partir do contexto dele e não têm mesa de referência. Edite à vontade: troque, apague, acrescente.",
+ "casos": [
+  {
+   "id": "r1-hooks",
+   "origem": "real",
+   "projeto": {
+    "nome": "Hook Monster",
+    "seed": "Criador de Hooks fodas",
+    "objetivo": "Criar hooks que faz o scroll parar",
+    "ctx": "OBJETIVO (puxe TODA resposta pra cá): Criar hooks que faz o scroll parar\n\n"
+   },
+   "problema": "Você é um estrategista de hooks “scroll-stopping”, especializado em criar aberturas que capturam atenção nos primeiros 1–3 segundos de vídeos, anúncios, posts e carrosséis. Domina pattern interrupt, curiosity gap, open loops, contraste, especificidade, tensão, novidade, identificação, prova, stakes, quebra de expectativa e linguagem nativa da audiência; por exemplo, transforma “3 dicas de vendas” em “Se você ainda vende assim, provavelmente está perdendo clientes sem perceber”. Sua expertise combina princípios de Eugene Schwartz, Claude Hopkins, David Ogilvy, Gary Halbert, Robert Cialdini e estudos contemporâneos de atenção, storytelling e creator economy. Opera no Estrato III–IV de Jaques, com horizonte de 1–2 anos, pensamento analítico, criativo, combinatório e experimental, conectando psicologia, contexto, formato e intenção. Trabalha com frameworks como PAS, AIDA, 4U, Before–After–Bridge, loops de curiosidade e matrizes de ângulo × emoção × mecanismo, gerando múltiplas variações e refinando-as por retenção, CTR e testes A/B. Adapta tom, intensidade e técnica ao público, plataforma e estágio de consciência, evitando clickbait enganoso. Utiliza pesquisa de audiência, análise de concorrentes, transcrições, métricas de retenção e bancos de hooks para produzir aberturas específicas, naturais e difíceis de ignorar.",
+   "segunda": "Engenharia de Interrupção — Desenhar a mecânica visual e verbal dos primeiros 1,5 segundos (pattern interrupt) para cortar o piloto automático do feed.",
+   "mesa_real": [
+    "79c8c4aa254b37094333980ddb9e66ec",
+    "5c941cc1d66a1f88547c034af341ec64",
+    "fe0c82ebb4090d4a7992c49cb606348d",
+    "7db29b7db124645a49880a4f38046ebc",
+    "025319070fd139e000cfa979f9568abc",
+    "dfb1914e3cfccc7f62d72226cd15a959"
+   ]
+  },
+  {
+   "id": "r2-comunidade-caes",
+   "origem": "real",
+   "projeto": {
+    "nome": "Hook Monster",
+    "seed": "Criador de Hooks fodas",
+    "objetivo": "Criar hooks que faz o scroll parar",
+    "ctx": "OBJETIVO (puxe TODA resposta pra cá): Criar hooks que faz o scroll parar\n\n"
+   },
+   "problema": "quero pensar em como manter uma comunidade de cachorros",
+   "segunda": "Rituais de Retenção Habitual — Desenhar os gatilhos e recompensas variáveis que fazem o dono de pet checar e interagir com o grupo todos os dias.",
+   "mesa_real": [
+    "dfb1914e3cfccc7f62d72226cd15a959",
+    "1a4256cdaf87029f39d50070fe012b84",
+    "569e48eabcaaa0f84a249960f7063c10",
+    "36b35bde1b1c06747333e89ebe07f887",
+    "bd71256196d06300b5dc636bc0016057",
+    "dc9c5accf4c1de8f5eb4c405eab46815"
+   ]
+  },
+  {
+   "id": "r3-posicionamento",
+   "origem": "real",
+   "projeto": {
+    "nome": "Posicionamento",
+    "seed": "Time para me ajudar com meu posicionamento",
+    "objetivo": "Definir nicho e posicionamento",
+    "ctx": "OBJETIVO (puxe TODA resposta pra cá): Definir nicho e posicionamento\n\n"
+   },
+   "problema": "sou designer web a 20 anos, trabalhei em grandes agencias, hoje trabalho sozinho como freelancer, mas com o avanço da IA e da tecnologia preciso me atualizar e estou totalmente perdido, nao sei nem se eu sou mais um diretor de arte, um product designer ou um estrategista de marca.\n\ne tambem quero saber se eu preciso encontrar um nicho para atuar....(estou tentando isso a mais de 1 ano e não consigo). \n\nenfim quero primeiro encontrar resposta pra isso para depois me posicionar no mercado e conseguir de forma clara identificar meu ICP - a partir dai tudo fica mais facil",
+   "segunda": "",
+   "mesa_real": [
+    "165b30ef722e45d4ba3c3675dc4ade7d",
+    "0b75c703aa59a8a586bc3ee155a0e1bb",
+    "f03bebd10a476dcf2c5d1cfe6aa1ceea",
+    "cb428e253396e9e9daeb260ec7800d2d",
+    "23e801d67eaf7d3c48254c122867c29b"
+   ]
+  },
+  {
+   "id": "r4-validacao",
+   "origem": "real",
+   "projeto": {
+    "nome": "02 · Validação",
+    "seed": "Validação de demanda para a Planta do Produto, minha oferta de estratégia e design de produto digital para empresários",
+    "objetivo": "10 conversas de diagnóstico em 30 dias e pelo menos 3 empresários avançando sem recuar do preço (R$ 18 mil)",
+    "ctx": "OBJETIVO (puxe TODA resposta pra cá): 10 conversas de diagnóstico em 30 dias e pelo menos 3 empresários avançando sem recuar do preço (R$ 18 mil)\n\n"
+   },
+   "problema": "Acabei de definir meu posicionamento como one-person business: sou estrategista e designer de produto digital com 20+ anos de mercado, e ajudo empresários tradicionais (que já faturam) a definir o que construir, e como, antes de gastar com programador. Minha oferta de entrada é um projeto fechado de R$ 18 mil, chamado Planta do Produto.\n\nAgora preciso VALIDAR se existe demanda real e paga por isso, antes de investir tempo em oferta, site e conteúdo. Minhas dificuldades:\n- Não tenho rede ativa de contatos. Trabalho sozinho, em casa.\n- Meu público atual nas redes é de designers, não de empresários.\n- Tenho só um case.\n- Tenho um padrão de travar na hora de falar com cliente e fugir para a parte de estruturar (site, marca, perfil).\n\nQuero montar uma mesa com os autores que melhor me ajudem a:\n1. Descobrir se a dor é real e se pagam por ela, sem me enganar com elogios e falsos positivos.\n2. Encontrar e abordar os primeiros empresários para conversar, partindo do zero.\n3. Desenhar testes rápidos e baratos, com critérios claros de \"seguir\", \"ajustar\" ou \"parar\".\n4. Lidar com o bloqueio de agir antes de ter tudo perfeito.",
+   "segunda": "Critério de validação real — Definir o que constitui prova concreta de interesse e dor antes de abrir proposta ou cobrar R$ 18 mil.",
+   "mesa_real": [
+    "cb428e253396e9e9daeb260ec7800d2d",
+    "74cda60a5e204ab57af93e19c3752f5d",
+    "cab7f44f49207b63fc99392d0e852547",
+    "30bb2794fdb0973ebe4f4b694c75373e",
+    "0743f39e1a02c2a96f59c261117100ec"
+   ]
+  },
+  {
+   "id": "r5-oferta",
+   "origem": "real",
+   "projeto": {
+    "nome": "03 · Oferta",
+    "seed": "Oferta de diagnóstico e definição de produto digital para empresários que já gastaram com um app ou sistema que está dando errado",
+    "objetivo": "Oferta fechada, com nomes, preços, escopo, garantia e proposta de 1 página, pronta pra usar nas primeiras conversas",
+    "ctx": "OBJETIVO (puxe TODA resposta pra cá): Oferta fechada, com nomes, preços, escopo, garantia e proposta de 1 página, pronta pra usar nas primeiras conversas\n\n"
+   },
+   "problema": "Sou estrategista e designer de produto digital, 20+ anos de mercado, trabalho sozinho (one-person business). Meu cliente é o empresário tradicional que já fatura e que já gastou com um app, portal ou sistema que está dando errado: o projeto não termina, as faturas não param, ele não consegue validar o que o dev entrega e não sabe se vale continuar. Atuo como o especialista independente do lado dele, sem interesse em construir. Já tenho um rascunho de oferta em três passos: 1. Raio-X do Projeto (1-2 semanas, R$ 5-8 mil): analiso o que existe e recomendo continuar, corrigir, refazer ou parar. 2. Planta do Produto (3-4 semanas, R$ 18-25 mil): regras de negócio, fluxos, escopo, protótipo e critérios de aceite para o próximo desenvolvimento não repetir o erro. 3. Do seu lado (R$ 4-6 mil/mês): fiscalizo entregas, faturas e prazos do dev. Meu maior receio: o cliente já gastou e se sente enganado. Por que ele pagaria mais, e logo para um consultor? Quero montar uma mesa com os autores que melhor me ajudem a: 1. Transformar esse rascunho numa oferta irresistível para quem já se queimou: promessa, entregáveis, garantia e o que NÃO entra. 2. Precificar por valor (pelo prejuízo que eu evito), e decidir se a escada de três passos faz sentido ou se complica a venda. 3. Nomear cada passo de um jeito que o empresário leigo entenda na hora. 4. Montar a proposta comercial e apresentar o preço sem parecer caro para quem já está desconfiado. 5. Proteger o escopo e definir o limite do que eu faço",
+   "segunda": "Arquitetura da Oferta e Risco — Definir se a escada em 3 passos reduz o atrito ou dispersa a decisão, desenhando promessa e garantias para um comprador escaldado.",
+   "mesa_real": [
+    "d700e7e53c42dfc96052f788ff34bf2c",
+    "44cb7d2af7907129741c83eaa79eaaf3",
+    "0b75c703aa59a8a586bc3ee155a0e1bb",
+    "7e55288fc3b1dc70ab619d7d53d65d4e",
+    "89fb467627240121afa07182d49e4198",
+    "7014dbf8d1ae5542acb9884a6d3b6318"
+   ]
+  },
+  {
+   "id": "r6-metodo",
+   "origem": "real",
+   "projeto": {
+    "nome": "04 · Método",
+    "seed": "Método de entrega do Diagnóstico e da Planta do Produto, repetível e acelerado por IA",
+    "objetivo": "Passo a passo, templates e checklists pra entregar o Diagnóstico em 10 dias úteis e a Planta em 3 a 4 semanas, sozinho, sempre com a mesma qualidade",
+    "ctx": "OBJETIVO (puxe TODA resposta pra cá): Passo a passo, templates e checklists pra entregar o Diagnóstico em 10 dias úteis e a Planta em 3 a 4 semanas, sozinho, sempre com a mesma qualidade\n\n"
+   },
+   "problema": "Sou estrategista e designer de produto digital, 20+ anos de mercado, one-person business. Já tenho a oferta definida:\n1. Diagnóstico (R$ 7.500, até 10 dias úteis): analiso o app/sistema de um empresário que já gastou e está dando errado, e dou o veredito — continuar, corrigir, refazer ou parar — com os motivos. Analiso negócio, fluxos, telas, regras e cobrado × entregue. Não analiso código.\n2. Planta do Produto (R$ 18 a 48 mil, 3 a 4 semanas): regras de negócio, fluxos, escopo priorizado, design system, protótipo e critérios de aceite observáveis, para o próximo desenvolvimento não repetir o erro.\n\nAgora preciso do MÉTODO para entregar isso sempre do mesmo jeito, com qualidade e sem estourar o prazo, trabalhando sozinho e usando IA para acelerar. Quero montar uma mesa com os autores que melhor me ajudem a:\n1. Desenhar o passo a passo do Diagnóstico em 10 dias: o que analisar, em que ordem, com quais perguntas e ferramentas, e como chegar ao veredito de forma defensável.\n2. Desenhar o passo a passo da Planta em 3 a 4 semanas: da imersão no negócio aos critérios de aceite, com etapas de aprovação do cliente.\n3. Escrever regras de negócio, fluxos e critérios de aceite que um desenvolvedor consiga executar sem interpretar.\n4. Criar templates e checklists reutilizáveis para não começar do zero a cada cliente.\n5. Usar IA dentro do processo para ganhar velocidade sem perder qualidade.",
+   "segunda": "Protocolo do Diagnóstico — Desenhar o roteiro de investigação dos 10 dias e a matriz de decisão que torna o veredito irrefutável.",
+   "mesa_real": [
+    "b66c82a210e5ce76dbc2a53856fa63c7",
+    "20453170291af8af1404fa30c863fe37",
+    "d161c78727998784853b861920cb9d3a",
+    "23e801d67eaf7d3c48254c122867c29b",
+    "7014dbf8d1ae5542acb9884a6d3b6318"
+   ]
+  },
+  {
+   "id": "s1-saas-preco",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Tenho um SaaS de criação de conteúdo para redes sociais que escreve na voz de cada marca. Já tem usuários usando de graça, mas quase ninguém paga. Preciso decidir os planos e o preço, e entender por que quem usa não converte. Não sei se o problema é preço, valor percebido ou o produto em si.",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s2-instagram-autoridade",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Quero voltar a postar muito no meu Instagram pessoal, defendendo o ofício do design na era da IA, com posts visualmente fortes. Não quero falar só com designers nem só com empresários. O objetivo é construir autoridade e, por tabela, atrair clientes. Como manter constância sem virar mais um perfil genérico de 'dicas de design'?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s3-app-bar",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Estou construindo um app de gestão para bares (comandas, estoque e mesas). Já tenho uma versão funcionando, mas nenhum bar usando de verdade. Quero colocar 3 bares usando por 30 dias antes de escrever mais uma linha de código. Como escolher esses bares, abordar o dono e medir se o app resolve alguma coisa?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s4-editorial-wellness",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Tenho um projeto editorial sobre bem-estar, comportamento e descobertas, separado do meu trabalho principal. Publico com alguma frequência mas a audiência não cresce. Quero entender como crescer sem virar mais um perfil de autoajuda e, no futuro, como monetizar sem estragar a confiança de quem lê.",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s5-procrastinacao",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Toda vez que preciso mandar mensagem para um potencial cliente eu travo. Arrumo o site, refaço o logo, reescrevo o perfil, mas não mando a mensagem. Sei o que tenho que fazer e não faço. Isso já me custou meses. Como eu quebro esse padrão de vez?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s6-pet-site",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Sou sócio de um negócio de cachorros e estou fazendo o site novo. Hoje as pessoas chegam pelo Instagram, olham e somem. Quero que o site transforme visita em contato e que o dono de cachorro confie na gente logo de cara. O que o site precisa ter e como deve contar a nossa história?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s7-rotina-energia",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Trabalho sozinho em casa e minha energia despenca depois do almoço. De manhã rendo bem, à tarde fico disperso, no celular, e à noite tento compensar e durmo mal. Quero montar uma rotina que funcione no longo prazo, sem depender de força de vontade.",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s8-primeiro-contratado",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Meu negócio de uma pessoa só começou a ter mais demanda do que consigo entregar. Estou pensando em contratar o primeiro freelancer fixo para me ajudar na produção, mas tenho medo de perder qualidade e de virar gerente em vez de fazer o que gosto. Contrato agora, subo o preço ou recuso cliente?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s9-cliente-fora",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Apareceu um cliente grande querendo um projeto que paga bem, mas é exatamente o tipo de trabalho que eu decidi parar de fazer quando me reposicionei. O dinheiro ajudaria muito agora. Aceito e arrisco confundir meu posicionamento, ou recuso e mantenho a linha?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s10-palestra-case",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Fui convidado para falar 20 minutos num evento sobre um projeto meu que deu certo. Não quero fazer a apresentação chata de 'contexto, desafio, solução, resultado'. Quero que as pessoas lembrem da história e venham falar comigo depois. Como estruturo a fala?",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s11-drinks",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Vou receber 10 amigos em casa no sábado e quero montar um cardápio curto de drinks autorais, uns 4, que eu consiga preparar sem passar a noite inteira no balcão. Gosto de coisas cítricas e pouco doces.",
+   "segunda": "",
+   "mesa_real": []
+  },
+  {
+   "id": "s12-ia-produto",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "projeto": null,
+   "problema": "Quero usar IA de verdade dentro dos produtos digitais que desenho para clientes, não só como enfeite. Como decido onde a IA entra no produto, como desenho a experiência quando a resposta pode estar errada e como explico isso para um cliente que não é técnico?",
+   "segunda": "",
+   "mesa_real": []
+  }
+ ]
+}
