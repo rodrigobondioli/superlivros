@@ -320,7 +320,9 @@ async function cast(req, env, cors) {
   const gostoTxt = (gTira || gChama) ? ("GOSTO DO USUARIO (aprendido nas mesas anteriores dele — pese isso):\n" + (gTira ? "- Costuma TIRAR da mesa: " + gTira + ". So escolha uma destas se ela for claramente a melhor pra um angulo critico deste problema.\n" : "") + (gChama ? "- Costuma CHAMAR por conta propria: " + gChama + ". Considere com prioridade quando servirem ao problema.\n" : "")) : "";
   // lista curta: os livros cujo TEXTO mais se parece com o problema + rede de seguranca por palavra
   let usar = roster, curto = false;
-  const viz = await livrosParecidos(env, problem, 40);
+  // Desligada por padrao: no banco de teste (04/10) a lista curta por palavra-chave + Pro errou mais (17/33 contra 21/33)
+  // e levou 40s em vez de 13s — a busca por texto puxa livro que so MENCIONA o termo. So liga se o pedido mandar lista_curta.
+  const viz = b.lista_curta === true ? await livrosParecidos(env, problem, 40) : null;
   if (viz && viz.length >= 10) {
     const ok = {}; viz.forEach(function (id) { ok[id] = 1; });
     porPalavra(problem, roster, 15).forEach(function (m) { if (m.id) ok[m.id] = 1; });

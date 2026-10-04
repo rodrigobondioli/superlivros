@@ -4,7 +4,12 @@
 
 Leia `CLAUDE.md` antes. Este plano não muda nenhuma regra de lá.
 
-> **Estado em 04/10/2026 — código pronto, falta ligar. Versão do PLANO GRATUITO (decisão do Rodrigo: não assinar Workers Paid).**
+> **Resultado do banco de teste (04/10/2026, rodadas `baseline`, `retrieval` = só correções, `trechos` = busca ligada):**
+> - **Conselho com trechos: mantido.** Trechos chegaram a 54 das ~85 mentes; as citações passaram a sair do texto do livro (ex.: Baker, "we can't read our own label from inside the jar") em vez da frase-âncora do dossiê. Ganho real, mas moderado — o raciocínio das falas mudou pouco. Custo: +5 s por turno (19 s contra 13,7 s) e uma chamada curta extra no Flash.
+> - **Lista curta + Pro na curadoria: DESLIGADA.** Errou mais (17/33 contra 21/33 da mesa real) e levou 40 s em vez de 13 s. A busca por palavra-chave puxa livro que só *menciona* o termo (no caso posicionamento trouxe Fox Web School e One Person Business School no lugar de Dunford e Baker). Continua no código atrás de `lista_curta: true`; o padrão voltou a ser o roster inteiro no Flash.
+> - Casos sem trecho nenhum: o "hooks" (o problema é um prompt de persona, sem assunto) e drinks (só 0-1 livro de bar com texto). Esperado.
+
+> **Estado em 04/10/2026 — LIGADO** (82.002 trechos no banco `superlivros-trechos`). Histórico da implementação: Versão do PLANO GRATUITO (decisão do Rodrigo: não assinar Workers Paid).**
 > - **Troca de peça:** em vez de Vectorize + embeddings (exigem Workers Paid), a busca é **por texto, no D1 com FTS5**, num banco separado (`superlivros-trechos`, binding `TRECHOS`). Como os livros são quase todos em inglês e a pergunta vem em português, uma chamada curta no Flash (`termosDeBusca`) devolve os conceitos nas duas línguas antes de buscar (~US$ 0,001 por turno, +1-3 s).
 > - **Medido com os dados reais (SQLite local, mesmo esquema):** 82.002 trechos de 305 livros = **260 MB** (o teto do D1 gratuito é 500 MB por banco; sobra espaço pra ~200 livros). Busca da lista curta: ~20 ms; trechos de um livro: ~4 ms.
 > - **Limite do gratuito que importa:** ~100 mil linhas gravadas por dia na conta. A carga inicial deve levar **2 a 3 dias** de `node docs/scripts/indexar.mjs` (ele para sozinho no teto e continua de onde parou). Enquanto o teto do dia estiver estourado, o portão do motor (limite por IP e log, que também gravam no D1) fica sem contar — o conselho continua respondendo.
