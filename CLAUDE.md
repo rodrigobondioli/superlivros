@@ -12,7 +12,7 @@ Site estático sem build e sem framework. **Leia este arquivo inteiro antes de t
 
 | linha | conteúdo | tamanho |
 |---|---|---|
-| `const BOOKS = [...]` | 307 livros com capas em base64 | **8,8 MB numa linha só** |
+| `const BOOKS = [...]` | 310 livros (capas são arquivos em `capas/<hash>.jpg`, não base64) | **~2,3 MB numa linha só** |
 | `const MENTES = [...]` | 306 dossiês | **1,1 MB numa linha só** |
 
 Ler o arquivo com Read estoura o contexto. Grep devolve a linha inteira e faz o mesmo estrago.

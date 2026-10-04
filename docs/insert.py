@@ -5,7 +5,10 @@ h=meta['hash']
 md=io.open(MD,encoding='utf-8').read().strip()
 txt=io.open(os.path.join(ASSETS,h+'.txt'),encoding='utf-8').read().strip()
 jpg=open(os.path.join(ASSETS,h+'.jpg'),'rb').read()
-cover='data:image/jpeg;base64,'+base64.b64encode(jpg).decode()
+# a capa mora em capas/<hash>.jpg ao lado do index.html (desde 04/10/2026; antes ia em base64 dentro do BOOKS)
+CAPAS=os.path.join(os.path.dirname(os.path.abspath(IDX)),'capas'); os.makedirs(CAPAS,exist_ok=True)
+open(os.path.join(CAPAS,h+'.jpg'),'wb').write(jpg)
+cover='capas/'+h+'.jpg'
 book=dict(meta['book'])
 book_out={"cat":book['cat'],"titulo":book['titulo'],"autor":book['autor'],
           "autor_norm":book['autor_norm'],"hash":h,"has_cover":True,"cover":cover,

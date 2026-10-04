@@ -32,7 +32,7 @@ Também dá para disparar isso de dentro de uma conversa: o card "Livros que for
 
 3. **Inserir** — `insert.py index.html <pasta-assets> meta.json md.txt` acrescenta um objeto no fim de `BOOKS` e outro no fim de `MENTES`, por cirurgia de string (`s.index('];\n', i)`), sem reserializar nada. Aborta se o hash já existir.
 
-   Campos do BOOK: `cat, titulo, autor, autor_norm, hash, has_cover, cover (base64), file, desc, muda, ganchos[], txt`
+   Campos do BOOK: `cat, titulo, autor, autor_norm, hash, has_cover, cover ("capas/<hash>.jpg"), file, desc, muda, ganchos[], txt` — o `insert.py` grava o JPG em `capas/` e põe só o caminho no BOOKS. **Não volte a pôr capa em base64 no index.html.**
    Campos da MENTE: `id (= hash do book), titulo, autor, dominio, tese, convoque, md`
 
 4. **Arquivar** — copie a capa para `Livros em PDF/.capas/<hash>.jpg`, mova o PDF para a pasta da categoria com nome limpo (`Título - Autor.pdf`), e o original para `_Entrada/_processados/`.
