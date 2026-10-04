@@ -1009,7 +1009,9 @@ function castCouncil(idea){const tks=tokens(idea).filter(w=>!STOP.has(w));let sc
 let castMotivo={}, castMeta=null, mesaLocked=false;
 async function castCouncilAI(idea){
   const ap=activeProj();
-  const roster=MENTES.map((m,i)=>({i,autor:m.autor,titulo:m.titulo,dominio:m.dominio,tese:m.tese}));
+  const roster=MENTES.map((m,i)=>{const nx=/\*\*N[ÃA]O convoque para:\*\*\s*(.+)/.exec(m.md||'');return {i,autor:m.autor,titulo:m.titulo,dominio:m.dominio,tese:m.tese,convoque:m.convoque||'',nao:nx?nx[1].trim():''};});
+  // ordem aleatoria a cada montagem: numa lista de 300, o modelo favorece o comeco e o fim
+  for(let k=roster.length-1;k>0;k--){const r=Math.floor(Math.random()*(k+1));const t=roster[k];roster[k]=roster[r];roster[r]=t;}
   const r=await fetch(CAST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({problem:idea,project:projForMotor(),roster})});
   if(!r.ok)throw new Error('http '+r.status);
   const j=await r.json();

@@ -123,6 +123,11 @@ O payload de entrada cresce ~8 mil tokens por turno. Já entra no orçamento de 
 
 ## Passo 6 — `/cast` sem mandar a estante inteira
 
+> **Estado atual (04/10/2026):** o curador já recebe, de cada livro, a tese inteira (até 400 chars), o `convoque` e o "NÃO convoque" (extraído do `md`), com a regra de nunca escolher uma mente cujo "NÃO convoque" descreve o problema. A ordem do roster é embaralhada a cada montagem para tirar o viés de posição. Custo: ~80 mil tokens por montagem, ~US$ 0,06 por conversa nova no Flash.
+>
+> **O que este passo muda:** o retrieval reduz a lista a ~30 livros pelo conteúdo real, e esses 30 vão com **todos** os critérios acima. Com a lista curta, a montagem pode rodar no **Pro** (`askComFallback(env, PRO, ...)`) por ~US$ 0,02 a conversa. A montagem roda uma vez por conversa e decide tudo o que vem depois — é onde o Pro rende mais por centavo.
+
+
 1. Embedding do problema.
 2. `VEC.query` sem filtro, `topK` alto (conferir o máximo permitido na doc).
 3. Agregar a pontuação por `livro` e ficar com os ~30 livros mais relevantes.
