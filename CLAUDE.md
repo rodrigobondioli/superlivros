@@ -158,7 +158,7 @@ Dois caminhos, propósitos diferentes — ver `docs/pipeline-livros.md`.
 ## Pendências conhecidas
 
 1. `/ask` não aceita `images[]` — o front já manda, o Worker precisa do patch.
-2. **Retrieval com Vectorize** — código pronto e testado, trechos extraídos; falta o Rodrigo ligar (`docs/plano-retrieval.md`, bloco "Estado").
+2. **Retrieval** — no plano gratuito, com busca por texto no D1 (FTS5), não Vectorize. Código pronto e testado, trechos extraídos; falta o Rodrigo ligar (`docs/plano-retrieval.md`, bloco "Estado"). **O Rodrigo não vai assinar Workers Paid** — não proponha nada que dependa dele.
 3. Saída do modelo entra no DOM sem sanitização (é proposital para permitir `<b>`, mas é HTML livre).
 4. Custo por turno cresce sem controle: `/council` remonta dossiês + histórico inteiros a cada turno, sem cache.
 5. ~~Não existe avaliação~~ → `docs/evals/` (ver "Banco de teste"). O baseline precisa ser rodado no Mac antes de ligar o retrieval.

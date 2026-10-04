@@ -4,12 +4,15 @@
 
 Leia `CLAUDE.md` antes. Este plano não muda nenhuma regra de lá.
 
-> **Estado em 04/10/2026 — código pronto, falta ligar.**
-> - **Passo 0 ✅** `docs/evals/` (perguntas.json com 6 conversas reais + 12 escritas, `rodar.mjs`, `comparar.mjs`).
-> - **Passos 2-6 ✅ no código, com fallback:** sem os bindings `AI`/`VEC`, ou se a busca falhar/demorar mais de 6s, o motor responde exatamente como antes. Testado com AI e Vectorize simulados (34 testes em `/council`, `/cast` e `/indexar`).
-> - **Passo 3 ✅ rodado:** `.indice/trechos.ndjson` (fora do git) tem **82.002 trechos de 305 livros**. Ficaram de fora 4 escaneados (Do the F*cking Work, Design Is Storytelling, Grid Systems, How to Be a Graphic Designer…) e 1 sem PDF (Não Me Faça Pensar). Lista em `.indice/relatorio.txt`.
-> - **Falta (Rodrigo, no Terminal):** confirmar Workers Paid → `bash docs/scripts/ativar-retrieval.sh` → `node docs/scripts/indexar.mjs` → Passo 7.
-> - Detalhes do que foi feito: `/cast` com índice monta uma lista curta (40 livros pelo texto + 15 por palavra + quem o usuário costuma chamar + mentes locais) e roda a curadoria no **Pro**; sem índice, roster inteiro no Flash como hoje. `/council` busca 4 trechos por mente (filtro `livro`) e exige `quote_orig` literal. `/indexar` só aceita o cabeçalho `X-Index-Key` (segredo `INDEX_KEY`), fora do portão de origem e do limite por IP.
+> **Estado em 04/10/2026 — código pronto, falta ligar. Versão do PLANO GRATUITO (decisão do Rodrigo: não assinar Workers Paid).**
+> - **Troca de peça:** em vez de Vectorize + embeddings (exigem Workers Paid), a busca é **por texto, no D1 com FTS5**, num banco separado (`superlivros-trechos`, binding `TRECHOS`). Como os livros são quase todos em inglês e a pergunta vem em português, uma chamada curta no Flash (`termosDeBusca`) devolve os conceitos nas duas línguas antes de buscar (~US$ 0,001 por turno, +1-3 s).
+> - **Medido com os dados reais (SQLite local, mesmo esquema):** 82.002 trechos de 305 livros = **260 MB** (o teto do D1 gratuito é 500 MB por banco; sobra espaço pra ~200 livros). Busca da lista curta: ~20 ms; trechos de um livro: ~4 ms.
+> - **Limite do gratuito que importa:** ~100 mil linhas gravadas por dia na conta. A carga inicial deve levar **2 a 3 dias** de `node docs/scripts/indexar.mjs` (ele para sozinho no teto e continua de onde parou). Enquanto o teto do dia estiver estourado, o portão do motor (limite por IP e log, que também gravam no D1) fica sem contar — o conselho continua respondendo.
+> - **Passo 0 ✅** `docs/evals/` (6 conversas reais + 12 escritas, `rodar.mjs`, `comparar.mjs`).
+> - **Passo 3 ✅ rodado:** `.indice/trechos.ndjson` (fora do git). Ficaram de fora 4 escaneados e 1 sem PDF (Não Me Faça Pensar) — `.indice/relatorio.txt`.
+> - **No motor, com fallback em tudo:** sem o banco, ou se a busca falhar/demorar mais de 12 s, responde exatamente como antes. `/council` busca até 4 trechos por mente (`livro:"<hash>" AND (termos)`, bm25) e exige `quote_orig` literal. `/cast` monta a lista curta (40 livros pelo texto + 15 por palavra + quem o usuário costuma chamar + mentes locais) e roda a curadoria no **Pro**; com menos de 10 livros achados, roster inteiro no Flash como hoje. `/indexar` grava 33 trechos por chamada (limite de 100 parâmetros do D1), só com o cabeçalho `X-Index-Key`. Testado com SQLite de verdade por baixo (24 testes).
+> - **Falta (Rodrigo, no Terminal):** `bash docs/scripts/ativar-retrieval.sh` → `node docs/scripts/indexar.mjs` (repetir nos dias seguintes até terminar) → Passo 7.
+> - Os Passos 2, 4, 5 e 6 abaixo descrevem a versão com Vectorize; ficam como registro. Se um dia a conta for pro Workers Paid, dá pra trocar a busca por embeddings sem mexer no resto.
 
 ---
 

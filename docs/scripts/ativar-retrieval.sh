@@ -1,34 +1,30 @@
 #!/bin/bash
-# Liga o retrieval: cria o índice no Vectorize, conecta no motor, gera a chave e publica.
+# Liga o retrieval no plano GRATUITO: cria o banco de busca (D1 + FTS5), conecta no motor, gera a chave e publica.
 # Rode UMA vez, na pasta do repo:   bash docs/scripts/ativar-retrieval.sh
-# Pré-requisito: conta Cloudflare no plano Workers Paid (US$ 5/mês). No gratuito o índice não cabe.
 set -e
 cd "$(dirname "$0")/../.."
-INDICE=superlivros-trechos
+BANCO=superlivros-trechos
 
-echo "1/4 · Índice no Vectorize"
-if npx wrangler vectorize get "$INDICE" >/dev/null 2>&1; then
-  echo "     já existe, sigo."
-else
-  npx wrangler vectorize create "$INDICE" --dimensions=1024 --metric=cosine
-  # o índice de metadado PRECISA existir antes do primeiro trecho, senão o filtro por livro não funciona
-  npx wrangler vectorize create-metadata-index "$INDICE" --property-name=livro --type=string
+echo "1/4 · Banco de busca no D1"
+if ! npx wrangler d1 list --json 2>/dev/null | grep -q "\"$BANCO\""; then
+  npx wrangler d1 create "$BANCO"
 fi
+ID=$(npx wrangler d1 list --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const i=s.indexOf("[{");const a=i<0?[]:JSON.parse(s.slice(i,s.lastIndexOf("]")+1));const x=a.find(d=>d.name===process.argv[1]);process.stdout.write(x?(x.uuid||x.database_id||""):"")})' "$BANCO")
+if [ -z "$ID" ]; then echo "Não achei o id do banco $BANCO. Me manda um print."; exit 1; fi
+echo "     id: $ID"
 
-echo "2/4 · Ligando o índice e a IA no motor (wrangler.toml)"
-if grep -q "$INDICE" wrangler.toml; then
+echo "2/4 · Ligando o banco no motor (wrangler.toml)"
+if grep -q "$BANCO" wrangler.toml; then
   echo "     já estava ligado."
 else
-  cat >> wrangler.toml <<EOF
+  cat >> wrangler.toml <<TOML
 
-# Retrieval: trechos do livro inteiro (docs/plano-retrieval.md)
-[ai]
-binding = "AI"
-
-[[vectorize]]
-binding = "VEC"
-index_name = "$INDICE"
-EOF
+# Retrieval: trechos do livro inteiro, busca por texto (docs/plano-retrieval.md)
+[[d1_databases]]
+binding = "TRECHOS"
+database_name = "$BANCO"
+database_id = "$ID"
+TOML
 fi
 
 echo "3/4 · Chave da rota de indexação"

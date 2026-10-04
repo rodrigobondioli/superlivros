@@ -1,4 +1,4 @@
-// Manda os trechos de .indice/trechos.ndjson pro motor, que gera o embedding e grava no Vectorize.
+// Manda os trechos de .indice/trechos.ndjson pro motor, que grava no banco de busca (D1, plano gratuito).
 // Roda no Terminal do Mac, na pasta do repo:   node docs/scripts/indexar.mjs
 // Retomável: se cair, roda de novo e ele continua de onde parou (.indice/enviados.txt).
 // Livro novo: rode trechos.py de novo e depois este script — só os trechos novos sobem.
@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const IDX = path.join(RAIZ, ".indice");
 const MOTOR = process.env.MOTOR || "https://broad-heart-33a0.rodrigobondioli.workers.dev";
-const LOTE = 50, PARALELO = 4;
+const LOTE = 33, PARALELO = 2;   // 33 = 99 parâmetros, o máximo que o D1 aceita por consulta
 
 const chaveP = path.join(IDX, "chave");
 if (!fs.existsSync(chaveP)) { console.log("Falta .indice/chave — rode antes: bash docs/scripts/ativar-retrieval.sh"); process.exit(1); }
@@ -25,12 +25,11 @@ async function chama(corpo) {
   return j;
 }
 
-// 1) confere a ligação antes de mandar 100 mil trechos
+// 1) confere a ligação antes de mandar 80 mil trechos
 let st;
 try { st = await chama({ op: "status" }); }
 catch (e) { console.log("O motor recusou: " + e.message + "\n(se for 'sem_bindings', o deploy com o Vectorize ainda não subiu; se for 'chave', rode o ativar-retrieval.sh de novo)"); process.exit(1); }
-if (st.dims !== 1024) { console.log(`O modelo de embedding devolveu ${st.dims} dimensões, mas o índice foi criado com 1024. Pare e me chame.`); process.exit(1); }
-console.log("Motor ok. Índice:", JSON.stringify(st.info));
+console.log(`Motor ok. O banco tem ${st.trechos} trechos.`);
 
 const progP = path.join(IDX, "enviados.txt");
 const ja = fs.existsSync(progP) ? parseInt(fs.readFileSync(progP, "utf8"), 10) || 0 : 0;
@@ -74,5 +73,11 @@ await Promise.all(Array.from({ length: PARALELO }, async () => {
   }
 }));
 salva();
-if (falhou) { console.log(`\nParou com erro: ${falhou}\nProgresso salvo (${confirmado}/${total}). Rode de novo pra continuar.`); process.exit(1); }
+if (falhou) {
+  const limite = /limit|exceeded/i.test(falhou);
+  console.log(limite
+    ? `\nO plano gratuito do D1 grava ~100 mil linhas por dia e chegou no teto de hoje. Progresso salvo (${confirmado}/${total}).\nRode o mesmo comando amanhã (o limite zera às 21h de Brasília) que ele continua de onde parou.\nEnquanto isso a mesa funciona normal, com os trechos que já subiram.`
+    : `\nParou com erro: ${falhou}\nProgresso salvo (${confirmado}/${total}). Rode de novo pra continuar.`);
+  process.exit(1);
+}
 console.log(`\nPronto: ${total} trechos no índice. A mesa já usa o livro inteiro.`);
