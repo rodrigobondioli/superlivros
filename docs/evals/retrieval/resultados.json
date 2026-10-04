@@ -1,0 +1,2041 @@
+{
+ "resumo": {
+  "rotulo": "retrieval",
+  "quando": "2026-10-04T11:17:32.819Z",
+  "motor": "https://broad-heart-33a0.rodrigobondioli.workers.dev",
+  "pro": false,
+  "casos": 18,
+  "cast_acerto_mesa_real": "21/33",
+  "cast_ms_medio": 13060,
+  "cast_categorias_por_mesa": 3.17,
+  "conselho_ms_medio": 13704,
+  "citacoes_literais": "50/52",
+  "falas_com_trechos": 0,
+  "erros": []
+ },
+ "casos": [
+  {
+   "id": "r1-hooks",
+   "origem": "real",
+   "problema": "Você é um estrategista de hooks “scroll-stopping”, especializado em criar aberturas que capturam atenção nos primeiros 1–3 segundos de vídeos, anúncios, posts e carrosséis. Domina pattern interrupt, curiosity gap, open loops, contraste, especificidade, tensão, novidade, identificação, prova, stakes, quebra de expectativa e linguagem nativa da audiência; por exemplo, transforma “3 dicas de vendas” em “Se você ainda vende assim, provavelmente está perdendo clientes sem perceber”. Sua expertise combina princípios de Eugene Schwartz, Claude Hopkins, David Ogilvy, Gary Halbert, Robert Cialdini e estudos contemporâneos de atenção, storytelling e creator economy. Opera no Estrato III–IV de Jaques, com horizonte de 1–2 anos, pensamento analítico, criativo, combinatório e experimental, conectando psicologia, contexto, formato e intenção. Trabalha com frameworks como PAS, AIDA, 4U, Before–After–Bridge, loops de curiosidade e matrizes de ângulo × emoção × mecanismo, gerando múltiplas variações e refinando-as por retenção, CTR e testes A/B. Adapta tom, intensidade e técnica ao público, plataforma e estágio de consciência, evitando clickbait enganoso. Utiliza pesquisa de audiência, análise de concorrentes, transcrições, métricas de retenção e bancos de hooks para produzir aberturas específicas, naturais e difíceis de ignorar.",
+   "cast": {
+    "ms": 11279,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "79c8c4aa254b37094333980ddb9e66ec",
+      "autor": "Brendan Kane",
+      "titulo": "Hook Point - How to Stand Out in a 3 Second World",
+      "cat": "Conteúdo & Audiência",
+      "motivo": "Fornece a mecânica exata de capturar atenção em feeds em menos de 3 segundos e calibrar hooks para múltiplos perfis psicológicos."
+     },
+     {
+      "id": "fe0c82ebb4090d4a7992c49cb606348d",
+      "autor": "Michael Masterson & John Forde",
+      "titulo": "Great leads",
+      "cat": "Copywriting & Vendas",
+      "motivo": "Oferece a taxonomia estrutural de tipos de abertura (leads) calibrada pelo nível de sofisticação e consciência do público."
+     },
+     {
+      "id": "5c941cc1d66a1f88547c034af341ec64",
+      "autor": "Eugene Schwartz",
+      "titulo": "Breakthrough advertising",
+      "cat": "Copywriting & Vendas",
+      "motivo": "Ensina como vencer o ceticismo de mercados saturados através de novos mecanismos e ângulos em vez de promessas gastas."
+     },
+     {
+      "id": "025319070fd139e000cfa979f9568abc",
+      "autor": "Chip Heath e Dan Heath",
+      "titulo": "Made to Stick",
+      "cat": "Storytelling",
+      "motivo": "Domina a psicologia do pattern interrupt e curiosity gap ao estruturar ideias inesperadas e concretas que abrem loops mentais imediatos."
+     },
+     {
+      "id": "7db29b7db124645a49880a4f38046ebc",
+      "autor": "Robert Cialdini",
+      "titulo": "Pre-Suasion",
+      "cat": "Mente & Comportamento",
+      "motivo": "Explica o princípio do frontloading de atenção: como o primeiro segundo de enquadramento torna o tema focal e persuasivo antes da mensagem."
+     }
+    ],
+    "angulos": "Cobriu a dinâmica moderna de feeds de 3 segundos (Kane), a tipologia clássica de aberturas (Masterson & Forde), os estágios de sofisticação de mercado (Schwartz), a quebra cognitiva de expectativa (Heath & Heath) e o direcionamento neuropsicológico da atenção prévia (Cialdini).",
+    "falta": "",
+    "acertos": 5,
+    "de": 6
+   },
+   "council": {
+    "ms": 8589,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "79c8c4aa254b37094333980ddb9e66ec",
+      "autor": "Brendan Kane",
+      "titulo": "Hook Point - How to Stand Out in a 3 Second World"
+     },
+     {
+      "id": "5c941cc1d66a1f88547c034af341ec64",
+      "autor": "Eugene Schwartz",
+      "titulo": "Breakthrough advertising"
+     },
+     {
+      "id": "fe0c82ebb4090d4a7992c49cb606348d",
+      "autor": "Michael Masterson & John Forde",
+      "titulo": "Great leads"
+     },
+     {
+      "id": "7db29b7db124645a49880a4f38046ebc",
+      "autor": "Robert Cialdini",
+      "titulo": "Pre-Suasion"
+     },
+     {
+      "id": "025319070fd139e000cfa979f9568abc",
+      "autor": "Chip Heath e Dan Heath",
+      "titulo": "Made to Stick"
+     },
+     {
+      "id": "dfb1914e3cfccc7f62d72226cd15a959",
+      "autor": "John Carlton",
+      "titulo": "Kick-Ass Copywriting Secrets of a Marketing Rebel"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Brendan Kane",
+      "livro": "Hook Point - How to Stand Out in a 3 Second World",
+      "txt": "O maior erro na largada é tentar enfiar a mensagem dentro do gancho. Nos primeiros 1,5 segundos, a sua mensagem <b>não importa</b>. O gancho existe por uma única função mecânica: parar o polegar. Coloque seu frame contra um mockup de feed competindo com 30 outros posts brutais de influenciadores e tragédias. Se o visual exigir mais de meio segundo de processamento cognitivo ou se você abrir com pose de apresentador e 'Fala pessoal', você já morreu. A abertura precisa operar como uma quebra de padrão visual e auditivo instantânea, antes de qualquer entrega de conteúdo.",
+      "quote": "O 'Hook Point' — separado da mensagem central — decide se o conteúdo é sequer consumido.",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "Chip Heath e Dan Heath",
+      "livro": "Made to Stick",
+      "txt": "Para o cérebro sair do piloto automático no feed, você precisa disparar o <b>Inesperado</b>. O cérebro humano roda em máquinas de previsão: quando o feed rola, ele já prevê o que vem a seguir e ignora. Você quebra o padrão quando viola um esquema mental (schema) nos primeiros 1,5s e abre uma <b>lacuna de curiosidade</b> imediata. Mas atenção: use elementos concretos, nunca conceituais. Em vez de 'Você comete erros no tráfego?', mostre alguém rasgando uma nota de cem reais na frente da câmera dizendo 'Pare de queimar isso no gerenciador'. O concreto ancora; a abstração deixa o polegar continuar subindo.",
+      "quote": "Abrir uma lacuna de conhecimento para prender atenção.",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "John Carlton",
+      "livro": "Kick-Ass Copywriting Secrets of a Marketing Rebel",
+      "txt": "Esqueçam fru-fru cinematográfico. Se o cara sentir cheiro de estúdio ou anúncio 'clean' no primeiro segundo, ele vaza. A engenharia dos primeiros 1,5s é entrar no meio de uma briga que já está acontecendo na cabeça dele. O visual tem que parecer cru, urgente, gravado com a mão trêmula de quem acabou de descobrir um segredo sujo. Abra falando como quem puxa o cara pelo colarinho num bar: nada de introdução, vá direto na ferida ou no detalhe bizarro. O hook tem que fisgar na jugular antes que o reflexo motor do polegar dele vença.",
+      "quote": "O hook fisga antes que o leitor fuja.",
+      "quote_orig": "",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "r2-comunidade-caes",
+   "origem": "real",
+   "problema": "quero pensar em como manter uma comunidade de cachorros",
+   "cast": {
+    "ms": 12276,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "1a4256cdaf87029f39d50070fe012b84",
+      "autor": "Bailey Richardson",
+      "titulo": "Get Together",
+      "cat": "Comunidade",
+      "motivo": "Ensina a estruturar rituais, papéis e conversas diretas entre os membros para que a comunidade de tutores viva por si só, sem depender da sua moderação o tempo todo."
+     },
+     {
+      "id": "36b35bde1b1c06747333e89ebe07f887",
+      "autor": "Seth Godin",
+      "titulo": "Tribes - We Need You to Lead Us",
+      "cat": "Comunidade",
+      "motivo": "Define como transformar simples amantes de cachorros em uma 'tribo' com causa compartilhada, narrativa comum e sentimento forte de identidade."
+     },
+     {
+      "id": "569e48eabcaaa0f84a249960f7063c10",
+      "autor": "Nir Eyal (com Ryan Hoover)",
+      "titulo": "Hooked: How to Build Habit-Forming Products",
+      "cat": "UX, UI & Produto",
+      "motivo": "Entrega a mecânica psicológica de retenção (gatilho, ação, recompensa variável e investimento) para transformar a participação na comunidade em um hábito diário."
+     },
+     {
+      "id": "bd71256196d06300b5dc636bc0016057",
+      "autor": "Jono Bacon",
+      "titulo": "Art of Community - Building the New Age of Participation",
+      "cat": "Comunidade",
+      "motivo": "Contrapõe a visão romântica de comunidade trazendo a gestão prática de conflitos, escolha de plataformas confiáveis e pesquisa de feedback contínua."
+     },
+     {
+      "id": "b8c1e45c142933a0f34c03381b07f8de",
+      "autor": "Jonah Berger",
+      "titulo": "Contagious - Why Things Catch On",
+      "cat": "Marketing & Branding",
+      "motivo": "Explica como ativar moeda social e gatilhos de emoção pública que incentivam donos de cães a gerarem conteúdo, compartilharem histórias e atraírem outros membros."
+     }
+    ],
+    "angulos": "Cobriu a dinâmica social participativa (Richardson), a liderança de movimento/identidade (Godin), a neurociência de retenção e loops de hábito (Eyal), a governança operacional e prevenção de conflitos (Bacon) e a psicologia de compartilhamento/moeda social (Berger).",
+    "falta": "",
+    "acertos": 4,
+    "de": 6
+   },
+   "council": {
+    "ms": 13887,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "dfb1914e3cfccc7f62d72226cd15a959",
+      "autor": "John Carlton",
+      "titulo": "Kick-Ass Copywriting Secrets of a Marketing Rebel"
+     },
+     {
+      "id": "1a4256cdaf87029f39d50070fe012b84",
+      "autor": "Bailey Richardson",
+      "titulo": "Get Together"
+     },
+     {
+      "id": "569e48eabcaaa0f84a249960f7063c10",
+      "autor": "Nir Eyal (com Ryan Hoover)",
+      "titulo": "Hooked: How to Build Habit-Forming Products"
+     },
+     {
+      "id": "36b35bde1b1c06747333e89ebe07f887",
+      "autor": "Seth Godin",
+      "titulo": "Tribes - We Need You to Lead Us"
+     },
+     {
+      "id": "bd71256196d06300b5dc636bc0016057",
+      "autor": "Jono Bacon",
+      "titulo": "Art of Community - Building the New Age of Participation"
+     },
+     {
+      "id": "dc9c5accf4c1de8f5eb4c405eab46815",
+      "autor": "Andrew Chen",
+      "titulo": "The Cold Start Problem"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Nir Eyal",
+      "livro": "Hooked: How to Build Habit-Forming Products",
+      "txt": "Comunidade não retém por simpatia, retém por <b>ciclo de hábito</b>. Dono de cachorro tem dois gatilhos internos brutais: <b>culpa</b> (passar o dia fora e achar que o bicho sofre) e <b>tédio/ansiedade</b>. O seu ritual precisa responder a isso.<br><br>O loop tem que ser: <b>Gatilho externo</b> (uma notificação no início da manhã ou fim de tarde) → <b>Ação de fricção quase zero</b> (subir uma foto do pet ou votar numa enquete de 1 segundo) → <b>Recompensa Variável</b> (ver a reação engraçada dos cães alheios — a caça social da matilha) → <b>Investimento</b> (o dono preenche a ficha do pet, loga peso ou histórico de vacina). Se a recompensa for previsível demais, cai no erro da Zynga e morre.",
+      "quote": "Achar o gatilho interno exige entender a dor emocional do usuário, não o que ele diz numa pesquisa.",
+      "quote_orig": "",
+      "literal": false
+     },
+     {
+      "autor": "John Carlton",
+      "livro": "Kick-Ass Copywriting Secrets of a Marketing Rebel",
+      "txt": "O Nir falou bonito de psicologia, mas se o seu <b>hook diário não parar o scroll</b>, ninguém entra no ciclo. Dono de pet rola o feed anestesiado. Para fazer o cara abrir a comunidade todo santo dia, o ritual precisa de uma headline que cutuca o nervo.<br><br><b>Se você quer retenção pelo ego</b>: faça a 'Batalha do Focinho' — quem tem o pet mais destruidor da semana. Dono adora se gabar.<br><b>Se você quer retenção pela dor</b>: use o hook da suspeita — <i>'Seu cachorro lambe a pata sem parar? O erro que 80% dos donos cometem'</i>.<br><br>Fale com a vaidade ou com o pavor dele. O hook entra na conversa que já está fritando na cabeça do dono.",
+      "quote": "O hook fisga antes que o leitor fuja.",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "Bailey Richardson",
+      "livro": "Get Together",
+      "txt": "Cuidado com o vício de virar animador de palco com manchete sensacionalista. Se você depender de inventar um hook genial todo dia, você vira escravo da sua própria comunidade.<br><br>O que sustenta o ritual não é você gritando no megafone; é criar <b>Espaço, Prompts e Estrutura</b> para os donos conversarem entre si. Dê um nome pra essa galera — um demônimo forte. Institua prompts semanais fixos que rodam sozinhos (ex.: 'Sexta da Bagunça'). A moderação só solta a pergunta e sai do caminho. Comunidade viva é membro respondendo membro, não membro assistindo o fundador.",
+      "quote": "Acerte o produto, trate bem o cliente e coloque eles para conversar. E é só isso.",
+      "quote_orig": "Get the product right, treat the customer well, and get them talking. And that's it.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "r3-posicionamento",
+   "origem": "real",
+   "problema": "sou designer web a 20 anos, trabalhei em grandes agencias, hoje trabalho sozinho como freelancer, mas com o avanço da IA e da tecnologia preciso me atualizar e estou totalmente perdido, nao sei nem se eu sou mais um diretor de arte, um product designer ou um estrategista de marca.\n\ne tambem quero saber se eu preciso encontrar um nicho para atuar....(estou tentando isso a mais de 1 ano e não consigo). \n\nenfim quero primeiro encontrar resposta pra isso para depois me posicionar no mercado e conseguir de forma clara identificar meu ICP - a partir dai tudo fica mais facil",
+   "cast": {
+    "ms": 13707,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "0b75c703aa59a8a586bc3ee155a0e1bb",
+      "autor": "David C Baker",
+      "titulo": "The Business of Expertise",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Destrava o impasse de 1 ano ensinando a diferença entre nicho vertical (mercado) e horizontal (tipo de problema), tirando o criativo sênior do limbo generalista."
+     },
+     {
+      "id": "165b30ef722e45d4ba3c3675dc4ade7d",
+      "autor": "April Dunford",
+      "titulo": "Obviously Awesome",
+      "cat": "Marketing & Branding",
+      "motivo": "Resolve a crise de identidade entre diretor de arte, product designer e estrategista ao definir o enquadramento de categoria e derivar o ICP a partir do valor entregue."
+     },
+     {
+      "id": "0743f39e1a02c2a96f59c261117100ec",
+      "autor": "Blair Enns",
+      "titulo": "The Win Without Pitching Manifesto",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Neutraliza o medo da comoditização pela IA ao forçar a transição de 'executor de entregáveis técnicos' para consultor especialista que diagnostica e lidera o cliente."
+     },
+     {
+      "id": "d3dedd86826a79e78a486ecdc07279eb",
+      "autor": "Harry Beckwith",
+      "titulo": "Selling the Invisible",
+      "cat": "Marketing & Branding",
+      "motivo": "Orienta como prestadores de serviços intangíveis encontram foco e constroem autoridade quando não possuem uma vocação de nicho imediatamente óbvia."
+     },
+     {
+      "id": "fa1ca04e95620dd1e774bbaba2edccf8",
+      "autor": "Barry Schwartz",
+      "titulo": "The Paradox of Choice",
+      "cat": "Mente & Comportamento",
+      "motivo": "Ataca o bloqueio comportamental do maximizador que paralisa há mais de um ano por medo de fechar portas diante de tantas opções de atuação."
+     }
+    ],
+    "angulos": "Cobri a mecânica de nicho para criativos, a engenharia de categoria/ICP, a fuga da comoditização da IA virando consultor, a seleção de especialidade em serviços e a paralisia psicológica de escolha que o trava há 1 ano.",
+    "falta": "",
+    "acertos": 2,
+    "de": 5
+   },
+   "council": {
+    "ms": 13419,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "165b30ef722e45d4ba3c3675dc4ade7d",
+      "autor": "April Dunford",
+      "titulo": "Obviously Awesome"
+     },
+     {
+      "id": "0b75c703aa59a8a586bc3ee155a0e1bb",
+      "autor": "David C Baker",
+      "titulo": "The Business of Expertise"
+     },
+     {
+      "id": "f03bebd10a476dcf2c5d1cfe6aa1ceea",
+      "autor": "Mike Monteiro",
+      "titulo": "Design Is a Job"
+     },
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test"
+     },
+     {
+      "id": "23e801d67eaf7d3c48254c122867c29b",
+      "autor": "Ethan Mollick",
+      "titulo": "Co-Intelligence Living and Working with AI"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "David C Baker",
+      "livro": "The Business of Expertise",
+      "txt": "Você está há um ano travado porque confunde 'nicho' com escolher uma única indústria. Achar que precisa desenhar só para pet shops ou fintechs é a armadilha do posicionamento vertical. O que você precisa considerar é o <b>posicionamento horizontal</b>: especializar-se em um <b>problema específico</b> e resolvê-lo através de múltiplos setores. Isso elimina o medo de ficar entediado e corta conflitos de interesse.<br><br>E pare de olhar para o próprio umbigo para adivinhar o que você é. Pegue 30 ou 40 pessoas — ex-clientes de agência, colegas, parceiros — e faça uma pergunta direta: <i>'Qual é a minha expertise única quando trabalho com você?'</i>. O padrão que emergir dali é o que o mercado compra de você; o resto é vaidade.",
+      "quote": "A primeira vantagem da expertise horizontal é como a aplicação da expertise a muitos setores mantém o especialista sempre engajado e aprendendo. Em segundo lugar, o posicionamento horizontal quase elimina conflitos de interesse.",
+      "quote_orig": "the first advantage of horizontal expertise, then, is how the application of expertise to many verticals always keeps the expert engaged and learning. Second, horizontal positioning nearly eliminates conflicts of interest",
+      "literal": true
+     },
+     {
+      "autor": "April Dunford",
+      "livro": "Obviously Awesome",
+      "txt": "Sua ordem de raciocínio está <b>completamente invertida</b>. Você quer primeiro definir seu crachá ('sou product designer ou diretor de arte?'), depois seu posicionamento e só então seu ICP. É exatamente assim que se perde mais um ano.<br><br>Posicionamento não começa em como você se enxerga; começa nas <b>alternativas competitivas</b>. Se você sumisse amanhã, o que seus clientes contratariam no lugar? Uma agência pesada e cara? Um júnior operando IA no Figma por 50 dólares? Ou tentariam fazer sozinhos com geradores de layout?<br><br>O que você tem (20 anos de bagagem, visão de negócio, liderança) que essas alternativas <b>não conseguem entregar</b>? Esse diferencial gera um valor real. É desse valor que sai o seu cliente ideal (quem precisa desesperadamente disso) e só aí você escolhe o rótulo de mercado que ancora o preço certo na cabeça dele.",
+      "quote": "",
+      "quote_orig": "",
+      "literal": null
+     },
+     {
+      "autor": "Mike Monteiro",
+      "livro": "Design Is a Job",
+      "txt": "Corta o drama existencial. 'Diretor de arte, product designer ou estrategista' são rótulos para colocar no LinkedIn, não como um negócio sobrevive. Design não é arte, <b>design é um trabalho de serviço</b>: você é contratado para resolver a bucha do negócio do cliente.<br><br>Se o seu trabalho nos últimos 20 anos foi apenas 'produção' — receber diagrama pronto e colorir tela bonita —, a IA vai te atropelar mesmo, e com razão. Mas se você sabe sentar na mesa, ouvir o problema de um negócio, dizer 'não' para ideias idiotas e liderar o cliente até uma solução que dê dinheiro para ele, a IA vira só a sua ferramenta de suporte.<br><br>Você tem dois caminhos claros de decisão agora:<br>1. <b>Se quer ser o consultor sênior de alto valor:</b> assuma que seu produto é a sua capacidade de liderar o projeto e tome a responsabilidade do negócio do cliente, cobrando por valor e não por tela produzida.<br>2. <b>Se continuar disputando entrega de tela ou tentando achar um 'título moderno':</b> você vai brigar por preço contra ferramentas automatizadas e gente cobrando migalhas.",
+      "quote": "",
+      "quote_orig": "",
+      "literal": null
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "r4-validacao",
+   "origem": "real",
+   "problema": "Acabei de definir meu posicionamento como one-person business: sou estrategista e designer de produto digital com 20+ anos de mercado, e ajudo empresários tradicionais (que já faturam) a definir o que construir, e como, antes de gastar com programador. Minha oferta de entrada é um projeto fechado de R$ 18 mil, chamado Planta do Produto.\n\nAgora preciso VALIDAR se existe demanda real e paga por isso, antes de investir tempo em oferta, site e conteúdo. Minhas dificuldades:\n- Não tenho rede ativa de contatos. Trabalho sozinho, em casa.\n- Meu público atual nas redes é de designers, não de empresários.\n- Tenho só um case.\n- Tenho um padrão de travar na hora de falar com cliente e fugir para a parte de estruturar (site, marca, perfil).\n\nQuero montar uma mesa com os autores que melhor me ajudem a:\n1. Descobrir se a dor é real e se pagam por ela, sem me enganar com elogios e falsos positivos.\n2. Encontrar e abordar os primeiros empresários para conversar, partindo do zero.\n3. Desenhar testes rápidos e baratos, com critérios claros de \"seguir\", \"ajustar\" ou \"parar\".\n4. Lidar com o bloqueio de agir antes de ter tudo perfeito.",
+   "cast": {
+    "ms": 16790,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Ensina a conduzir conversas de descoberta sem induzir respostas e a distinguir falsos elogios de compromisso real (tempo, reputação, dinheiro), blindando contra falsos positivos."
+     },
+     {
+      "id": "74cda60a5e204ab57af93e19c3752f5d",
+      "autor": "David J Bland",
+      "titulo": "Testing Business Ideas",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Entrega o cardápio exato de testes rápidos e baratos antes de construir qualquer ativo, com matriz de força de evidência para balizar decisões de prosseguir, ajustar ou parar."
+     },
+     {
+      "id": "cab7f44f49207b63fc99392d0e852547",
+      "autor": "Peter Kazanjy",
+      "titulo": "Founding Sales",
+      "cat": "Founder-led Growth",
+      "motivo": "Resolve a prospecção B2B do zero direto ao decisor/empresário, ensinando o fundador técnico a fazer discovery e construir argumento de ROI sem precisar de audiência prévia ou produção cara."
+     },
+     {
+      "id": "0743f39e1a02c2a96f59c261117100ec",
+      "autor": "Blair Enns",
+      "titulo": "The Win Without Pitching Manifesto",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Muda a postura de designer/executor para a de consultor estratégico, ensinando a conduzir diagnósticos pagos e bancar os R$ 18 mil sem dar passos atrás nem fazer concessões."
+     },
+     {
+      "id": "30bb2794fdb0973ebe4f4b694c75373e",
+      "autor": "Nir Eyal",
+      "titulo": "Indistractable",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Desmonta a causa-raiz da procrastinação: fugir do desconforto interno da rejeição comercial refugiando-se em tarefas seguras de estruturação (site, marca, perfil)."
+     }
+    ],
+    "angulos": "Cobrimos validação neutra contra falsos positivos (Fitzpatrick), desenho de experimentos com critérios de corte (Bland), abordagem outbound B2B do zero (Kazanjy), postura de diagnóstico e sustentação de preço alto (Enns) e o bloqueio comportamental de fuga para o perfeccionismo (Eyal).",
+    "falta": "",
+    "acertos": 5,
+    "de": 5
+   },
+   "council": {
+    "ms": 12286,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test"
+     },
+     {
+      "id": "74cda60a5e204ab57af93e19c3752f5d",
+      "autor": "David J Bland",
+      "titulo": "Testing Business Ideas"
+     },
+     {
+      "id": "cab7f44f49207b63fc99392d0e852547",
+      "autor": "Peter Kazanjy",
+      "titulo": "Founding Sales"
+     },
+     {
+      "id": "30bb2794fdb0973ebe4f4b694c75373e",
+      "autor": "Nir Eyal",
+      "titulo": "Indistractable"
+     },
+     {
+      "id": "0743f39e1a02c2a96f59c261117100ec",
+      "autor": "Blair Enns",
+      "titulo": "The Win Without Pitching Manifesto"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Rob Fitzpatrick",
+      "livro": "The Mom Test",
+      "txt": "Esqueça opiniões. Se o empresário disser <i>'acho uma ideia fantástica, o mercado precisa muito disso'</i>, considere isso um <b>fracasso absoluto de validação</b>. Elogio é o jeito mais educado de se livrar de você. Prova concreta de dor tem apenas dois componentes: <b>fatos passados</b> e <b>compromisso presente</b>.<br><br>Primeiro, investigue o passado: ele já perdeu dinheiro tentando construir software sem escopo? Quanto gastou? Quando foi a última vez? Se a resposta for <i>'nunca tentei, mas pretendo'</i> ou <i>'seria legal ter um app'</i>, ele é só um queixoso, não um comprador.<br><br>Segundo, meça o compromisso real (<b>Advancement</b>): para avançar na conversa, ele aceita abrir números reais da operação dele, envolver o sócio numa segunda ligação ou bloquear 1 hora na agenda da semana que vem? Se ele empurra com a barriga pedindo <i>'me manda um material por e-mail'</i>, você não tem tração nenhuma.",
+      "quote": "Você quer fatos e compromissos, não elogios.",
+      "quote_orig": "You want facts and commitments, not compliments.",
+      "literal": true
+     },
+     {
+      "autor": "David J Bland",
+      "livro": "Testing Business Ideas",
+      "txt": "O maior perigo agora é você rebaixar a régua da sua hipótese só para se sentir aliviado e dizer que 'validou'. É por isso que não usamos a palavra validar; usamos <b>aprender</b>.<br><br>Para sua meta de 10 diagnósticos em 30 dias, fixe seu critério de corte <b>antes</b> de discar para o primeiro lead:<br>• <b>Sinal forte de dor:</b> O empresário relata um custo financeiro ou atraso tangível nos últimos 6 meses decorrente de falta de clareza técnica.<br>• <b>Critério de 'seguir':</b> Pelo menos 4 de 10 relatam essa dor ativa e concordam em analisar o escopo da Planta do Produto sob o patamar de R$ 18 mil.<br>• <b>Critério de 'ajustar':</b> A dor existe, mas o empresário tradicional delega isso 100% para uma agência e não sente a perda direta. (Muda o nicho ou a ancoragem).<br>• <b>Critério de 'parar':</b> 7 ou mais dizem que preferem contratar direto o programador júnior e ver o que acontece. Nesse caso, a dor não dói o suficiente para justificar R$ 18 mil.",
+      "quote": "Preferimos 'Aprender' a 'Validar'",
+      "quote_orig": "We prefer 'Learn' over 'Validate'",
+      "literal": true
+     },
+     {
+      "autor": "Blair Enns",
+      "livro": "The Win Without Pitching Manifesto",
+      "txt": "Separar curiosos de clientes exige uma distinção brutal: <b>interesse vs. intento</b>. Interesse não vale um centavo; intento é ancorado a uma data de início, a uma consequência financeira de não agir e a orçamento real.<br><br>E tem mais: você quer validar se pagam <b>R$ 18 mil</b>, não se acham a ideia bacana. O erro amador de consultores e designers é esconder o preço até o fim, com medo da rejeição. Minha regra: <b>trate de dinheiro cedo</b>.<br><br>No meio da conversa de diagnóstico, você solta a âncora: <i>'Um trabalho de especificação e Planta do Produto conosco não sai por menos de R$ 18 mil. Isso está dentro do universo de investimento que você consideraria para blindar seu orçamento de desenvolvimento?'</i><br>Se ele travar ou engasgar, você descobriu a verdade em 10 minutos sem gastar uma semana desenhando proposta grátis.",
+      "quote": "Praticantes não apresentam. Estrelas não fazem audição.",
+      "quote_orig": "Practitioners do not present. Stars do not audition.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "r5-oferta",
+   "origem": "real",
+   "problema": "Sou estrategista e designer de produto digital, 20+ anos de mercado, trabalho sozinho (one-person business). Meu cliente é o empresário tradicional que já fatura e que já gastou com um app, portal ou sistema que está dando errado: o projeto não termina, as faturas não param, ele não consegue validar o que o dev entrega e não sabe se vale continuar. Atuo como o especialista independente do lado dele, sem interesse em construir. Já tenho um rascunho de oferta em três passos: 1. Raio-X do Projeto (1-2 semanas, R$ 5-8 mil): analiso o que existe e recomendo continuar, corrigir, refazer ou parar. 2. Planta do Produto (3-4 semanas, R$ 18-25 mil): regras de negócio, fluxos, escopo, protótipo e critérios de aceite para o próximo desenvolvimento não repetir o erro. 3. Do seu lado (R$ 4-6 mil/mês): fiscalizo entregas, faturas e prazos do dev. Meu maior receio: o cliente já gastou e se sente enganado. Por que ele pagaria mais, e logo para um consultor? Quero montar uma mesa com os autores que melhor me ajudem a: 1. Transformar esse rascunho numa oferta irresistível para quem já se queimou: promessa, entregáveis, garantia e o que NÃO entra. 2. Precificar por valor (pelo prejuízo que eu evito), e decidir se a escada de três passos faz sentido ou se complica a venda. 3. Nomear cada passo de um jeito que o empresário leigo entenda na hora. 4. Montar a proposta comercial e apresentar o preço sem parecer caro para quem já está desconfiado. 5. Proteger o escopo e definir o limite do que eu faço",
+   "cast": {
+    "ms": 13545,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "7014dbf8d1ae5542acb9884a6d3b6318",
+      "autor": "Gerald M. Weinberg",
+      "titulo": "The Secrets of Consulting",
+      "cat": "One Person Business",
+      "motivo": "Ensina o consultor sênior a navegar a desconfiança de quem pede ajuda traumatizado, precificar julgamento sem virar mão de obra e lidar com a irracionalidade do cliente queimado."
+     },
+     {
+      "id": "44cb7d2af7907129741c83eaa79eaaf3",
+      "autor": "Blair Enns",
+      "titulo": "Pricing Creativity",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Resolve a precificação pelo prejuízo evitado (value conversation), a estrutura de opções na proposta para reduzir risco e o modelo de remuneração sem vender horas."
+     },
+     {
+      "id": "d700e7e53c42dfc96052f788ff34bf2c",
+      "autor": "Alex Hormozi",
+      "titulo": "#100M Offers",
+      "cat": "Marketing & Branding",
+      "motivo": "Dá a mecânica exata para desenhar a promessa, reverter o risco com garantias cirúrgicas e empilhar valor de modo que o preço pareça insignificante frente ao rombo evitado."
+     },
+     {
+      "id": "02ef3adaaed9509ba19f81119bfa0633",
+      "autor": "Tom Sant",
+      "titulo": "Persuasive Business Proposals",
+      "cat": "Copywriting & Vendas",
+      "motivo": "Entrega o formato da proposta B2B persuasiva de alto impacto, blindando o escopo ao definir explicitamente os limites e o que NÃO entra no serviço solo."
+     },
+     {
+      "id": "165b30ef722e45d4ba3c3675dc4ade7d",
+      "autor": "April Dunford",
+      "titulo": "Obviously Awesome",
+      "cat": "Marketing & Branding",
+      "motivo": "Muda a moldura de referência da oferta para que o empresário leigo não te compare a mais uma agência de dev, tornando o valor do diagnóstico autoevidente."
+     }
+    ],
+    "angulos": "Cobri a postura consultiva e o manejo do cliente traumatizado (Weinberg), precificação por prejuízo evitado e opções de proposta (Enns), arquitetura de oferta irresistível e garantia (Hormozi), blindagem de escopo e proposta formal (Sant) e reenquadramento de categoria/nomenclatura (Dunford).",
+    "falta": "",
+    "acertos": 3,
+    "de": 6
+   },
+   "council": {
+    "ms": 15265,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "d700e7e53c42dfc96052f788ff34bf2c",
+      "autor": "Alex Hormozi",
+      "titulo": "#100M Offers"
+     },
+     {
+      "id": "44cb7d2af7907129741c83eaa79eaaf3",
+      "autor": "Blair Enns",
+      "titulo": "Pricing Creativity"
+     },
+     {
+      "id": "0b75c703aa59a8a586bc3ee155a0e1bb",
+      "autor": "David C Baker",
+      "titulo": "The Business of Expertise"
+     },
+     {
+      "id": "7e55288fc3b1dc70ab619d7d53d65d4e",
+      "autor": "Neil Rackham",
+      "titulo": "The SPIN Selling Fieldbook"
+     },
+     {
+      "id": "89fb467627240121afa07182d49e4198",
+      "autor": "Donald Miller",
+      "titulo": "Building a StoryBrand"
+     },
+     {
+      "id": "7014dbf8d1ae5542acb9884a6d3b6318",
+      "autor": "Gerald M. Weinberg",
+      "titulo": "The Secrets of Consulting"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Blair Enns",
+      "livro": "Pricing Creativity",
+      "txt": "Você está cometendo dois erros estruturais graves. Primeiro: você confundiu <b>plano de entrega</b> com <b>opções de precificação</b>. Jogar três fases sequenciais com três preços numa proposta gera paralisia por análise num comprador que já está traumatizado. Ele pensa: <i>'Lá vêm mais R$ 30 mil e mais mensalidades infinitas'</i>. Segundo: o seu Passo 3 (R$ 4-6 mil/mês) é um <b>retainer clássico</b>. E retainers de fiscalização sempre terminam com uma das partes se sentindo lesada — ou você trabalha demais e ganha pouco, ou ele acha que você cobrou sem fazer nada no mês em que o dev atrasou. <br><br><b>Caminho 1:</b> Venda apenas o <b>Diagnóstico Fechado</b> (Passo 1). Não dê preço do Passo 2 e 3 agora. Você ainda não abriu o capô do carro; cotar a reforma antes do Raio-X é chute e compromete sua autoridade.<br><b>Caminho 2:</b> Se quiser apresentar uma proposta única, ofereça <b>três opções de escopo simultâneas</b> (onde a Opção 1 é só o laudo, a 2 é o laudo + projeto blindado, e a 3 inclui seu acompanhamento com risco transferido para você), deixando que <i>ele</i> escolha o nível de risco que quer comprar.",
+      "quote": "Retainers: dividir o orçamento do cliente por 12 e o trabalho por 12; sempre acaba com uma das partes se sentindo lesada.",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "Donald Miller",
+      "livro": "Building a StoryBrand",
+      "txt": "O Blair tem razão na cobrança, mas discordo sobre esconder os passos. Para o cérebro de um empresário que já perdeu rios de dinheiro, o desconhecido é uma névoa aterrorizante. O que fez ele ser enganado antes foi justamente contratar devs sem saber qual era o processo. O que você precisa é de um <b>Plano de Processo em 3 Passos</b> evidente na sua comunicação. Isso acalma o sistema límbico dele e posiciona você como o Guia com um mapa claro. <br><br>A regra é: <b>mostre 3 passos para dar clareza, mas só peça o cartão de crédito para o Passo 1</b>.<br><br>Nomeie para o leigo: <b>1. Parar a Sangria</b> (o Raio-X que diz a verdade crua), <b>2. O Projeto Blindado</b> (a especificação que dev nenhum distorce), e <b>3. Direção Assistida</b> (sua presença técnica do lado dele). O chamado à ação da proposta de 1 página não vende o pacote todo; vende o primeiro compromisso: <i>'Agendar o Diagnóstico para Estancar o Prejuízo'</i>.",
+      "quote": "Se você confunde, você perde.",
+      "quote_orig": "If you confuse, you lose.",
+      "literal": true
+     },
+     {
+      "autor": "Alex Hormozi",
+      "livro": "#100M Offers",
+      "txt": "O seu cliente tem dor brutal e tem dinheiro, ou seja, é uma multidão faminta. Mas a <b>certeza percebida do resultado</b> dele está no chão porque ele acabou de se queimar. Para transformar esse rascunho numa oferta Grand Slam, o preço não é o obstáculo; o obstáculo é o risco de ele ser feito de trouxa pela segunda vez. Você precisa inverter o risco com uma <b>Garantia Condicional Agressiva</b> no Passo 1. <br><br>Em vez de vender '1-2 semanas de análise por R$ 5-8 mil', empacote a promessa assim: <i>'Em 10 dias eu entrego o laudo técnico definitivo dizendo se seu software deve continuar, ser ajustado ou ser cancelado. Se eu não encontrar pelo menos o dobro do valor do meu diagnóstico em retrabalho, faturas indevidas ou desperdício futuro comprovado, devolvo 100% do seu dinheiro e você fica com o relatório.'</i><br><br>Percebe a virada? De repente, contratar você não é mais 'gastar mais com outro consultor'; é comprar uma apólice de seguro que se paga na largada.",
+      "quote": "Multidão faminta (mercado) > Força da oferta > Habilidades de persuasão",
+      "quote_orig": "",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "r6-metodo",
+   "origem": "real",
+   "problema": "Sou estrategista e designer de produto digital, 20+ anos de mercado, one-person business. Já tenho a oferta definida:\n1. Diagnóstico (R$ 7.500, até 10 dias úteis): analiso o app/sistema de um empresário que já gastou e está dando errado, e dou o veredito — continuar, corrigir, refazer ou parar — com os motivos. Analiso negócio, fluxos, telas, regras e cobrado × entregue. Não analiso código.\n2. Planta do Produto (R$ 18 a 48 mil, 3 a 4 semanas): regras de negócio, fluxos, escopo priorizado, design system, protótipo e critérios de aceite observáveis, para o próximo desenvolvimento não repetir o erro.\n\nAgora preciso do MÉTODO para entregar isso sempre do mesmo jeito, com qualidade e sem estourar o prazo, trabalhando sozinho e usando IA para acelerar. Quero montar uma mesa com os autores que melhor me ajudem a:\n1. Desenhar o passo a passo do Diagnóstico em 10 dias: o que analisar, em que ordem, com quais perguntas e ferramentas, e como chegar ao veredito de forma defensável.\n2. Desenhar o passo a passo da Planta em 3 a 4 semanas: da imersão no negócio aos critérios de aceite, com etapas de aprovação do cliente.\n3. Escrever regras de negócio, fluxos e critérios de aceite que um desenvolvedor consiga executar sem interpretar.\n4. Criar templates e checklists reutilizáveis para não começar do zero a cada cliente.\n5. Usar IA dentro do processo para ganhar velocidade sem perder qualidade.",
+   "cast": {
+    "ms": 20901,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "b66c82a210e5ce76dbc2a53856fa63c7",
+      "autor": "David Jenyns",
+      "titulo": "SYSTEMology",
+      "cat": "One Person Business",
+      "motivo": "Ensina a mapear o Fluxo Crítico do Cliente (CCF) e criar checklists e templates operacionais padronizados para entregar serviços de alto valor sozinho e no prazo, sem reinventar a roda a cada projeto."
+     },
+     {
+      "id": "7014dbf8d1ae5542acb9884a6d3b6318",
+      "autor": "Gerald M. Weinberg",
+      "titulo": "The Secrets of Consulting",
+      "cat": "One Person Business",
+      "motivo": "Mestre da consultoria em sistemas de software, dá as ferramentas para enxergar o que ninguém está dizendo em projetos falhos e sustentar um veredito desconfortável (parar, refazer, corrigir) com autoridade irrefutável."
+     },
+     {
+      "id": "f030562a54fa4ab4fad8f386441fe7a7",
+      "autor": "Barbara Minto",
+      "titulo": "The Minto Pyramid Principle",
+      "cat": "Storytelling",
+      "motivo": "Fornece a estrutura lógica (SCQA e pirâmide dedutiva) para transformar achados técnicos dispersos em um veredito executivo defensável e redigir regras de negócio sem ambiguidades interpretativas."
+     },
+     {
+      "id": "7e03b44b36d712531c50ee3276a79280",
+      "autor": "Marty Cagan",
+      "titulo": "Inspired: How To Create Products Customers Love",
+      "cat": "UX, UI & Produto",
+      "motivo": "Ensina a estruturar a especificação do produto (PRD, regras, priorização de escopo e critérios funcionais) traçando uma linha rígida entre discovery e delivery para que os desenvolvedores executem sem desvios."
+     },
+     {
+      "id": "dbe813dcd724a94b28d425e6318b1203",
+      "autor": "James Phoenix",
+      "titulo": "Prompt Engineering for Generative AI",
+      "cat": "Inteligência Artificial",
+      "motivo": "Resolve o motor de IA ao estruturar pipelines de prompts encadeados e decomposição de tarefas complexas, garantindo extração veloz de regras e consistência técnica sem alucinações."
+     }
+    ],
+    "angulos": "Cobriu a arquitetura de processos repetíveis solo (Jenyns), a postura e método do diagnóstico consultivo de software (Weinberg), a lógica executiva do veredito (Minto), o handoff inequívoco de produto para desenvolvedores (Cagan) e a automação por engenharia de prompts com IA (Phoenix).",
+    "falta": "",
+    "acertos": 2,
+    "de": 5
+   },
+   "council": {
+    "ms": 13906,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "b66c82a210e5ce76dbc2a53856fa63c7",
+      "autor": "David Jenyns",
+      "titulo": "SYSTEMology"
+     },
+     {
+      "id": "20453170291af8af1404fa30c863fe37",
+      "autor": "Richard Rumelt",
+      "titulo": "Good Strategy Bad Strategy"
+     },
+     {
+      "id": "d161c78727998784853b861920cb9d3a",
+      "autor": "Alan Cooper, Robert Reimann, David Cronin & Christopher Noessel",
+      "titulo": "About Face: The Essentials of Interaction Design (4ª ed.)"
+     },
+     {
+      "id": "23e801d67eaf7d3c48254c122867c29b",
+      "autor": "Ethan Mollick",
+      "titulo": "Co-Intelligence Living and Working with AI"
+     },
+     {
+      "id": "7014dbf8d1ae5542acb9884a6d3b6318",
+      "autor": "Gerald M. Weinberg",
+      "titulo": "The Secrets of Consulting"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Richard Rumelt",
+      "livro": "Good Strategy Bad Strategy",
+      "txt": "Um diagnóstico de verdade não é um laudo de 60 páginas listando botões desalinhados. Isso é inventário de defeitos, não estratégia. O veredito só se torna irrefutável se você construir o <b>kernel</b> da situação: identificar o obstáculo central que paralisa o produto e propor uma resposta focada. Sua matriz de decisão de 4 saídas precisa de critérios binários duros:<br><br>1. <b>Parar:</b> A premissa de negócio morreu ou o custo de salvar o sistema supera qualquer retorno econômico plausível.<br>2. <b>Refazer:</b> O modelo de dados e a arquitetura de fluxos estão tão podres que remendar custa mais tempo e dinheiro do que reconstruir do zero.<br>3. <b>Corrigir:</b> O núcleo de valor existe e funciona, mas há atrito operacional severo nas interfaces e regras mal amarradas.<br>4. <b>Continuar:</b> O software está no caminho certo; o problema é pura ansiedade do fundador ou expectativa irreal de prazo com a fábrica.",
+      "quote": "um diagnóstico não é apenas uma lista de fatos, mas uma avaliação focada da situação que simplifica a realidade esmagadora identificando certos aspectos críticos.",
+      "quote_orig": "",
+      "literal": false
+     },
+     {
+      "autor": "David Jenyns",
+      "livro": "SYSTEMology",
+      "txt": "Se você trabalha sozinho e tem 10 dias úteis cravados, não pode inventar a investigação a cada cliente. Você precisa de um <b>Critical Client Flow (CCF)</b> imutável para a entrega do Diagnóstico:<br><br>• <b>Dias 1–2 (Ingestão & Escopo):</b> Coleta padronizada (briefing gravado de 60 min, contratos da fábrica, propostas pagas e acessos ao ambiente). Sem reunião extra.<br>• <b>Dias 3–5 (Auditoria de Fluxo Crítico):</b> Análise forense do caminho principal do usuário e a planilha 'Cobrado × Entregue'.<br>• <b>Dias 6–7 (Matriz de Veredito):</b> Cruzamento dos achados contra a matriz de decisão estratégica.<br>• <b>Dias 8–9 (Montagem do Laudo):</b> Preenchimento do template fixo de apresentação em slides (máximo 15 telas, estrutura visual blindada).<br>• <b>Dia 10 (Sessão de Devolutiva):</b> 90 minutos para entregar o veredito e matar dúvidas.<br><br>Tudo que você fizer nesses 10 dias tem que virar checklist. O valor não está em você suar 80 horas; está na consistência do sistema.",
+      "quote": "alavancagem extraordinária é criada sempre que você cria algo que pode ser vendido mais de uma vez com o mínimo de trabalho adicional.",
+      "quote_orig": "extraordinary leverage is created any time you create something that can be sold more than once with minimal additional work.",
+      "literal": true
+     },
+     {
+      "autor": "Gerald M. Weinberg",
+      "livro": "The Secrets of Consulting",
+      "txt": "Esqueça a palavra 'irrefutável' se você achar que vai vencer o cliente pela pura lógica matemática. O empresário já queimou dinheiro, está machucado e morrendo de medo de ter sido feito de idiota. Se o seu veredito for <b>Parar</b> ou <b>Refazer</b>, ele vai resistir porque aceitar isso dói no bolso e no ego.<br><br>Seu maior instrumento investigativo é o <b>Insight da Incongruência</b>: observe o descompasso entre a letra e a música. A 'letra' é a proposta técnica e as notas fiscais da software house prometendo 'arquitetura escalável e design intuitivo'; a 'música' é a tela travando no cadastro básico e o usuário abandonando o fluxo. Quando você põe o print da tela do lado da fatura paga de R$ 30 mil que prometia aquela função, você não precisa discutir: o contraste fala sozinho.<br><br>E antes de cravar qualquer veredito, aplique a <b>Regra de Três</b>: se você só consegue enxergar um caminho óbvio para aquele app, você ainda não pensou o suficiente sobre o problema.",
+      "quote": "se você não consegue pensar em três coisas que podem dar errado no seu plano, o problema não é o plano, é o seu raciocínio.",
+      "quote_orig": "",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s1-saas-preco",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Tenho um SaaS de criação de conteúdo para redes sociais que escreve na voz de cada marca. Já tem usuários usando de graça, mas quase ninguém paga. Preciso decidir os planos e o preço, e entender por que quem usa não converte. Não sei se o problema é preço, valor percebido ou o produto em si.",
+   "cast": {
+    "ms": 10719,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Ensina a entrevistar os usuários gratuitos para descobrir a verdade crua sobre por que não pagam, sem cair em falsos elogios."
+     },
+     {
+      "id": "b2b9e8c0926687e3f6e54ae3682fee18",
+      "autor": "Clayton M. Christensen",
+      "titulo": "Competing Against Luck",
+      "cat": "UX, UI & Produto",
+      "motivo": "Diagnostica se 'escrever na voz da marca' resolve um Job to Be Done doloroso o bastante para justificar orçamento ou se é só perfumaria."
+     },
+     {
+      "id": "b8f50b6273a231657332bd329f71808e",
+      "autor": "Rob Walling",
+      "titulo": "The SaaS Playbook",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Traz a mecânica específica de SaaS para estruturar planos, calibrar paywalls e corrigir o erro clássico de entregar valor demais no plano grátis."
+     },
+     {
+      "id": "165b30ef722e45d4ba3c3675dc4ade7d",
+      "autor": "April Dunford",
+      "titulo": "Obviously Awesome",
+      "cat": "Marketing & Branding",
+      "motivo": "Reposiciona o software fora da vala comum de geradores de texto por IA, ancorando o valor percebido contra alternativas caras."
+     },
+     {
+      "id": "d700e7e53c42dfc96052f788ff34bf2c",
+      "autor": "Alex Hormozi",
+      "titulo": "#100M Offers",
+      "cat": "Marketing & Branding",
+      "motivo": "Estrutura a transição do grátis para o pago criando uma oferta irresistível com bônus, garantias e empilhamento de valor percebido."
+     }
+    ],
+    "angulos": "Cobri validação real do usuário (Fitzpatrick), relevância essencial do produto (Christensen), arquitetura de monetização SaaS (Walling), enquadramento de mercado (Dunford) e engenharia da oferta de conversão (Hormozi).",
+    "falta": ""
+   },
+   "council": {
+    "ms": 18566,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test"
+     },
+     {
+      "id": "b2b9e8c0926687e3f6e54ae3682fee18",
+      "autor": "Clayton M. Christensen",
+      "titulo": "Competing Against Luck"
+     },
+     {
+      "id": "b8f50b6273a231657332bd329f71808e",
+      "autor": "Rob Walling",
+      "titulo": "The SaaS Playbook"
+     },
+     {
+      "id": "165b30ef722e45d4ba3c3675dc4ade7d",
+      "autor": "April Dunford",
+      "titulo": "Obviously Awesome"
+     },
+     {
+      "id": "d700e7e53c42dfc96052f788ff34bf2c",
+      "autor": "Alex Hormozi",
+      "titulo": "#100M Offers"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Rob Walling",
+      "livro": "The SaaS Playbook",
+      "txt": "<b>Corte o freemium agora.</b> Usuário grátis em SaaS bootstrapped não é validação de negócio, é ilusão de tração e dreno de custo. Se você não levantou 5 milhões de dólares para tentar 'sugar o ar do mercado' oferecendo coisa de graça até quebrar os rivais, você não pode subsidiar curioso. Se ninguém paga, você não tem um negócio, tem um hobby caro. <b>Seu caminho de decisão:</b> se quer saber de verdade se o produto resolve algo crítico, feche a torneira e mude para um trial de 14 dias exigindo cartão de crédito; se prefere manter o modelo freemium, coloque travas tão duras no volume ou nas integrações que qualquer uso profissional obrigue o upgrade imediatamente.",
+      "quote": "esteja ciente de que eles podem estar tentando sugar o ar do mercado oferecendo uma solução gratuita ou baixando os preços",
+      "quote_orig": "be aware they might be trying to suck the air out of the market by either offering a free solution or dropping prices",
+      "literal": true
+     },
+     {
+      "autor": "April Dunford",
+      "livro": "Obviously Awesome",
+      "txt": "O Walling está certo sobre barrar o grátis, mas o problema raiz é de <b>contexto</b>. Quando você se apresenta como 'ferramenta de criação de conteúdo para redes sociais', qual é a alternativa competitiva na cabeça do cliente? É o ChatGPT grátis ou um gerador genérico qualquer. Você ativou a âncora errada. O seu atributo único é 'escrever na voz de cada marca', mas para um profissional autônomo isso vale quase nada. Agora, para uma agência de marketing que gerencia 15 clientes com tons de voz distintos e perde horas alinhando redatores, isso economiza salários inteiros. <b>Sua escolha:</b> se quiser vender barato para todo mundo, prepare-se para morrer contra as ferramentas gratuitas; se quiser cobrar planos de valor alto, reposicione o produto como plataforma de escala para agências ou times de marketing B2B e cobre pelo valor que economiza de equipe.",
+      "quote": "Preço deve refletir a categoria",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "Rob Fitzpatrick",
+      "livro": "The Mom Test",
+      "txt": "E nem pense em mandar mensagem perguntando 'quanto você pagaria?' ou 'por que não assinou?'. Qualquer pergunta sobre o futuro vai render uma mentira educada. As pessoas elogiam porque é de graça e não custa nada ser legal. Você precisa cavar fatos do passado imediato desses usuários ativos. Chame três deles para conversar e pergunte: <b>'O que você fez com o último texto que a ferramenta gerou? Alguém revisou? Quanto você gastava para produzir isso no mês passado antes de usar meu software?'</b>. Se descobrir que eles nunca pagaram ninguém nem gastavam dinheiro real com isso antes, eles não são clientes, são apenas reclamões ou curiosos. <b>Caminho prático:</b> se ao puxar o histórico você vir que eles já pagavam freelancers ou outras ferramentas, o problema é sua oferta; se descobrir que nunca gastaram um tostão com isso na vida, você está atraindo o público errado.",
+      "quote": "Você quer fatos e compromissos, não elogios.",
+      "quote_orig": "You want facts and commitments, not compliments.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": [
+     {
+      "titulo": "Monetizing Innovation",
+      "autor": "Madhavan Ramanujam e Georg Tacke",
+      "porque": "Ensina a estruturar empacotamento e testar a disposição a pagar (willingness to pay) antes de definir planos às cegas."
+     }
+    ]
+   }
+  },
+  {
+   "id": "s2-instagram-autoridade",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Quero voltar a postar muito no meu Instagram pessoal, defendendo o ofício do design na era da IA, com posts visualmente fortes. Não quero falar só com designers nem só com empresários. O objetivo é construir autoridade e, por tabela, atrair clientes. Como manter constância sem virar mais um perfil genérico de 'dicas de design'?",
+   "cast": {
+    "ms": 12488,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "e53389fb6c73e561ee776382bc090d57",
+      "autor": "Joe Pulizzi",
+      "titulo": "Content Inc - Second Edition",
+      "cat": "Conteúdo & Audiência",
+      "motivo": "Ensina a encontrar o 'content tilt' (o ângulo editorial único e sub-servido) para não cair na vala comum dos tutoriais e dicas genéricas de design."
+     },
+     {
+      "id": "f42e1c46bb65ab2a7978e05241545059",
+      "autor": "Austin Kleon",
+      "titulo": "Show Your Work",
+      "cat": "Criatividade & Inspiração",
+      "motivo": "Substitui as 'dicas prontas' pela documentação pública dos bastidores do ofício e do processo criativo, gerando posts visuais fortes que mostram o diferencial humano frente à IA."
+     },
+     {
+      "id": "9760ae54c3c51d6691be65670b60b8ea",
+      "autor": "Ryan Rumsey",
+      "titulo": "Business Thinking for Designers",
+      "cat": "Design",
+      "motivo": "Resolve o dilema de falar com designers e empresários ao mesmo tempo, ensinando a traduzir decisões estéticas de craft em vocabulário e valor estratégico de negócio."
+     },
+     {
+      "id": "0743f39e1a02c2a96f59c261117100ec",
+      "autor": "Blair Enns",
+      "titulo": "The Win Without Pitching Manifesto",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Orienta como transformar essa autoridade conquistada no Instagram em atração passiva de clientes de alto valor, posicionando o designer como consultor especializado e não como mero operador."
+     },
+     {
+      "id": "b33351baa56a638a6c12328c21fca1a7",
+      "autor": "Jason Richburg",
+      "titulo": "Do the F*cking Work — Lowbrow Advice for High-Level Creativity",
+      "cat": "Criatividade & Inspiração",
+      "motivo": "Ataca o gargalo comportamental da constância, desmontando a ilusão de esperar inspiração e o perfeccionismo estético que costumam travar a rotina de postagem de criativos."
+     }
+    ],
+    "angulos": "Cobriu a diferenciação editorial contra conteúdo genérico, a exibição prática do ofício visual, a ponte de comunicação entre estética e negócio, a conversão de reputação em clientes e a disciplina comportamental para sustentar a frequência.",
+    "falta": ""
+   },
+   "council": {
+    "ms": 14130,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "82cdccb17b557dc8d293bc4d1d1f3cc6",
+      "autor": "Youngme Moon",
+      "titulo": "Different"
+     },
+     {
+      "id": "f42e1c46bb65ab2a7978e05241545059",
+      "autor": "Austin Kleon",
+      "titulo": "Show Your Work"
+     },
+     {
+      "id": "9760ae54c3c51d6691be65670b60b8ea",
+      "autor": "Ryan Rumsey",
+      "titulo": "Business Thinking for Designers"
+     },
+     {
+      "id": "36e9cb6eaaeae86bedfd89b491f17960",
+      "autor": "Daniel Priestley",
+      "titulo": "Key Person of Influence"
+     },
+     {
+      "id": "b33351baa56a638a6c12328c21fca1a7",
+      "autor": "Jason Richburg",
+      "titulo": "Do the F*cking Work — Lowbrow Advice for High-Level Creativity"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Youngme Moon",
+      "livro": "Different",
+      "txt": "Você já começou caindo na armadilha clássica: tentar agradar a gregos e troianos ao dizer que 'não quer falar só com designers nem só com empresários'. O resultado disso é a <b>homogeneidade heterogênea</b> — você vira mais uma voz morna no meio do rebanho. Distribuir 'dicas de design' é o que chamo de <i>augmentation-by-addition</i>: um esforço caro que só leva à comoditização. Se quer autoridade contra a IA, você não precisa de dicas; precisa de uma <b>marca hostil</b>. Defina com clareza o que você despreza na mediocridade gerada por algoritmos e afaste deliberadamente quem busca atalhos baratos. Autoridade nasce da dissonância e da coragem de polarizar, não do consenso.",
+      "quote": "O incremento de produto tornou-se, mais uma vez, uma rota cara para a comoditização.",
+      "quote_orig": "Product augmentation has become, once again, an expensive route to commoditization",
+      "literal": true
+     },
+     {
+      "autor": "Austin Kleon",
+      "livro": "Show Your Work",
+      "txt": "A Youngme quer que você vire um manifesto ambulante, mas manifesto cansa e paralisa a produção. O segredo da constância não é inventar teses geniais todo dia, é <b>documentar o seu processo</b>. Pare de tentar ensinar 'dicas' como um professor pedante. Mostre a briga real da sua mesa de trabalho. Pegue um projeto, mostre onde a IA cuspiu uma solução genérica e horrorosa, e mostre onde entrou o seu ofício para consertar. Conte a jornada: o problema, o embate e o resultado. Quando você responde honestamente à pergunta clássica do ofício, o público certo se conecta pelo valor da sua prática, não pelo seu discurso.",
+      "quote": "No que você está trabalhando?",
+      "quote_orig": "What are you working on?",
+      "literal": true
+     },
+     {
+      "autor": "Daniel Priestley",
+      "livro": "Key Person of Influence",
+      "txt": "Mostrar a oficina é vital, Kleon, mas sem estratégia de negócio você vira apenas um artesão admirado e mal pago. Ninguém constrói autoridade sendo 'loja de departamento' que fala com todo mundo. Para se tornar um <b>Key Person of Influence</b>, você precisa de um <b>Social Pitch</b> cirúrgico: responder em uma frase qual problema caro e complexo de negócio você resolve que nenhuma ferramenta de dez dólares consegue tocar. Se o objetivo final é atrair clientes, seu perfil não pode viver só de post visual; ele precisa apontar para um ecossistema com ativos claros — um artigo publicado, um kit de valor ou um canal direto de contato.<br><br>Você tem dois caminhos claros de decisão aqui:<br>1. Se o foco for <b>marca pessoal cult</b>: siga a Moon, adote uma postura hostil contra a estética de prompt e documente a superioridade do olho humano como propõe o Kleon.<br>2. Se o foco for <b>geração imediata de caixa e clientes</b>: recorte um micro-nicho corporativo e mostre exatamente como a falta de critério no uso de IA destrói o valor comercial de uma marca.",
+      "quote": "A loja geral é a Amazon e você não vai vencê-los no jogo deles.",
+      "quote_orig": "",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s3-app-bar",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Estou construindo um app de gestão para bares (comandas, estoque e mesas). Já tenho uma versão funcionando, mas nenhum bar usando de verdade. Quero colocar 3 bares usando por 30 dias antes de escrever mais uma linha de código. Como escolher esses bares, abordar o dono e medir se o app resolve alguma coisa?",
+   "cast": {
+    "ms": 18428,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Ensina a abordar o dono do bar e investigar dores reais de operação sem fazer perguntas enviesadas nem aceitar elogios vazios no lugar de compromisso real."
+     },
+     {
+      "id": "0a380542c26f341a8cd757e6a7b50ff7",
+      "autor": "Steve Blank",
+      "titulo": "The Four Steps to the Epiphany",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Dá o critério cirúrgico para escolher os 3 bares: identificar 'earlyvangelists' que já sentem a dor extrema de mesas/estoque e usam gambiarras, evitando o bar médio que resiste a mudanças."
+     },
+     {
+      "id": "cab7f44f49207b63fc99392d0e852547",
+      "autor": "Peter Kazanjy",
+      "titulo": "Founding Sales",
+      "cat": "Founder-led Growth",
+      "motivo": "Guia prático de vendas B2B para o fundador técnico bater de porta em porta, falar a língua do dono e conduzir a negociação para fechar a parceria do piloto."
+     },
+     {
+      "id": "702dc12fea4174881f8303a26b8e89d8",
+      "autor": "Melissa Perri",
+      "titulo": "Escaping the Build Trap",
+      "cat": "UX, UI & Produto",
+      "motivo": "Define como medir o impacto real através de outcomes de negócio do bar (tempo de atendimento, quebra de comanda, desperdício) em vez de apenas contar telas usadas e codar mais features."
+     },
+     {
+      "id": "74cda60a5e204ab57af93e19c3752f5d",
+      "autor": "David J Bland",
+      "titulo": "Testing Business Ideas",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Estrutura o teste de 30 dias como um experimento controlado com hipóteses claras e régua de evidência para saber com certeza se a tese se sustentou."
+     }
+    ],
+    "angulos": "Cobriu a seleção do perfil ideal de adotante (Blank), a abordagem investigativa sem viés (Fitzpatrick), a venda consultiva SMB de fundador (Kazanjy), a arquitetura do experimento (Bland) e as métricas de impacto de negócio para combater a compulsão por codar (Perri).",
+    "falta": ""
+   },
+   "council": {
+    "ms": 16431,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "0a380542c26f341a8cd757e6a7b50ff7",
+      "autor": "Steve Blank",
+      "titulo": "The Four Steps to the Epiphany"
+     },
+     {
+      "id": "cb428e253396e9e9daeb260ec7800d2d",
+      "autor": "Rob Fitzpatrick",
+      "titulo": "The Mom Test"
+     },
+     {
+      "id": "cab7f44f49207b63fc99392d0e852547",
+      "autor": "Peter Kazanjy",
+      "titulo": "Founding Sales"
+     },
+     {
+      "id": "702dc12fea4174881f8303a26b8e89d8",
+      "autor": "Melissa Perri",
+      "titulo": "Escaping the Build Trap"
+     },
+     {
+      "id": "8b650b5ed19dd89a93798dee32a9d128",
+      "autor": "Eric Ries",
+      "titulo": "The Lean Startup"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Rob Fitzpatrick",
+      "livro": "The Mom Test",
+      "txt": "O maior erro aqui é chegar no bar dizendo: <b>'tenho um app de gestão, quer testar?'</b>. O dono vai dizer 'nossa, bacana, me manda por e-mail' só pra você ir embora. Isso é falso-positivo, é um <b>zombie lead</b>.<br><br><b>Como abordar:</b> vá terça-feira às 15h, quando o bar está montando a casa e o dono está lá, sem correria de cliente. Não abra o celular. Não mostre telas. Faça perguntas sobre a vida real passada: <i>'Como você fechou a contagem de chope da última semana? Deu furo? O que você fez a respeito?'</i>. Se ele já usa planilha torta ou caderno manchado, ele sente a dor. Se ele falar 'ah, aqui a gente confia na equipe', cai fora — ele é só um reclamão ou não tem o problema.<br><br><b>O teste de compromisso:</b> Você quer 30 dias de uso? Isso custa a reputação dele com os garçons. <b>Peça compromisso real antes do login:</b> 'Se eu configurar seu cardápio hoje à tarde, você me deixa ficar sexta-feira na abertura operando lado a lado com sua equipe?'. Se ele não pagar com tempo agora, nunca vai usar.",
+      "quote": "Você quer fatos e compromissos, não elogios.",
+      "quote_orig": "You want facts and commitments, not compliments.",
+      "literal": true
+     },
+     {
+      "autor": "Steve Blank",
+      "livro": "The Four Steps to the Epiphany",
+      "txt": "Mercado de software para bar é <b>mercado existente</b> e hipercompetitivo. Todo mundo já tentou vender PDV pra esses caras. Se você tentar vender para um bar estabelecido e organizado, ele vai exigir nota fiscal integrada, TEF e mil integrações que seu app não tem.<br><br><b>Como escolher:</b> Procure os <b>earlyvangelists</b>. Não é o bar mais famoso do bairro; é o bar em caos operacional que tentou usar os sistemas tradicionais e abandonou porque achou complexo demais. O dono tem uma conexão emocional com a dor: ele perde dinheiro todo sábado com mesa que sai sem pagar ou estoque de garrafa furado.<br><br>Faça a pergunta-chave direto na cara dele:<br><b>Se você quer validar comanda:</b> mire o bar com giro rápido e fila de balcão.<br><b>Se você quer validar estoque:</b> mire a choperia artesanal ou bar de coquetelaria onde a perda de garrafa cara quebra o mês.",
+      "quote": "Qual é a maior dor no modo como você trabalha... Se você pudesse balançar uma varinha mágica e mudar qualquer coisa no que faz, o que seria?",
+      "quote_orig": "What is the biggest pain in how you work... If you could wave a magic wand and change anything in what you do, what would it be? I call these the 'IPO questions'",
+      "literal": true
+     },
+     {
+      "autor": "Melissa Perri",
+      "livro": "Escaping the Build Trap",
+      "txt": "Você construiu comanda, estoque E mesas sem nenhum cliente real. Você já está com os dois pés afundados na <b>armadilha de build</b> (achando que valor é feature entregue). Pare de programar agora.<br><br><b>Como medir se resolve algo:</b> Não meça 'tempo de uso no app' nem 'telas acessadas' — isso é métrica de vaidade fácil de manipular. Você precisa medir <b>outcomes</b> de negócio usando um par de métricas mutuamente destrutivas pra evitar ilusão:<br><br>1. <b>Velocidade de fechamento da conta vs. Erro/Estorno de pedidos</b>: o garçom fechou mais rápido a mesa, mas aumentou o erro de pedido no caixa?<br>2. <b>Tempo gasto na contagem de fechamento vs. Discrepância de estoque físico</b>: ele economizou tempo à noite, mas sumiram três garrafas de gim do mesmo jeito?<br><br>Se ao final de 30 dias você não conseguir apontar <b>uma hora economizada por dia</b> ou <b>dinheiro que não sumiu</b>, seu app não resolveu nada — só virou mais um trabalho chato pro garçom preencher.",
+      "quote": "É fácil manipular uma métrica quando ela é o seu foco exclusivo.",
+      "quote_orig": "It's easy to game one metric when it's your singular focus.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s4-editorial-wellness",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Tenho um projeto editorial sobre bem-estar, comportamento e descobertas, separado do meu trabalho principal. Publico com alguma frequência mas a audiência não cresce. Quero entender como crescer sem virar mais um perfil de autoajuda e, no futuro, como monetizar sem estragar a confiança de quem lê.",
+   "cast": {
+    "ms": 8604,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "82cdccb17b557dc8d293bc4d1d1f3cc6",
+      "autor": "Youngme Moon",
+      "titulo": "Different",
+      "cat": "Marketing & Branding",
+      "motivo": "Ensina a escapar da comoditização e da 'homogeneidade heterogênea' de uma categoria saturada como a de bem-estar, evitando virar mais um perfil clichê de autoajuda."
+     },
+     {
+      "id": "e53389fb6c73e561ee776382bc090d57",
+      "autor": "Joe Pulizzi",
+      "titulo": "Content Inc - Second Edition",
+      "cat": "Conteúdo & Audiência",
+      "motivo": "Estrutura o conceito de 'content tilt' para achar o ângulo editorial único e guiar a transição de audiência fiel para monetização sustentável sem quebrar confiança."
+     },
+     {
+      "id": "34bdb83c84998fe317d3923955d84ee6",
+      "autor": "Ross Simmonds",
+      "titulo": "Create Once, Distribute Forever",
+      "cat": "Conteúdo & Audiência",
+      "motivo": "Diagnostica por que publicar com frequência sem crescer é um sintoma de focar só na criação e negligenciar a engenharia de distribuição do conteúdo existente."
+     },
+     {
+      "id": "478e4084abcd9300f6e268b235a7b793",
+      "autor": "Paul Jarvis",
+      "titulo": "Company of One",
+      "cat": "One Person Business",
+      "motivo": "Ajuda a desenhar um projeto paralelo focado em retenção, profundidade e lucro mínimo viável, protegendo a relação com o leitor contra a ganância de monetização predatória."
+     },
+     {
+      "id": "4dbaab81bcbcfcef457eeb842e9c5ce2",
+      "autor": "Eric Jorgenson (Naval Ravikant)",
+      "titulo": "The Almanack of Naval Ravikant",
+      "cat": "One Person Business",
+      "motivo": "Traz a perspectiva de jogar jogos iterados de longo prazo fundados em conhecimento específico e reputação ética, em oposição a atalhos transacionais de autoajuda."
+     }
+    ],
+    "angulos": "Cobriu a fuga da comoditização do nicho (diferenciação), o desenho do ângulo editorial (estratégia de conteúdo), o gargalo prático da estagnação de alcance (distribuição), a governança de escala como projeto paralelo (negócio solo) e a proteção ética da reputação a longo prazo (confiança).",
+    "falta": ""
+   },
+   "council": {
+    "ms": 19653,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "34bdb83c84998fe317d3923955d84ee6",
+      "autor": "Ross Simmonds",
+      "titulo": "Create Once, Distribute Forever"
+     },
+     {
+      "id": "82cdccb17b557dc8d293bc4d1d1f3cc6",
+      "autor": "Youngme Moon",
+      "titulo": "Different"
+     },
+     {
+      "id": "e53389fb6c73e561ee776382bc090d57",
+      "autor": "Joe Pulizzi",
+      "titulo": "Content Inc - Second Edition"
+     },
+     {
+      "id": "f42e1c46bb65ab2a7978e05241545059",
+      "autor": "Austin Kleon",
+      "titulo": "Show Your Work"
+     },
+     {
+      "id": "aa7ee97e0b0f794244c3536f4f775e73",
+      "autor": "Ryan Holiday",
+      "titulo": "Perennial Seller"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Youngme Moon",
+      "livro": "Different",
+      "txt": "O seu problema não é algoritmo: é que bem-estar virou um mar de <b>homogeneidade heterogênea</b>. Todo mundo adiciona um truque novo de rotina matinal ou respiração, achando que está inovando, mas na prática todos parecem idênticos. Para não virar autoajuda barata, você não precisa adicionar mais dicas; precisa de <b>subtração</b>. A IKEA cresceu tirando entrega e montagem. O que o seu projeto <b>deliberadamente se recusa a fazer</b> que todo perfil de autoajuda faz? É essa recusa explícita que cria identidade real e atrai quem tem aversão a papo de guru.",
+      "quote": "Homogeneidade heterogênea — uma multiplicação de produtos e marcas competindo em uma multiplicação de subsegmentos.",
+      "quote_orig": "heterogeneous homogeneity—a multiplication of products and brands competing across a multiplication of subsegments",
+      "literal": true
+     },
+     {
+      "autor": "Ross Simmonds",
+      "livro": "Create Once, Distribute Forever",
+      "txt": "Você disse: 'publico com alguma frequência mas a audiência não cresce'. Esse é o reflexo preguiçoso clássico de achar que produzir mais peça nova vai salvar o projeto. <b>Conteúdo é ativo, não campanha</b>. Se você já tem textos bons, parar de publicar coisa nova agora não vai mudar nada. O trabalho real é distribuição: pegue suas melhores ideias e remixe em outros formatos respeitando a convenção de cada canal. Entre em comunidades (como subreddits específicos de comportamento), ordene os posts por votos para entender o padrão de valor daquele grupo e distribua lá sem fazer spam.",
+      "quote": "Conteúdo é ativo, não campanha — e como todo ativo, o retorno vem de segurar e extrair valor ao longo do tempo, não de comprar mais.",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "Joe Pulizzi",
+      "livro": "Content Inc - Second Edition",
+      "txt": "Discordo do Ross se você for distribuir no vazio: distribuir sem um <b>content tilt</b> só espalha ruído mais rápido. 'Bem-estar e comportamento' é genérico demais para furar a bolha. Você precisa de um ângulo específico e sub-servido, validado por dados de busca e testes pequenos, não intuição. Sobre monetizar sem perder a confiança: foque tudo em construir uma <b>lista própria de e-mail</b> desde hoje. Se você constrói a audiência primeiro e aprende exatamente as dores dela, o produto futuro não parece venda empurrada; parece a resposta natural que eles mesmos pediram.",
+      "quote": "Eu fazia testes A/B; eu rodava experimentos bem pequenos... para realmente ter uma noção de como os usuários se engajam com esta plataforma.",
+      "quote_orig": "I would do A/B tests; I would run very small experiments... to really get a sense of how users engage with this platform",
+      "literal": true
+     },
+     {
+      "autor": "Austin Kleon",
+      "livro": "Show Your Work",
+      "txt": "Quer a resposta prática para não virar autoajuda? Pare de posar de especialista ensinando como viver e adote a postura de quem <b>mostra o processo</b>. A pergunta norteadora online deve ser: 'no que você está trabalhando hoje?'. Compartilhe seus experimentos, seus cadernos de leitura, o que deu errado e o que deu certo na sua própria rotina. Autoajuda dita regras; criadores interessantes documentam a jornada. <b>90% do que produzimos no início é fraco</b>, e é a fricção de mostrar o rascunho em público que filtra o que realmente presta.",
+      "quote": "Sturgeon... 90 por cento de tudo é lixo. O mesmo vale para o nosso próprio trabalho.",
+      "quote_orig": "Sturgeon... 90 percent of everything is crap. The same is true of our own work.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s5-procrastinacao",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Toda vez que preciso mandar mensagem para um potencial cliente eu travo. Arrumo o site, refaço o logo, reescrevo o perfil, mas não mando a mensagem. Sei o que tenho que fazer e não faço. Isso já me custou meses. Como eu quebro esse padrão de vez?",
+   "cast": {
+    "ms": 13003,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "30bb2794fdb0973ebe4f4b694c75373e",
+      "autor": "Nir Eyal",
+      "titulo": "Indistractable",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Diagnostica a raiz da sua procrastinação: mexer no site e no logo não é trabalho, é fuga disfarçada do desconforto interno de se expor à rejeição."
+     },
+     {
+      "id": "b33351baa56a638a6c12328c21fca1a7",
+      "autor": "Jason Richburg",
+      "titulo": "Do the F*cking Work — Lowbrow Advice for High-Level Creativity",
+      "cat": "Criatividade & Inspiração",
+      "motivo": "Derruba o perfeccionismo estético que serve de escudo covarde e força a disciplina brutal de agir antes de 'se sentir pronto'."
+     },
+     {
+      "id": "32bb1fea5edaeb9d40dbd69a7f76c5aa",
+      "autor": "Gay Hendricks",
+      "titulo": "The Big Leap",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Ataca o mecanismo inconsciente de autossabotagem (Upper Limit Problem) que trava suas ações no momento exato em que o negócio pode dar certo."
+     },
+     {
+      "id": "a1f66690a357a51025fd22d2521783f1",
+      "autor": "Jeb Blount",
+      "titulo": "90 Days to Level Up Your Sales Skills",
+      "cat": "Copywriting & Vendas",
+      "motivo": "Transforma a prospecção de um monstro emocional e intimidador em uma rotina mecânica de blocos diários e micro-compromissos."
+     },
+     {
+      "id": "f8bc9c4bb5b3976edce15dba766cd939",
+      "autor": "Gary Keller",
+      "titulo": "The ONE Thing",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Obriga a cortar todas as tarefas cosméticas periféricas fixando o envio de mensagens como a 'Única Coisa' diária sem a qual nada mais importa."
+     }
+    ],
+    "angulos": "Cobri a causa psicológica da evasão emocional, o confronto comportamental contra o falso perfeccionismo, a autossabotagem inconsciente, a operacionalização mecânica do outreach e a regra de foco exclusivo na única alavanca de receita.",
+    "falta": ""
+   },
+   "council": {
+    "ms": 12103,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "b33351baa56a638a6c12328c21fca1a7",
+      "autor": "Jason Richburg",
+      "titulo": "Do the F*cking Work — Lowbrow Advice for High-Level Creativity"
+     },
+     {
+      "id": "30bb2794fdb0973ebe4f4b694c75373e",
+      "autor": "Nir Eyal",
+      "titulo": "Indistractable"
+     },
+     {
+      "id": "f8bc9c4bb5b3976edce15dba766cd939",
+      "autor": "Gary Keller",
+      "titulo": "The ONE Thing"
+     },
+     {
+      "id": "a1f66690a357a51025fd22d2521783f1",
+      "autor": "Jeb Blount",
+      "titulo": "90 Days to Level Up Your Sales Skills"
+     },
+     {
+      "id": "32bb1fea5edaeb9d40dbd69a7f76c5aa",
+      "autor": "Gay Hendricks",
+      "titulo": "The Big Leap"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Jason Richburg",
+      "livro": "Do the F*cking Work — Lowbrow Advice for High-Level Creativity",
+      "txt": "Você não está travado; você está se escondendo. Arrumar site, mexer em logo e reescrever bio é a clássica <b>desculpa de amador</b> pra parecer ocupado sem correr risco nenhum de ser julgado. É procrastinação disfarçada de capricho. O profissional produz mesmo sem vontade e sem estar no clima. Quer quebrar esse padrão? Para de brincar de designer agora. O seu site atual já serve, o seu logo já serve. <b>Produzir vem antes de sentir vontade de produzir.</b> Se você precisa mandar a mensagem, senta e manda com o que você tem hoje.",
+      "quote": "",
+      "quote_orig": "",
+      "literal": null
+     },
+     {
+      "autor": "Nir Eyal",
+      "livro": "Indistractable",
+      "txt": "O Jason apontou o sintoma, mas você precisa atacar a causa-raiz. Arrumar o logo é só a <b>causa proximal</b> da sua distração. O motivo real pelo qual você não manda a mensagem é a <b>fuga de um desconforto interno</b>: medo da rejeição, incerteza ou sensação de incompetência. Para quebrar isso, pare de focar no resultado e controle os inputs com duas ações imediatas: primeiro, reconheça o desconforto sem fugir dele pelos primeiros 10 minutos; segundo, crie um <b>pacto de pré-compromisso</b>. Agende um bloco de tempo fechado no seu calendário para envio de mensagens e amarre uma consequência real com outra pessoa caso você abra o editor do site durante esse bloco.",
+      "quote": "A causa-raiz de toda distração é a fuga do desconforto interno",
+      "quote_orig": "",
+      "literal": true
+     },
+     {
+      "autor": "Jeb Blount",
+      "livro": "90 Days to Level Up Your Sales Skills",
+      "txt": "Você está tratando um simples primeiro contato como se fosse um julgamento final de vida ou morte. Baixe a pressão: em média, <b>são necessários 11 toques para um prospect responder</b>. Ninguém está esperando uma obra de arte na caixa de entrada. Se você tem uma solução que realmente resolve o problema daquele cliente, procurá-lo não é incômodo, é um dever comercial. Para destravar, você tem dois caminhos claros: <b>Caminho 1 (Rotina em bloco):</b> planeje seu dia na noite anterior e trave os primeiros 45 minutos da manhã exclusivamente para envio de mensagens frias, antes de encostar em qualquer outra tarefa; ou <b>Caminho 2 (Micro-compromisso):</b> mude o objetivo da mensagem — não tente vender nada agora, apenas busque uma resposta curta de confirmação de dor para abrir a conversa.",
+      "quote": "Seu trabalho é ajudá-los a resolver problemas. Se eles têm problemas que você pode resolver, sua persistência é um serviço, não um incômodo.",
+      "quote_orig": "Your job is to help them solve problems. If they have problems you can solve, your persistence is a service, not a bother.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s6-pet-site",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Sou sócio de um negócio de cachorros e estou fazendo o site novo. Hoje as pessoas chegam pelo Instagram, olham e somem. Quero que o site transforme visita em contato e que o dono de cachorro confie na gente logo de cara. O que o site precisa ter e como deve contar a nossa história?",
+   "cast": {
+    "ms": 9687,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "89fb467627240121afa07182d49e4198",
+      "autor": "Donald Miller",
+      "titulo": "Building a StoryBrand",
+      "cat": "Marketing & Branding",
+      "motivo": "Ensina a estruturar a narrativa do site colocando o dono do cachorro como herói e a empresa como o guia confiável, definindo chamadas para ação claras."
+     },
+     {
+      "id": "d3dedd86826a79e78a486ecdc07279eb",
+      "autor": "Harry Beckwith",
+      "titulo": "Selling the Invisible",
+      "cat": "Marketing & Branding",
+      "motivo": "Ataca o núcleo da venda de serviços intangíveis e emocionais, mostrando como projetar sinais de segurança para quem precisa confiar o próprio pet a estranhos."
+     },
+     {
+      "id": "5b1e8aa5842e92d3f3ede44e31fc94ee",
+      "autor": "Tim Ash",
+      "titulo": "Landing Page Optimization",
+      "cat": "Growth & Aquisição",
+      "motivo": "Diagnostica por que visitantes vindos do Instagram batem e somem, eliminando ruídos visuais e pontos de fricção na página para forçar a conversão em contato."
+     },
+     {
+      "id": "e95aeee1fa5bf31fb700de77e845db94",
+      "autor": "Marcus Sheridan",
+      "titulo": "They Ask You Answer",
+      "cat": "Conteúdo & Audiência",
+      "motivo": "Gera autoridade e confiança imediata ao orientar o site a responder com franqueza cirúrgica as maiores dúvidas, medos e objeções dos donos de cães."
+     },
+     {
+      "id": "84abd1c5bfc85869ff093027b511ada7",
+      "autor": "Allan Dib",
+      "titulo": "The 1-Page Marketing Plan",
+      "cat": "Marketing & Branding",
+      "motivo": "Traz o olhar prático de pequenos negócios para corrigir 'sinais de desconfiança' no site e criar mecanismos simples de captura para quem ainda não está pronto para ligar."
+     }
+    ],
+    "angulos": "Cobriu a estrutura narrativa do site (StoryBrand), a psicologia de confiança na venda de serviços sensíveis (Beckwith), a mecânica de conversão sem atrito (Ash), a transparência com dores do cliente (Sheridan) e os sinais de credibilidade para pequenos negócios (Dib).",
+    "falta": ""
+   },
+   "council": {
+    "ms": 13301,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "89fb467627240121afa07182d49e4198",
+      "autor": "Donald Miller",
+      "titulo": "Building a StoryBrand"
+     },
+     {
+      "id": "d3dedd86826a79e78a486ecdc07279eb",
+      "autor": "Harry Beckwith",
+      "titulo": "Selling the Invisible"
+     },
+     {
+      "id": "5b1e8aa5842e92d3f3ede44e31fc94ee",
+      "autor": "Tim Ash",
+      "titulo": "Landing Page Optimization"
+     },
+     {
+      "id": "e95aeee1fa5bf31fb700de77e845db94",
+      "autor": "Marcus Sheridan",
+      "titulo": "They Ask You Answer"
+     },
+     {
+      "id": "4a9e64c6777a10fced3f5bbedad1b54e",
+      "autor": "Steve Krug",
+      "titulo": "Não me faça pensar"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Donald Miller",
+      "livro": "Building a StoryBrand",
+      "txt": "O erro fatal já está na sua pergunta: você <b>não deve contar a sua história</b>. O dono do cachorro não quer saber da sua biografia nem da sua paixão de infância por animais. O cliente é o herói; sua empresa é apenas o guia. Se você gasta a tela inicial falando de si, você perde. O site precisa de pouquíssimo texto — dez frases ou menos. Ataque a dor interna dele: a culpa de deixar o cachorro sozinho ou o pavor de ele ser maltratado. Dê a ele um <b>plano de 3 passos</b> simples ('1. Fale conosco no WhatsApp, 2. Faça uma visita de adaptação, 3. Viaje sem culpa') e um botão de ação direto. Se ele ainda estiver inseguro para comprar, ofereça um guia gratuito de transição.",
+      "quote": "Posicione seu cliente como o herói e sua marca como o guia. Se não fizer isso, sua marca lutará para sobreviver.",
+      "quote_orig": "Position your customer as the hero and your brand as the guide. If you don't, your brand will struggle to survive.",
+      "literal": true
+     },
+     {
+      "autor": "Harry Beckwith",
+      "livro": "Selling the Invisible",
+      "txt": "Miller acertou no enquadramento, mas esqueceu a natureza do bicho: você vende um serviço, não um produto de prateleira. Cuidar de cachorro mexe com afeto e medo puro. Em serviços, a competência técnica e a estrutura bonita só pagam o pedágio de entrada. Ganhar a decisão é puramente <b>emocional</b>. Como não existe garantia contratual de carinho, a integridade da sua equipe substitui a garantia que o serviço não pode dar. Use a <b>lógica menor</b>: mostre maestria no cenário mais difícil. Explique detalhadamente como vocês lidam com cães reativos, idosos ou emergências médicas graves. O dono pensa: 'se eles dominam o caso mais difícil com essa serenidade, meu cachorro estará seguro'.",
+      "quote": "As razões lógicas pelas quais você deveria ganhar o negócio — sua competência, sua excelência, seu talento — apenas pagam o pedágio de entrada. Ganhar é uma questão de sentimentos.",
+      "quote_orig": "The logical reasons that you should win the business—your competence, your excellence, your talent—just pay the entry fees. Winning is a matter of feelings.",
+      "literal": true
+     },
+     {
+      "autor": "Marcus Sheridan",
+      "livro": "They Ask You Answer",
+      "txt": "Vocês estão no mundo das ideias. Quer saber por que o sujeito sai do Instagram, entra no site e foge? Porque você provavelmente faz <b>marketing de avestruz</b> e esconde o preço. Ninguém quer chamar no WhatsApp para passar pelo constrangimento de descobrir que não cabe no bolso. O comprador atual exige transparência radical. Coloque no site quanto custa, quais fatores aumentam ou diminuem o valor, quem é o cliente perfeito e, principalmente, <b>para quem o seu serviço NÃO serve</b>. Quando você tem coragem de falar abertamente de custo e limitações antes de todo mundo, você mata as objeções e conquista uma autoridade instantânea que nenhum feed bonitinho consegue comprar.",
+      "quote": "A ignorância do consumidor não é mais uma estratégia viável de vendas e marketing.",
+      "quote_orig": "Consumer ignorance is no longer a viable sales and marketing strategy.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s7-rotina-energia",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Trabalho sozinho em casa e minha energia despenca depois do almoço. De manhã rendo bem, à tarde fico disperso, no celular, e à noite tento compensar e durmo mal. Quero montar uma rotina que funcione no longo prazo, sem depender de força de vontade.",
+   "cast": {
+    "ms": 13449,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "9462c5b83bb1a4c42f420b1e94eff3a7",
+      "autor": "James Clear",
+      "titulo": "Workbook For James Clears Atomic Habits",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Ensina a estruturar gatilhos e atritos no ambiente doméstico para que a rotina aconteça no piloto automático sem depender de força de vontade."
+     },
+     {
+      "id": "30bb2794fdb0973ebe4f4b694c75373e",
+      "autor": "Nir Eyal",
+      "titulo": "Indistractable",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Ataca a causa-raiz do impulso pelo celular à tarde como fuga do desconforto do cansaço, criando pactos de pré-compromisso e tempo blindado."
+     },
+     {
+      "id": "2e41a5177692df6fb019e645e1b31a96",
+      "autor": "Cal Newport",
+      "titulo": "Deep Work",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Mostra como concentrar trabalho cognitivo pesado nas manhãs e instituir um ritual rígido de encerramento para não compensar pendências à noite."
+     },
+     {
+      "id": "e5739e0804dc49577123e003bd7ac461",
+      "autor": "John Medina",
+      "titulo": "12 Principles for Surviving a",
+      "cat": "Mente & Comportamento",
+      "motivo": "Explica o fundamento circadiano da queda de energia pós-almoço e como privação de sono à noite degrada o cérebro, retroalimentando o ciclo."
+     },
+     {
+      "id": "f8bc9c4bb5b3976edce15dba766cd939",
+      "autor": "Gary Keller",
+      "titulo": "The ONE Thing",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Aborda o esgotamento biológico da força de vontade ao longo do dia, ensinando a matar a tarefa mais decisiva antes que a bateria mental se esgote."
+     }
+    ],
+    "angulos": "Cobri a base biológica e circadiana do sono, o redesenho ambiental de hábitos sem força de vontade, a psicologia da distração pelo celular e a arquitetura de blocos de trabalho com ritual de encerramento.",
+    "falta": ""
+   },
+   "council": {
+    "ms": 22909,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "9462c5b83bb1a4c42f420b1e94eff3a7",
+      "autor": "James Clear",
+      "titulo": "Workbook For James Clears Atomic Habits"
+     },
+     {
+      "id": "30bb2794fdb0973ebe4f4b694c75373e",
+      "autor": "Nir Eyal",
+      "titulo": "Indistractable"
+     },
+     {
+      "id": "e5739e0804dc49577123e003bd7ac461",
+      "autor": "John Medina",
+      "titulo": "12 Principles for Surviving a"
+     },
+     {
+      "id": "2e41a5177692df6fb019e645e1b31a96",
+      "autor": "Cal Newport",
+      "titulo": "Deep Work"
+     },
+     {
+      "id": "f8bc9c4bb5b3976edce15dba766cd939",
+      "autor": "Gary Keller",
+      "titulo": "The ONE Thing"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Gary Keller",
+      "livro": "The ONE Thing",
+      "txt": "Você está caindo no maior mito da produtividade: achar que sua força de vontade é infinita e constante o dia todo. Não é. Ela funciona como a <b>bateria do celular</b>: de manhã está cheia; depois do almoço e de dezenas de microdecisões, ela descarrega. Quando a bateria zera, você entra no modo padrão (<i>default setting</i>), que é buscar o caminho de menor esforço — no seu caso, a dopamina barata do celular.<br><br>Pare de tentar ter duas manhãs no mesmo dia. Se quer resultado no longo prazo, decida: <b>ou</b> você concentra 100% da sua <b>Única Coisa</b> no bloco da manhã, protege esse bloco com ferocidade e aceita que a tarde não serve para trabalho crítico, <b>ou</b> vai continuar nessa culpa inútil.",
+      "quote": "",
+      "quote_orig": "",
+      "literal": null
+     },
+     {
+      "autor": "James Clear",
+      "livro": "Workbook For James Clears Atomic Habits",
+      "txt": "O Gary diagnosticou o esgotamento, mas a solução dele ainda aceita a derrota para o celular. O seu problema à tarde não é só energia baixa, é <b>design de ambiente desastroso</b>. Pela <b>Lei do Menor Esforço</b>, o cérebro cansado sempre escolhe a ação com menos fricção física. Se o smartphone está na sua mesa ou no seu bolso às 14h, você <i>vai</i> rolar feed — não tem força de vontade no mundo que vença isso.<br><br>Quer blindar a rotina? Torne o hábito ruim <b>invisível e inacessível</b>. Antes de almoçar, coloque o celular em outro cômodo ou numa gaveta trancada. Você tem dois caminhos: se precisa de pausas, crie um ritual de descanso de alta fricção para o vício (ir caminhar 15 minutos sem aparelho); se precisa executar, deixe aberto na tela apenas o documento de trabalho antes de sentar.",
+      "quote": "Pessoas com alto autocontrole não resistem à tentação – elas a evitam.",
+      "quote_orig": "People with high self-control do not resist temptation – they avoid it.",
+      "literal": true
+     },
+     {
+      "autor": "Cal Newport",
+      "livro": "Deep Work",
+      "txt": "Esqueçam a tarde por um segundo: o verdadeiro veneno na fala dele é <b>'à noite tento compensar'</b>. Isso destrói qualquer profissional do conhecimento. Ninguém sustenta mais de três a quatro horas de trabalho profundo (<i>Deep Work</i>) por dia. Sua manhã já esgotou essa cota; tentar compensar à noite é produzir trabalho raso, arrastado e fragmentado, que só serve para gerar ansiedade.<br><br>Você precisa instituir um <b>ritual rígido de encerramento (shutdown ritual)</b> às 17h ou 18h. Feche o laptop, revise as pendências do dia seguinte e declare o expediente encerrado. O descanso não é perda de tempo: é o período em que sua mente inconsciente processa soluções e restaura a energia mental. Sem shutdown, você não descansa, dorme mal e destrói a única parte do dia em que realmente rende: a manhã.",
+      "quote": "Para aprender coisas difíceis rapidamente, você precisa focar intensamente sem distração.",
+      "quote_orig": "To learn hard things quickly, you must focus intensely without distraction.",
+      "literal": true
+     },
+     {
+      "autor": "John Medina",
+      "livro": "12 Principles for Surviving a",
+      "txt": "O Cal tocou no ponto biológico central: essa sua tentativa de 'compensar à noite' está matando seu cérebro no dia seguinte. O sono é onde você consolida o aprendizado processual e limpa o lixo metabólico. Ao dormir mal para tentar pagar a dívida da tarde, você entra num déficit cognitivo cumulativo brutal.<br><br>Se você dormir menos de 7 horas por noite durante a semana, seu desempenho cai para o <b>percentil dos piores 9%</b> de capacidade cognitiva comparado a quem dorme bem. Dormir 6 horas por cinco noites seguidas equivale a ficar <b>48 horas acordado direto</b>. Escolha: ou você preserva seu sono religiosamente para garantir que suas manhãs continuem brilhantes, ou essa névoa mental da tarde vai invadir suas manhãs em menos de um mês.",
+      "quote": "A perda de uma noite de sono resultou em cerca de 30 por cento de perda na habilidade cognitiva geral... Aumente isso para duas noites perdidas, e o número vai para 60 por cento.",
+      "quote_orig": "One night's loss of sleep resulted in about a 30 percent loss in overall cognitive skill... Bump that to two nights' loss, and the figure becomes 60 percent.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": [
+     {
+      "titulo": "Quando: Os segredos científicos do timing perfeito",
+      "autor": "Daniel H. Pink",
+      "porque": "Explica o padrão biológico universal de pico, vale e recuperação ao longo do dia, oferecendo critérios científicos para distribuir tarefas analíticas e operacionais conforme o relógio circadiano."
+     }
+    ]
+   }
+  },
+  {
+   "id": "s8-primeiro-contratado",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Meu negócio de uma pessoa só começou a ter mais demanda do que consigo entregar. Estou pensando em contratar o primeiro freelancer fixo para me ajudar na produção, mas tenho medo de perder qualidade e de virar gerente em vez de fazer o que gosto. Contrato agora, subo o preço ou recuso cliente?",
+   "cast": {
+    "ms": 11143,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "478e4084abcd9300f6e268b235a7b793",
+      "autor": "Paul Jarvis",
+      "titulo": "Company of One",
+      "cat": "One Person Business",
+      "motivo": "Questiona a premissa de que mais demanda exige crescer a equipe, defendendo a escolha deliberada de continuar pequeno, lucrativo e focado na qualidade."
+     },
+     {
+      "id": "44cb7d2af7907129741c83eaa79eaaf3",
+      "autor": "Blair Enns",
+      "titulo": "Pricing Creativity",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Ataca a frente de precificação: usa o excesso de demanda como sinal perfeito para subir preços e filtrar clientes, capturando mais valor sem inchar a operação."
+     },
+     {
+      "id": "1e4f81fc4defd39b0158bcdbbe077955",
+      "autor": "Michael E. Gerber",
+      "titulo": "The E-Myth Revisited",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Confronta a dor central do 'técnico' que teme virar gerente, ensinando a diferença entre delegar com processo estruturado e abdicar com perda de controle."
+     },
+     {
+      "id": "4887317c66ce06ad1ab57e29bdd97e2c",
+      "autor": "Greg McKeown",
+      "titulo": "Essentialism",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Dá o respaldo comportamental e a coragem necessária para dizer 'não' a clientes e oportunidades que ameacem a essência e o padrão do seu trabalho."
+     },
+     {
+      "id": "6a236bbd3c872bd5c07c3fe16a48ecef",
+      "autor": "Dan Martell",
+      "titulo": "Buy Back Your Time",
+      "cat": "One Person Business",
+      "motivo": "Resolve o dilema prático de contratar sem perder o prazer pelo ofício, mapeando o que terceirizar para recomprar tempo para a criação em vez de virar mero administrador."
+     }
+    ],
+    "angulos": "Cobri a decisão estrutural de escala (ficar solo vs. crescer), a regulação de demanda via precificação premium, a transição comportamental de técnico para líder de processos, o critério de corte/recusa de clientes e a proteção do prazer pelo ofício ao delegar.",
+    "falta": ""
+   },
+   "council": {
+    "ms": 9008,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "478e4084abcd9300f6e268b235a7b793",
+      "autor": "Paul Jarvis",
+      "titulo": "Company of One"
+     },
+     {
+      "id": "3bc0de77aae834170f078bf87582d241",
+      "autor": "Alan Weiss",
+      "titulo": "Value Based Fees"
+     },
+     {
+      "id": "4887317c66ce06ad1ab57e29bdd97e2c",
+      "autor": "Greg McKeown",
+      "titulo": "Essentialism"
+     },
+     {
+      "id": "6a236bbd3c872bd5c07c3fe16a48ecef",
+      "autor": "Dan Martell",
+      "titulo": "Buy Back Your Time"
+     },
+     {
+      "id": "1e4f81fc4defd39b0158bcdbbe077955",
+      "autor": "Michael E. Gerber",
+      "titulo": "The E-Myth Revisited"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Alan Weiss",
+      "livro": "Value Based Fees",
+      "txt": "Você está com a faca e o queijo na mão e pensando em arrumar dor de cabeça operacional. Se a demanda explodiu, seu preço está <b>baixo demais</b>. Simples assim. Lembre-se do palestrante que trabalhava 220 dias por ano cobrando US$ 1.100 a diária morrendo de medo de aumentar: se você dobrar o preço e perder metade dos clientes, você fatura exatamente o mesmo trabalhando a metade do tempo. Não contrate ninguém agora. Posicione-se como o <b>Bentley</b> do seu mercado: suba o valor, filtre os curiosos e atenda só quem paga pelo resultado da transformação, não pelas suas horas.",
+      "quote": "Avance em direção a ser o Bentley do seu campo.",
+      "quote_orig": "Push Toward Being the Bentley of Your Field.",
+      "literal": true
+     },
+     {
+      "autor": "Paul Jarvis",
+      "livro": "Company of One",
+      "txt": "Contratar só porque a demanda bateu à porta é o reflexo mais perigoso do mercado. É o dogma do crescimento por inércia ou por ego falando mais alto. Você acabou de dizer o que importa: <b>não quer virar gerente</b>. Sua empresa de uma pessoa só precisa mirar no seu MVPr (lucro mínimo viável) e na sua liberdade, não em volume bruto. Aumentar a estrutura traz folha de pagamento, estresse e dilui a qualidade do que você faz. Antes de chamar qualquer freelancer, defina o que é 'suficiente' para sustentar sua vida e aprenda a dizer não para o excesso.",
+      "quote": "O ego é a última razão pela qual a maioria das empresas deseja crescer. É também a mais difícil, porque é mais difícil de superar.",
+      "quote_orig": "Ego is the final reason most companies want to grow. It's also the trickiest, because it's harder to overcome.",
+      "literal": true
+     },
+     {
+      "autor": "Michael E. Gerber",
+      "livro": "The E-Myth Revisited",
+      "txt": "Cuidado: você está vivendo o surto clássico do <b>Técnico</b>. Você ama fazer o trabalho técnico, a demanda aperta, e o seu plano é jogar a produção na mão de um freelancer fixo? Isso não é delegação, é <b>gerenciamento por abdicação</b>. Você vai largar o trabalho no colo dele, rezar para ele ter o mesmo capricho que você e, no primeiro erro, vai entrar em desespero e dizer que 'ninguém faz tão bem quanto eu'. Se for contratar, você precisa criar o protótipo de sistema primeiro: documentar o método e o padrão de entrega. Se não está disposto a construir esse sistema, nem comece — ou você vai virar babá de freelancer.",
+      "quote": "o pequeno empresário típico prefere a gerência por abdicação à gerência por delegação.",
+      "quote_orig": "the typical small business owner prefers Management by Abdication to Management by Delegation.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s9-cliente-fora",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Apareceu um cliente grande querendo um projeto que paga bem, mas é exatamente o tipo de trabalho que eu decidi parar de fazer quando me reposicionei. O dinheiro ajudaria muito agora. Aceito e arrisco confundir meu posicionamento, ou recuso e mantenho a linha?",
+   "cast": {
+    "ms": 10336,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "0743f39e1a02c2a96f59c261117100ec",
+      "autor": "Blair Enns",
+      "titulo": "The Win Without Pitching Manifesto",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Ensina a dizer não a clientes e projetos fora do novo foco para não retroceder ao papel de fornecedor commodity."
+     },
+     {
+      "id": "ab3a9e41b77a116c5ce62b0047822f77",
+      "autor": "Adrian Shaughnessy",
+      "titulo": "How to Be a Graphic Designer Without Losing Your Soul",
+      "cat": "Design",
+      "motivo": "Trata diretamente do dilema prático de aceitar trabalho desalinhado por necessidade de caixa versus preservar a reputação e a integridade de portfólio."
+     },
+     {
+      "id": "900b6bd3089c79e385022c31cb6b1a05",
+      "autor": "Al Ries & Jack Trout",
+      "titulo": "Positioning",
+      "cat": "Marketing & Branding",
+      "motivo": "Explica o custo mercadológico real de emitir sinais confusos para a mente do prospect logo após um movimento de reposicionamento."
+     },
+     {
+      "id": "4887317c66ce06ad1ab57e29bdd97e2c",
+      "autor": "Greg McKeown",
+      "titulo": "Essentialism",
+      "cat": "Desenvolvimento Pessoal",
+      "motivo": "Fornece a disciplina comportamental necessária para recusar uma oportunidade financeiramente tentadora que desvia do foco essencial."
+     },
+     {
+      "id": "a2e02bf9a6df5d3578a90e13445217ae",
+      "autor": "Morgan Housel",
+      "titulo": "The Psychology of Money",
+      "cat": "Mente & Comportamento",
+      "motivo": "Ajuda a calibrar o medo financeiro e o estresse de caixa no curto prazo contra a sobrevivência e sustentabilidade de longo prazo."
+     }
+    ],
+    "angulos": "Cobri autoridade comercial em serviços, o dilema ético/prático do profissional criativo, a mecânica de percepção de mercado, a disciplina pessoal de dizer não e a psicologia do medo financeiro de curto prazo.",
+    "falta": ""
+   },
+   "council": {
+    "ms": 10183,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "0743f39e1a02c2a96f59c261117100ec",
+      "autor": "Blair Enns",
+      "titulo": "The Win Without Pitching Manifesto"
+     },
+     {
+      "id": "ab3a9e41b77a116c5ce62b0047822f77",
+      "autor": "Adrian Shaughnessy",
+      "titulo": "How to Be a Graphic Designer Without Losing Your Soul"
+     },
+     {
+      "id": "900b6bd3089c79e385022c31cb6b1a05",
+      "autor": "Al Ries & Jack Trout",
+      "titulo": "Positioning"
+     },
+     {
+      "id": "4887317c66ce06ad1ab57e29bdd97e2c",
+      "autor": "Greg McKeown",
+      "titulo": "Essentialism"
+     },
+     {
+      "id": "a2e02bf9a6df5d3578a90e13445217ae",
+      "autor": "Morgan Housel",
+      "titulo": "The Psychology of Money"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Blair Enns",
+      "livro": "The Win Without Pitching Manifesto",
+      "txt": "Você está diante do que eu chamo de <b>The Difficult Business Decision</b>. Escolher um foco de verdade significa eliminar a concorrência justamente porque você abre mão do que não é sua especialidade. O problema desse cliente não é o dinheiro, é a dinâmica: ele está te contratando como tirador de pedidos para um serviço genérico, não como o especialista que diagnostica e lidera. Se você aceitar, você reinicia o ciclo de dependência do trabalho transacional e sinaliza para si mesmo que seu posicionamento novo é só da boca para fora. Se o caixa não estiver em colapso total, <b>caminhe embora</b>.",
+      "quote": "Não precisamos ser mais inteligentes ou mais criativos que nossos concorrentes, apenas mais focados.",
+      "quote_orig": "We need not be smarter or more creative than our competition, only more focused.",
+      "literal": true
+     },
+     {
+      "autor": "Greg McKeown",
+      "livro": "Essentialism",
+      "txt": "O maior perigo para quem tenta focar não são as oportunidades ruins; são as <b>boas oportunidades que desviam da rota</b>. Você acha que está apenas 'pegando uma ajuda financeira', mas não existe neutralidade aqui: a energia, o tempo e a atenção que você vai gastar entregando esse projeto são recursos que você vai roubar da consolidação do seu novo espaço. A pergunta essencial que você tem que responder agora não é se o dinheiro é bom, mas o que você realmente prioriza quando a corda aperta.",
+      "quote": "toda vez que você deixa de dizer 'não' a um não-essencial, você está realmente dizendo sim por padrão.",
+      "quote_orig": "anytime you fail to say \"no\" to a nonessential, you are really saying yes by default.",
+      "literal": true
+     },
+     {
+      "autor": "Morgan Housel",
+      "livro": "The Psychology of Money",
+      "txt": "Baixem a bola com a pureza teórica. No mundo real, <b>ser razoável ganha de ser estritamente racional</b>. A habilidade número um nos negócios não é ter o posicionamento mais elegante da praça; é <b>sobreviver</b>. Se recusar esse cliente esgota sua margem de segurança (room for error) e te deixa desesperado daqui a três meses, você vai acabar aceitando coisa muito pior depois. Agora, a regra é fria: se você precisa desse oxigênio para não quebrar, pegue o trabalho, faça discretamente nos bastidores, use o dinheiro para comprar tempo e <b>não use isso como desculpa para desistir da transição</b>.",
+      "quote": "Fazer bem com o dinheiro tem pouco a ver com o quão inteligente você é e muito a ver com como você se comporta.",
+      "quote_orig": "Doing well with money has little to do with how smart you are and a lot to do with how you behave.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s10-palestra-case",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Fui convidado para falar 20 minutos num evento sobre um projeto meu que deu certo. Não quero fazer a apresentação chata de 'contexto, desafio, solução, resultado'. Quero que as pessoas lembrem da história e venham falar comigo depois. Como estruturo a fala?",
+   "cast": {
+    "ms": 15980,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "d7fe7222164f47c140d77a2ade6769be",
+      "autor": "Nancy Duarte",
+      "titulo": "Resonate - Present Visual Stories that Transform Audiences",
+      "cat": "Storytelling",
+      "motivo": "Ensina a romper o formato padrão de relatório substituindo-o pelo 'sparkline' (contraste entre o que é e o que poderia ser) e desenhando um S.T.A.R. Moment memorável."
+     },
+     {
+      "id": "a8a0fc9be3042a212d66978e6f5b3156",
+      "autor": "Matthew Dicks",
+      "titulo": "Storyworthy",
+      "cat": "Storytelling",
+      "motivo": "Traz a técnica de palco para humanizar o projeto com vulnerabilidade e momentos de virada reais, criando a empatia íntima que faz as pessoas quererem puxar conversa depois."
+     },
+     {
+      "id": "025319070fd139e000cfa979f9568abc",
+      "autor": "Chip Heath e Dan Heath",
+      "titulo": "Made to Stick",
+      "cat": "Storytelling",
+      "motivo": "Fornece os princípios (inesperado, concreto, emocional) para desarmar a 'Maldição do Conhecimento' e garantir que a ideia central fique grudada na cabeça da audiência."
+     },
+     {
+      "id": "4e41e3fa4222c6ba5145c377181e21c0",
+      "autor": "Carmine Gallo",
+      "titulo": "The Storytellers Secret",
+      "cat": "Storytelling",
+      "motivo": "Oferece o modelo prático de talks estilo TED para costurar a história pessoal de bastidor aos aprendizados do projeto, gerando impulso de ação."
+     },
+     {
+      "id": "e5739e0804dc49577123e003bd7ac461",
+      "autor": "John Medina",
+      "titulo": "12 Principles for Surviving a",
+      "cat": "Mente & Comportamento",
+      "motivo": "Explica a neurociência da atenção em apresentações: como o cérebro processa o sentido geral antes dos detalhes e como resetar a atenção que despenca na marca dos 10 minutos em uma fala de 20."
+     }
+    ],
+    "angulos": "Cobriu a arquitetura narrativa de palco (Duarte), a conexão humana que convida ao diálogo pós-palestra (Dicks), a fixação cognitiva da mensagem (Heath & Heath), o ritmo de palestras modernas (Gallo) e a neurobiologia da retenção e tempo de atenção (Medina).",
+    "falta": ""
+   },
+   "council": {
+    "ms": 11770,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "d7fe7222164f47c140d77a2ade6769be",
+      "autor": "Nancy Duarte",
+      "titulo": "Resonate - Present Visual Stories that Transform Audiences"
+     },
+     {
+      "id": "a8a0fc9be3042a212d66978e6f5b3156",
+      "autor": "Matthew Dicks",
+      "titulo": "Storyworthy"
+     },
+     {
+      "id": "ea3368621f185170433f33e8d4d218ca",
+      "autor": "Oren Klaff",
+      "titulo": "Pitch Anything"
+     },
+     {
+      "id": "025319070fd139e000cfa979f9568abc",
+      "autor": "Chip Heath e Dan Heath",
+      "titulo": "Made to Stick"
+     },
+     {
+      "id": "e5739e0804dc49577123e003bd7ac461",
+      "autor": "John Medina",
+      "titulo": "12 Principles for Surviving a"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Oren Klaff",
+      "livro": "Pitch Anything",
+      "txt": "Se você entregar a receita inteira mastigada no palco, <b>ninguém vai falar com você depois</b>. Por que iriam? O cérebro deles já recebeu a resposta e desligou. Apresentação que gera fila no final opera por <b>tensão e suspense</b>, não por relatório de fechamento de trimestre. Corte o 'analyst frame' — nada de abrir com 15 slides de dados que só alimentam o cérebro lógico e matam o desejo. Em vez disso, use o <b>prizing</b>: apresente a sua solução como um segredo que você descobriu a duras penas, revele o conflito central, mas retenha o 'molho secreto' final para a conversa no corredor. Se você quiser que eles venham até você, posicione-se como o prêmio, não como o vendedor querendo aprovação.",
+      "quote": "Se você sabe onde o tubarão está o tempo todo, você não tem tensão, nem suspense, nem sucesso de bilheteria.",
+      "quote_orig": "If you know where the shark is at all times, you have no tension, no suspense, no blockbuster.",
+      "literal": true
+     },
+     {
+      "autor": "Nancy Duarte",
+      "livro": "Resonate - Present Visual Stories that Transform Audiences",
+      "txt": "Oren está certo em matar a apresentação-relatório, mas cuidado com a arrogância de achar que o palco é só sobre você. O maior erro de quem fala sobre um projeto vencedor é subir achando que é o herói da jornada. <b>O herói é a plateia; você é apenas o guia</b> — o Yoda que entrega o mapa. A estrutura que funciona em 20 minutos não é a linha reta do 'deu certo', mas o <b>sparkline</b>: você precisa alternar sistematicamente entre <b>'o que é'</b> (o estado medíocre ou doloroso em que todo mundo no setor está acostumado a viver) e <b>'o que poderia ser'</b> (a nova realidade que o seu projeto desbravou). E mais: para que eles lembrem, você precisa desenhar um <b>S.T.A.R. Moment</b> — um momento físico ou dramático que grude na memória visual deles, como Feynman jogando o anel de borracha na água gelada.",
+      "quote": "A lacuna entre o que é e o que poderia ser é estabelecida pela criação de contraste.",
+      "quote_orig": "The gap between what is and what could be is established through creating contrast.",
+      "literal": true
+     },
+     {
+      "autor": "Matthew Dicks",
+      "livro": "Storyworthy",
+      "txt": "Esqueçam pirotecnia corporativa por um segundo. As pessoas não vão até você no final porque acharam seu framework brilhante; elas vão porque <b>se reconheceram na sua vulnerabilidade</b>. Ninguém se conecta com o executivo infalível que executou um plano impecável. Conte a história pelo avesso: comece no instante em que tudo parecia ridículo, humilde ou prestes a desmoronar. O motor de uma história que cola não é uma ambição abstrata de bater meta, é um sentimento muito humano — o medo de falhar ou a necessidade nua e crua de ter seu trabalho reconhecido. Escolha um <b>detalhe concreto ou um objeto simbólico</b> daquele período difícil para carregar o peso emocional da virada. Se você mostrar o homem comum por trás do resultado extraordinário, o café vai ficar pequeno para tanta gente querendo puxar assunto.",
+      "quote": "Eu tinha o desejo desesperado de que alguém — qualquer um — finalmente me notasse e reconhecesse que eu era capaz de fazer algo bem feito.",
+      "quote_orig": "I had the desperate desire for someone — anyone — to finally notice me and acknowledge that I was capable of doing something well.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  },
+  {
+   "id": "s11-drinks",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Vou receber 10 amigos em casa no sábado e quero montar um cardápio curto de drinks autorais, uns 4, que eu consiga preparar sem passar a noite inteira no balcão. Gosto de coisas cítricas e pouco doces.",
+   "cast": {
+    "ms": 11489,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "a36e1bffed4a7973a1eb5e12e7c4c231",
+      "autor": "Alex Day",
+      "titulo": "Cocktail Codex",
+      "cat": "Drinks",
+      "motivo": "Ensina a criar drinks autorais consistentes usando a lógica de famílias-raiz (como Sours e Highballs), perfeito para calibrar perfis cítricos e secos sem inventar do zero."
+     },
+     {
+      "id": "4028f610472343ab13793b37b63d44f5",
+      "autor": "Dave Arnold",
+      "titulo": "Liquid Intelligence",
+      "cat": "Drinks",
+      "motivo": "Domina o equilíbrio químico exato entre ácido e doce e fornece a técnica de pré-diluição e coquetéis em lote (batching), a chave mestra para você não passar a noite preparando drinks."
+     },
+     {
+      "id": "73ef6952fd9296edb7cc51344bdaad90",
+      "autor": "Jeffrey Morgenthaler",
+      "titulo": "The Bar Book",
+      "cat": "Drinks",
+      "motivo": "Entrega os fundamentos práticos de mise en place de bar — preparação prévia de insumos, xaropes e sucos — para que o serviço no sábado seja rápido e sem bagunça."
+     },
+     {
+      "id": "a631f36eab9d65c67ad2d9abfbb7e8d7",
+      "autor": "Gary regan",
+      "titulo": "The joy of mixology",
+      "cat": "Drinks",
+      "motivo": "Ajuda a estruturar uma carta curta e equilibrada de apenas 4 drinks, garantindo variedade de estilos e bases sem sobrecarregar sua lista de ingredientes."
+     },
+     {
+      "id": "8605389bdf887d48a256e65c72791db8",
+      "autor": "Danny Meyer",
+      "titulo": "Setting the Table",
+      "cat": "Negócios & Estratégia",
+      "motivo": "Traz a perspectiva de hospitalidade: desenhar a experiência da noite para que o anfitrião esteja presente com os convidados, e não isolado como um prestador de serviço atrás da bancada."
+     }
+    ],
+    "angulos": "Cobriu a concepção das receitas autorais cítricas, o controle técnico de acidez e pré-preparo em lote (batching), a eficiência do mise en place operacional, a curadoria do menu enxuto e o papel do anfitrião sob a ótica da hospitalidade.",
+    "falta": ""
+   },
+   "council": {
+    "ms": 10419,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "a36e1bffed4a7973a1eb5e12e7c4c231",
+      "autor": "Alex Day",
+      "titulo": "Cocktail Codex"
+     },
+     {
+      "id": "4028f610472343ab13793b37b63d44f5",
+      "autor": "Dave Arnold",
+      "titulo": "Liquid Intelligence"
+     },
+     {
+      "id": "73ef6952fd9296edb7cc51344bdaad90",
+      "autor": "Jeffrey Morgenthaler",
+      "titulo": "The Bar Book"
+     },
+     {
+      "id": "a631f36eab9d65c67ad2d9abfbb7e8d7",
+      "autor": "Gary regan",
+      "titulo": "The joy of mixology"
+     },
+     {
+      "id": "8605389bdf887d48a256e65c72791db8",
+      "autor": "Danny Meyer",
+      "titulo": "Setting the Table"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Danny Meyer",
+      "livro": "Setting the Table",
+      "txt": "Se você passar a noite inteira batendo coqueteleira de costas pros seus amigos, <b>o serviço matou a hospitalidade</b>. Dez pessoas tomando três ou quatro drinks na noite significam de trinta a quarenta preparos. Se você não desenhar o fluxo pra se libertar do balcão, a experiência vira estresse de anfitrião em vez de conexão. Você precisa planejar o cardápio pensando em desapegar da operação.",
+      "quote": "Quantas dessas coisas poderiam ser feitas tão bem ou melhor por outra pessoa se ao menos eu estivesse disposto a abrir mão.",
+      "quote_orig": "How many of these things could be done at least as well or better by somebody else if only I were willing to let go.",
+      "literal": true
+     },
+     {
+      "autor": "Alex Day",
+      "livro": "Cocktail Codex",
+      "txt": "A solução estrutural pra atender dez pessoas com perfil cítrico e seco sem morrer no balcão é apoiar o menu na <b>família Highball</b>. O amador acha que drink autoral exige xarope de sete camadas e cinco minutos de guarnição; não exige. Um Highball bem executado — destilado trabalhado, um modificador seco e um mixer carbonatado muito gelado — entrega elegância imediata, baixo teor de açúcar e montagem em vinte segundos direto no copo longo.",
+      "quote": "O Highball é um modelo ao mesmo tempo muito simples e extremamente flexível.",
+      "quote_orig": "The Highball is a template that's both very simple and extremely flexible.",
+      "literal": true
+     },
+     {
+      "autor": "Jeffrey Morgenthaler",
+      "livro": "The Bar Book",
+      "txt": "Quer quatro drinks autorais na pressão de sábado? <b>Batching e mise en place de precisão</b>. Na véspera, pese o açúcar em balança pra fazer seus xaropes — volume mente e desregula a acidez do coquetel. Para os drinks batidos da família sour, pré-misture todo o álcool da receita numa garrafa de vidro. Na hora do serviço, você só mede a dose da base prévia, adiciona o cítrico fresco e bate uma vez só. Dois caminhos: ou você pré-engarrafa as bases alcoólicas pra só finalizar com gelo e cítrico no copo, ou monta dois Highballs montados direto no copo e dois Sours batidos rápidos.",
+      "quote": "240 ml (a medida de volume) de açúcar pesa perto de 200 g, então nossa proporção de 1:1 é na verdade ⅞:1.",
+      "quote_orig": "8 fl oz/240 ml (the volume measure) of sugar weighs closer to 7 oz/200 g, so our 1:1 ratio is actually ⅞:1",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": [
+     {
+      "titulo": "Batch Cocktails: Make-Ahead Pitcher Drinks for Every Occasion",
+      "autor": "Maggie Hoffman",
+      "porque": "Foco integral em coquetelaria em lote pré-diluída e pré-resfriada especificamente desenhada para receber grupos em casa sem depender de serviço individual."
+     }
+    ]
+   }
+  },
+  {
+   "id": "s12-ia-produto",
+   "origem": "escrita pelo Claude a partir do contexto do Rodrigo (sem mesa de referência)",
+   "problema": "Quero usar IA de verdade dentro dos produtos digitais que desenho para clientes, não só como enfeite. Como decido onde a IA entra no produto, como desenho a experiência quando a resposta pode estar errada e como explico isso para um cliente que não é técnico?",
+   "cast": {
+    "ms": 11259,
+    "modelo": "gemini-3.8-flash",
+    "lista": 309,
+    "picks": [
+     {
+      "id": "5ac7363ae6bb9aa221e6139ae2328612",
+      "autor": "Dr. Marily Nika",
+      "titulo": "Building AI-Powered Products",
+      "cat": "Inteligência Artificial",
+      "motivo": "Ensina a decidir onde a IA gera valor real no PRD em vez de empurrar tecnologia como enfeite em produtos digitais."
+     },
+     {
+      "id": "33f7e0b7ac5482125f15b658b9d176f6",
+      "autor": "Louise Macfadyen",
+      "titulo": "Designing AI Interfaces",
+      "cat": "UX, UI & Produto",
+      "motivo": "Ataca diretamente o desenho de UX para respostas falíveis, ensinando a exibir fontes, sinalizar incerteza e permitir correções."
+     },
+     {
+      "id": "52ce54a70388789a787c3fa850196012",
+      "autor": "Tom Greever",
+      "titulo": "Articulating Design Decisions",
+      "cat": "Design",
+      "motivo": "Oferece o roteiro exato para designers defenderem e explicarem decisões técnicas complexas a clientes leigos sem perder a autoridade."
+     },
+     {
+      "id": "117cab98e1fbd4fd8fb2793e8e35219a",
+      "autor": "Arvind Narayanan",
+      "titulo": "AI Snake Oil",
+      "cat": "Inteligência Artificial",
+      "motivo": "Traz a dose de ceticismo necessária para desarmar ilusões de clientes e separar casos de uso viáveis de mero charlatanismo algorítmico."
+     },
+     {
+      "id": "1513be708758d8c1b9c629103f1567fd",
+      "autor": "Cliff Kuang",
+      "titulo": "User Friendly - How the Hidden Rules of Design - Are Changing the Way We Live Work and Play",
+      "cat": "UX, UI & Produto",
+      "motivo": "Explica como dosar autonomia da máquina e intervenção humana, projetando sistemas que absorvem erros sem alienar o usuário."
+     }
+    ],
+    "angulos": "Cobriu a estratégia de inserção de IA em produto (Nika), o design de interface para incerteza (Macfadyen e Kuang), o filtro crítico anti-hype (Narayanan) e a articulação didática com clientes não técnicos (Greever).",
+    "falta": ""
+   },
+   "council": {
+    "ms": 10850,
+    "modelo": "gemini-3.8-flash",
+    "mesa": [
+     {
+      "id": "5ac7363ae6bb9aa221e6139ae2328612",
+      "autor": "Dr. Marily Nika",
+      "titulo": "Building AI-Powered Products"
+     },
+     {
+      "id": "33f7e0b7ac5482125f15b658b9d176f6",
+      "autor": "Louise Macfadyen",
+      "titulo": "Designing AI Interfaces"
+     },
+     {
+      "id": "52ce54a70388789a787c3fa850196012",
+      "autor": "Tom Greever",
+      "titulo": "Articulating Design Decisions"
+     },
+     {
+      "id": "117cab98e1fbd4fd8fb2793e8e35219a",
+      "autor": "Arvind Narayanan",
+      "titulo": "AI Snake Oil"
+     },
+     {
+      "id": "1513be708758d8c1b9c629103f1567fd",
+      "autor": "Cliff Kuang",
+      "titulo": "User Friendly - How the Hidden Rules of Design - Are Changing the Way We Live Work and Play"
+     }
+    ],
+    "replies": [
+     {
+      "autor": "Dr. Marily Nika",
+      "livro": "Building AI-Powered Products",
+      "txt": "Primeiro filtro: <b>se o problema pode ser resolvido com lógica condicional simples (se/então) ou heurística comum, não use IA</b>. IA entra onde há incerteza, personalização em massa ou processamento de dados não estruturados que mudam no tempo. O maior choque de quem vem do software clássico para o que chamamos de 'Software 2.0' é aceitar que você não consegue prever com certeza como a aplicação vai performar antes de expô-la aos dados reais. Ao escopar o MVP com seu cliente, defina a tríade básica: <b>viabilidade de negócio, viabilidade técnica e real desejabilidade</b>. Se a IA só gera um texto bonitinho que não mexe num indicador de dor do usuário, ela é enfeite caro.",
+      "quote": "Introduzir IA em sua estratégia de produto não é apenas sobre seguir tendências — é sobre resolver problemas específicos que se alinham com os objetivos da sua empresa e com as necessidades dos usuários.",
+      "quote_orig": "Introducing AI into your product strategy isn't just about following trends—it's about solving specific problems that align with your company's goals and user needs.",
+      "literal": true
+     },
+     {
+      "autor": "Louise Macfadyen",
+      "livro": "Designing AI Interfaces",
+      "txt": "Para a interface lidar com o erro sem quebrar a confiança, você precisa de <b>grounding explícito</b>. O maior veneno de UX em IA é entregar uma resposta gerada com tom absolutamente confiante, mas sem mostrar a lente de onde ela saiu. O usuário precisa bater o olho e ver: qual fonte foi consultada, qual modo está ativo (analítico ou exploratório) e qual a localidade assumida. Se você projeta assistentes ou agentes, não crie um buraco negro de prompt-e-resposta: quebre o fluxo, mostre o raciocínio em etapas e <b>dê botões claros para pausar, editar a premissa ou redirecionar o rumo</b> antes da ação final acontecer.",
+      "quote": "Um usuário pode pedir diretrizes de contratação e receber um resumo de tom confiante sem saber se ele foi extraído de lei federal, de política interna de RH ou de uma fonte genérica da web.",
+      "quote_orig": "A user might ask for hiring guidelines and receive a confident-sounding summary without knowing whether it was pulled from federal law, internal HR policy, or a generic web source.",
+      "literal": true
+     },
+     {
+      "autor": "Tom Greever",
+      "livro": "Articulating Design Decisions",
+      "txt": "Pare de tentar dar aula de machine learning ou explicar probabilidade matemática para cliente leigo; você vai soar pedante e criar insegurança. Aplique ao seu cliente a mesma <b>empatia</b> que você aplica ao usuário final: o que ele não está dizendo em voz alta é o medo de lançar algo que fale bobagem e queime a empresa dele no mercado. Explique a incerteza como <b>gestão de risco e limites de autonomia</b>. Mostre a ele: <i>'Se quisermos automação cega sem revisão humana, o risco de marca é alto; se colocarmos a interface sugerindo e o time dele aprovando em um clique, blindamos o negócio e aceleramos o trabalho em 80%'</i>. Decisão de design se vende alinhando com a meta e o medo de quem assina o cheque.",
+      "quote": "Ser um ótimo designer tem tanto a ver com habilidades de comunicação quanto com habilidades de design.",
+      "quote_orig": "Being a great designer is just as much about communication skills as it is about design chops.",
+      "literal": true
+     }
+    ],
+    "fontes": {},
+    "deriva": "",
+    "sugeridos": []
+   }
+  }
+ ]
+}
