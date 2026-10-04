@@ -17,3 +17,9 @@ compatibility_date = "2026-08-16"
 binding = "DB"
 database_name = "superlivros-db"
 database_id = "ffcc1e5d-792c-4393-ab01-aafb53efc3f5"
+
+# Retrieval: trechos do livro inteiro, busca por texto (docs/plano-retrieval.md)
+[[d1_databases]]
+binding = "TRECHOS"
+database_name = "superlivros-trechos"
+database_id = "3ad57fe0-f600-42fc-8239-284b170694f9"
