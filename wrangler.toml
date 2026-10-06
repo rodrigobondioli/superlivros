@@ -23,3 +23,8 @@ database_id = "ffcc1e5d-792c-4393-ab01-aafb53efc3f5"
 binding = "TRECHOS"
 database_name = "superlivros-trechos"
 database_id = "3ad57fe0-f600-42fc-8239-284b170694f9"
+
+# Pautas diarias: todo dia as 6h de Sao Paulo (9h UTC) o motor sorteia um livro
+# e extrai 5 pautas (handler "scheduled" no worker.js, docs/pautas-prompt-claude-code.md).
+[triggers]
+crons = ["0 9 * * *"]

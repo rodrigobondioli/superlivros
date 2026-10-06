@@ -41,6 +41,8 @@ Também dá para disparar isso de dentro de uma conversa: o card "Livros que for
 
 6. **Indexar o texto (retrieval)** — depois do retrieval ligado, livro novo só usa o texto inteiro se for indexado: `python3 docs/scripts/trechos.py --pdfs "<pasta Livros em PDF>"` (só processa o que falta) e, no Terminal do Mac, `node docs/scripts/indexar.mjs` (só manda os trechos novos).
 
+7. **Catálogo das pautas** — ao adicionar (ou tirar) livro, rode `python3 scripts/catalogo-pautas.py`. Ele regrava `data/catalogo-pautas.json` (hash, título, autor, categoria — é daí que o motor sorteia o livro do dia) e `data/catalogo-pautas-texto.ndjson` (o `txt`/ganchos/muda, usado só quando o livro não tem trechos no índice). Os dois arquivos vão no mesmo commit do `index.html`; o motor guarda o catálogo em cache por 6 horas, então um livro novo pode levar até isso pra entrar no sorteio.
+
 **Antes de ingerir, cheque duplicata por autor.** "O Mito do Empreendedor" foi recusado porque é a tradução de "The E-Myth Revisited", que já estava lá — e como a mesa deduplica por autor, a segunda entrada nunca seria convocada.
 
 ## Esquema do hash — inconsistência histórica

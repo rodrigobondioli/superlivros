@@ -343,9 +343,43 @@
   .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .mcard{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px 13px;cursor:pointer}.mcard:hover{border-color:var(--line2)}
   .mcard .mt{font-size:13.5px;font-weight:600;line-height:1.25}.mcard .ma{font-size:11.5px;color:var(--mut);margin-top:2px}.mcard .md{font-size:11px;color:var(--faint);margin-top:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  /* PAUTAS */
+  .pauhead{padding:17px 26px 0;border-bottom:1px solid var(--line);background:var(--bg)}
+  .pautop{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .pautop h1{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0;text-wrap:balance}
+  .pautop .sub{font-size:13px;color:var(--mut);line-height:1.45;text-wrap:pretty}
+  .pautop .sp{margin-left:auto}
+  .pauchips{display:flex;flex-wrap:wrap;gap:7px;padding:0 0 14px}
+  .pauchip{border:1px solid var(--line2);background:transparent;color:var(--faint);border-radius:999px;padding:5px 11px;font-size:12px;cursor:pointer;transition:border-color .12s,color .12s,background .12s}
+  .pauchip:hover{border-color:var(--mut);color:var(--mut)}
+  .pauchip.on{background:#12160a;border-color:#3a4020;color:var(--lime)}
+  .pauchip.on:hover{border-color:var(--lime)}
+  .pauaviso{margin:0 0 14px;background:#2a1a1a;border:1px solid #4a2a2a;color:#f0b4b7;border-radius:10px;padding:10px 13px;font-size:13px;line-height:1.5;text-wrap:pretty}
+  .paubody{flex:1;overflow-y:auto;padding:22px 26px 60px}
+  .paulist{max-width:760px;margin:0 auto}
+  .pauempty{color:var(--faint);font-size:14.5px;padding:40px 4px;line-height:1.6;text-wrap:pretty}
+  .paugrp{margin-bottom:34px}
+  .pauhd{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+  .paucov{width:44px;height:62px;object-fit:cover;border-radius:5px;background:var(--panel3);flex:0 0 auto;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  .paumeta{min-width:0}
+  .paudia{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-weight:700}
+  .paulivro{font-size:15.5px;font-weight:700;letter-spacing:-.01em;line-height:1.3;text-wrap:balance}
+  .pauautor{font-size:12.5px;color:var(--mut);margin-top:1px}
+  .pauta{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px;transition:border-color .12s}
+  .pauta:hover{border-color:var(--line2)}
+  .pauta.fav{border-color:#3a4020}
+  .pautipo{display:inline-block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:2px 9px;margin-bottom:9px}
+  .paugancho{font-size:17px;font-weight:800;letter-spacing:-.015em;line-height:1.3;margin:0 0 8px;color:var(--txt);text-wrap:balance}
+  .pauinsight{font-size:14.5px;line-height:1.6;color:#dcdce0;margin:0 0 8px;text-wrap:pretty}
+  .pauancora{font-size:12.5px;line-height:1.5;color:var(--faint);margin:0 0 10px;font-style:italic;text-wrap:pretty}
+  .pauacts{display:flex;gap:6px;flex-wrap:wrap}
+  .pauacts .repbtn+.repbtn{margin-left:0}
+  .pauacts .repbtn.ok{border-color:var(--lime);color:var(--lime)}
   /* MOBILE */
   @media(max-width:820px){
     .app{grid-template-columns:1fr}
+    .pauhead{padding:12px 16px 0}.paubody{padding:16px 16px 60px}
+    .pauchips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px;padding:0 16px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pauchips::-webkit-scrollbar{display:none}.pauchip{flex:0 0 auto}
     .side{position:fixed;left:0;top:0;bottom:0;width:270px;z-index:70;transform:translateX(-100%);transition:transform .2s}
     .side.open{transform:none;box-shadow:0 0 50px rgba(0,0,0,.7)}
     .mbackdrop.on{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:65}
@@ -413,6 +447,7 @@
       <div class="navitem on" id="nav-est" onclick="showView('estante')"><span class="ic">▦</span> Estante <span class="ct" id="bookcount"></span></div>
       <div class="navitem" id="nav-con" onclick="showView('conselheiros')"><span class="ic">✦</span> Conselheiros</div>
       <div class="navsub" onclick="novaAvulsa()">＋ conversa avulsa <span class="hintx">sem projeto</span></div>
+      <div class="navitem" id="nav-pau" onclick="showView('pautas')"><span class="ic">✎</span> Pautas</div>
     </div>
     <div class="ctx" id="ctx-est">
       <div class="ctxhd">Categorias</div>
@@ -433,7 +468,7 @@
   <main class="main">
     <div class="mtop">
       <button class="mb" onclick="openSidebar()">☰</button>
-      <div class="mseg"><button id="mseg-est" class="on" onclick="showView('estante')">Estante</button><button id="mseg-con" onclick="showView('conselheiros')">Conselheiros</button></div>
+      <div class="mseg"><button id="mseg-est" class="on" onclick="showView('estante')">Estante</button><button id="mseg-con" onclick="showView('conselheiros')">Conselheiros</button><button id="mseg-pau" onclick="showView('pautas')">Pautas</button></div>
     </div>
     <!-- ESTANTE -->
     <section class="view on" id="view-estante">
@@ -474,6 +509,20 @@
         <div class="replybar"><div class="imgstrip" style="display:none"></div><div class="replywrap"><button class="attachb" onclick="document.getElementById('imgfile').click()" title="Anexar imagem">📎</button><textarea class="reply" id="reply" placeholder="Responde, discorda, empurra… (@ fala só com um · Enter envia · cola print)"></textarea><button class="sendb" id="sendb" onclick="sendReply()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>
         <input type="file" id="imgfile" accept="image/*" multiple style="display:none">
       </section>
+    </section>
+
+    <!-- PAUTAS -->
+    <section class="view" id="view-pautas">
+      <div class="pauhead">
+        <div class="pautop">
+          <div><h1>Pautas</h1><div class="sub">Todo dia às 6h um livro sorteado vira 5 ideias brutas. Copia e leva pra onde você escreve.</div></div>
+          <div class="sp"></div>
+          <button class="btn lime" id="paugerar" onclick="pautasGerar()" title="Sorteia um livro agora e extrai 5 pautas">Gerar agora</button>
+        </div>
+        <div class="pauchips" id="pauchips" aria-label="Categorias que entram no sorteio"></div>
+        <div class="pauaviso" id="pauaviso" style="display:none"></div>
+      </div>
+      <div class="paubody" id="paubody"><div class="paulist" id="paulist"></div></div>
     </section>
   </main>
 </div>
@@ -519,6 +568,7 @@ const ORIENT_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/orient'
 const VERDICT_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/verdict';
 const ASK_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/ask';
 const LIBRARIAN_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/librarian';
+const PAUTAS_URL = 'https://broad-heart-33a0.rodrigobondioli.workers.dev/pautas';
 const GROUPS=[
   {name:'Negócio & Estratégia', cats:['Negócios & Estratégia','Growth & Aquisição','One Person Business','Founder-led Growth']},
   {name:'Produto & Design', cats:['Design','UX, UI & Produto']},
@@ -536,16 +586,14 @@ const COLORS=['#37B24D','#F08C00','#E64980','#8B5CF6','#22B8CF','#3B82F6','#E548
 
 /* ===== navegação + mobile ===== */
 function showView(v){
-  document.getElementById('view-estante').classList.toggle('on',v==='estante');
-  document.getElementById('view-conselheiros').classList.toggle('on',v==='conselheiros');
-  document.getElementById('nav-est').classList.toggle('on',v==='estante');
-  document.getElementById('nav-con').classList.toggle('on',v==='conselheiros');
-  document.getElementById('mseg-est').classList.toggle('on',v==='estante');
-  document.getElementById('mseg-con').classList.toggle('on',v==='conselheiros');
+  const vistas={estante:['view-estante','nav-est','mseg-est'],conselheiros:['view-conselheiros','nav-con','mseg-con'],pautas:['view-pautas','nav-pau','mseg-pau']};
+  if(!vistas[v])v='estante';
+  Object.keys(vistas).forEach(k=>vistas[k].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.toggle('on',k===v);}));
   document.getElementById('ctx-est').style.display=v==='estante'?'':'none';
   document.getElementById('ctx-con').style.display=v==='conselheiros'?'':'none';
   closeSidebar();
   lsSet('slos_view',v);
+  if(v==='pautas'&&!pautasCarregada&&pautasEstado!=='carregando')pautasCarregar();
 }
 function goEstante(){showView('estante');}
 function openSidebar(){document.getElementById('side').classList.add('open');document.getElementById('mbackdrop').classList.add('on');}
@@ -1274,6 +1322,125 @@ function mmRender(){let e=mmEl();if(!e){e=document.createElement('div');e.id='mm
 function mmMove(d){if(!mmItems.length)return;mmIdx=(mmIdx+d+mmItems.length)%mmItems.length;mmRender();const e=mmEl();if(e){const it=e.querySelectorAll('.mi')[mmIdx];if(it&&it.scrollIntoView)it.scrollIntoView({block:'nearest'});}}
 function mmPick(i){const m=mmItems[i];if(!m)return;const ta=document.getElementById('reply');const g=mmQuery();if(!g){mmClose();return;}const name=m.autor||m.titulo;const v=ta.value;ta.value=v.slice(0,g.start)+'@'+name+' '+v.slice(g.end);const pos=g.start+name.length+2;mmClose();ta.focus();try{ta.setSelectionRange(pos,pos);}catch(e){}ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,140)+'px';}
 
+/* ===== PAUTAS: todo dia um livro sorteado vira 5 ideias brutas, pra copiar e levar pra onde voce escreve =====
+   Tudo que vem do modelo entra com textContent, nunca innerHTML. */
+let pautas=[], pautasOff=new Set(), pautasHoje='', pautasEstado='', pautasCarregada=false, pautasBusy=false, pautasFiltroTimer=null;
+function pautasCats(){const ordem=[];GROUPS.forEach(g=>g.cats.forEach(c=>ordem.push(c)));const vistas=new Set(BOOKS.map(b=>b.cat).filter(Boolean));const out=ordem.filter(c=>vistas.has(c));vistas.forEach(c=>{if(out.indexOf(c)<0)out.push(c);});return out;}
+function pauEl(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function pauBtn(cls,txt,fn){const b=pauEl('button',cls,txt);b.type='button';b.onclick=fn;return b;}
+async function pautasCarregar(){
+  pautasEstado='carregando';renderPautas();
+  try{
+    const r=await fetch(PAUTAS_URL+'?dias=14');
+    if(!r.ok)throw new Error('http '+r.status);
+    const j=await r.json();
+    pautas=Array.isArray(j.pautas)?j.pautas:[];pautasOff=new Set(Array.isArray(j.cats_off)?j.cats_off:[]);pautasHoje=j.hoje||'';
+    pautasEstado='ok';pautasCarregada=true;
+  }catch(e){pautasEstado='erro:'+String(e.message||e);}
+  renderPautas();
+}
+function pautaDiaLabel(dia){
+  if(dia&&dia===pautasHoje)return 'Hoje';
+  const d=new Date((dia||'')+'T12:00:00');if(isNaN(d))return dia||'';
+  const hoje=pautasHoje?new Date(pautasHoje+'T12:00:00'):null;
+  if(hoje&&Math.round((hoje-d)/86400000)===1)return 'Ontem';
+  return d.toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}).replace(/\./g,'');
+}
+function pautasGrupos(){
+  const map=new Map();
+  pautas.filter(p=>p.status!=='descartada').forEach(p=>{
+    const k=p.dia+'|'+p.livro;
+    if(!map.has(k))map.set(k,{dia:p.dia,livro:p.livro,titulo:p.livro_titulo||'',autor:p.livro_autor||'',cat:p.cat||'',primeiro:p.id,itens:[]});
+    const g=map.get(k);g.itens.push(p);if(p.id<g.primeiro)g.primeiro=p.id;
+  });
+  const gs=[...map.values()];
+  gs.forEach(g=>g.itens.sort((a,b)=>a.id-b.id));
+  // dia mais recente primeiro; no mesmo dia, o grupo gerado por ultimo fica no topo
+  return gs.sort((a,b)=>a.dia===b.dia?(b.primeiro-a.primeiro):(a.dia<b.dia?1:-1));
+}
+function renderPautasChips(){
+  const el=document.getElementById('pauchips');if(!el)return;el.textContent='';
+  pautasCats().forEach(c=>{const on=!pautasOff.has(c);const b=pauBtn('pauchip'+(on?' on':''),c,()=>pautasToggleCat(c));b.setAttribute('aria-pressed',on?'true':'false');b.dataset.cat=c;b.title=on?'Entra no sorteio. Clique pra tirar.':'Fora do sorteio. Clique pra ligar.';el.appendChild(b);});
+}
+function pautasToggleCat(c){if(pautasOff.has(c))pautasOff.delete(c);else pautasOff.add(c);renderPautasChips();renderPautasAviso();clearTimeout(pautasFiltroTimer);pautasFiltroTimer=setTimeout(pautasSalvarFiltro,600);}
+async function pautasSalvarFiltro(){
+  try{const r=await fetch(PAUTAS_URL+'/filtro',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cats_off:[...pautasOff]})});if(!r.ok)throw new Error('http '+r.status);}
+  catch(e){toast('Não consegui salvar o filtro ('+String(e.message||e)+'). Tenta de novo.');}
+}
+function pautasTudoOff(){const cs=pautasCats();return cs.length>0&&cs.every(c=>pautasOff.has(c));}
+function renderPautasAviso(){const el=document.getElementById('pauaviso');if(!el)return;const off=pautasTudoOff();el.style.display=off?'':'none';el.textContent=off?'Todas as categorias estão desligadas: amanhã às 6h não sai pauta nenhuma, e o "Gerar agora" não tem de onde sortear. Liga pelo menos uma.':'';}
+function pautaTexto(p){return (p.gancho||'')+'\n\n'+(p.insight||'')+'\n\n— '+(p.livro_titulo||'')+', '+(p.livro_autor||'');}
+function copiarTexto(txt,btn,rotulo){
+  const feito=()=>{if(btn){const a=btn.textContent;btn.textContent='✓ copiado';btn.classList.add('ok');setTimeout(()=>{btn.textContent=rotulo||a;btn.classList.remove('ok');},1500);}};
+  const naMao=()=>{try{const t=document.createElement('textarea');t.value=txt;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();const ok=document.execCommand('copy');document.body.removeChild(t);if(ok){feito();return true;}}catch(e){}return false;};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(feito).catch(()=>{if(!naMao())toast('Não consegui copiar. Seleciona o texto e usa Cmd+C.');});
+  else if(!naMao())toast('Não consegui copiar. Seleciona o texto e usa Cmd+C.');
+}
+function pautasCopiar(id,btn){const p=pautas.find(x=>x.id===id);if(!p)return;copiarTexto(pautaTexto(p),btn,'⧉ copiar');}
+async function pautasStatus(id,status){
+  const p=pautas.find(x=>x.id===id);if(!p)return;const antes=p.status;p.status=status;renderPautas();
+  try{const r=await fetch(PAUTAS_URL+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})});if(!r.ok)throw new Error('http '+r.status);}
+  catch(e){p.status=antes;renderPautas();toast('Não consegui salvar ('+String(e.message||e)+').');}
+}
+function pautasFav(id){const p=pautas.find(x=>x.id===id);if(!p)return;pautasStatus(id,p.status==='fav'?'nova':'fav');}
+function pautasDescartar(id){pautasStatus(id,'descartada');}
+async function pautasGerar(){
+  if(pautasBusy)return;
+  if(pautasTudoOff()){toast('Liga pelo menos uma categoria pra eu sortear um livro.');return;}
+  pautasBusy=true;renderPautas();
+  try{
+    const r=await fetch(PAUTAS_URL+'/gerar',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!Array.isArray(j.pautas)||!j.pautas.length)throw new Error(j.error?(j.error+(j.detail?' — '+j.detail:'')):('http '+r.status));
+    const ids=new Set(pautas.map(p=>p.id));j.pautas.forEach(p=>{if(!ids.has(p.id))pautas.push(p);});
+    if(j.hoje)pautasHoje=j.hoje;pautasCarregada=true;pautasEstado='ok';
+    pautasBusy=false;renderPautas();
+    const body=document.getElementById('paubody');if(body)body.scrollTop=0;
+    toast('5 pautas novas de “'+((j.livro&&j.livro.titulo)||'um livro')+'”.');
+  }catch(e){
+    pautasBusy=false;renderPautas();
+    const m=String(e.message||e);
+    toast(m.indexOf('tudo_desligado')===0?'Liga pelo menos uma categoria pra eu sortear um livro.':(m.indexOf('limite')===0?'Muitas chamadas nesta hora. Tenta mais tarde.':'Não consegui gerar agora ('+m+').'));
+  }
+}
+function pautaEl(p){
+  const a=pauEl('article','pauta'+(p.status==='fav'?' fav':''));a.dataset.id=p.id;
+  a.appendChild(pauEl('span','pautipo',p.tipo||''));
+  a.appendChild(pauEl('h3','paugancho',p.gancho||''));
+  a.appendChild(pauEl('p','pauinsight',p.insight||''));
+  if(p.ancora)a.appendChild(pauEl('p','pauancora',p.ancora));
+  const acts=pauEl('div','pauacts');
+  const c=pauBtn('repbtn pau-copiar','⧉ copiar',()=>pautasCopiar(p.id,c));c.title='Copia gancho, insight e a fonte';
+  const f=pauBtn('repbtn pau-fav'+(p.status==='fav'?' ok':''),p.status==='fav'?'★ favorita':'☆ favoritar',()=>pautasFav(p.id));
+  const d=pauBtn('repbtn pau-descartar','✕ descartar',()=>pautasDescartar(p.id));
+  acts.append(c,f,d);a.appendChild(acts);return a;
+}
+function pautaGrupoEl(g){
+  const b=BOOKS.find(x=>x.hash===g.livro);
+  const w=pauEl('section','paugrp');w.dataset.livro=g.livro;
+  const hd=pauEl('div','pauhd');
+  const img=document.createElement('img');img.className='paucov';img.alt='';img.loading='lazy';img.decoding='async';img.src=(b&&b.cover)||genCover(g.titulo||(b&&b.titulo)||'',g.livro);
+  hd.appendChild(img);
+  const meta=pauEl('div','paumeta');
+  meta.appendChild(pauEl('div','paudia',pautaDiaLabel(g.dia)));
+  meta.appendChild(pauEl('div','paulivro',g.titulo||(b&&b.titulo)||''));
+  meta.appendChild(pauEl('div','pauautor',(g.autor||(b&&b.autor)||'')+(g.cat?' · '+g.cat:'')));
+  hd.appendChild(meta);w.appendChild(hd);
+  g.itens.forEach(p=>w.appendChild(pautaEl(p)));
+  return w;
+}
+function renderPautas(){
+  renderPautasChips();renderPautasAviso();
+  const btn=document.getElementById('paugerar');if(btn){btn.disabled=pautasBusy;btn.textContent=pautasBusy?'Sorteando…':'Gerar agora';}
+  const el=document.getElementById('paulist');if(!el)return;el.textContent='';
+  if(pautasBusy){const l=pauEl('div','libload');l.appendChild(pauEl('div','libspin'));l.appendChild(pauEl('span',null,'Sorteando um livro e lendo ele por dentro… uns 30 segundos.'));el.appendChild(l);}
+  if(pautasEstado==='carregando'){const l=pauEl('div','libload');l.appendChild(pauEl('div','libspin'));l.appendChild(pauEl('span',null,'Buscando as pautas…'));el.appendChild(l);return;}
+  if(pautasEstado.indexOf('erro')===0){const e=pauEl('div','liberr','Não consegui buscar as pautas agora ('+pautasEstado.slice(5)+'). ');e.appendChild(pauBtn('btn sm','tentar de novo',pautasCarregar));el.appendChild(e);return;}
+  const grupos=pautasGrupos();
+  if(!grupos.length){if(!pautasBusy){const v=pauEl('div','pauempty','As primeiras pautas chegam amanhã às 6h — ou gere agora.');v.appendChild(document.createElement('br'));const b=pauBtn('btn sm lime','Gerar agora',pautasGerar);b.style.marginTop='12px';v.appendChild(b);el.appendChild(v);}return;}
+  grupos.forEach(g=>el.appendChild(pautaGrupoEl(g)));
+}
+
 /* ===== mentes ===== */
 function openMentes(){renderMentesGrid();document.getElementById('ov').classList.add('on');}
 function renderMentesGrid(){const s=document.getElementById('sheet');s.innerHTML=`<button class="x" onclick="closeSheet()">✕</button><div class="h2" style="font-size:18px;margin-bottom:3px">O Conselho</div><div style="font-size:12px;color:var(--faint);margin-bottom:16px">${MENTES.length} mentes fundadas no texto real dos livros.</div><div class="mgrid">${MENTES.map((m,i)=>`<div class="mcard" onclick="openDossie(${i})"><div class="mt">${esc(m.titulo)}</div><div class="ma">${esc(m.autor)}</div><div class="md">${esc(m.tese)}</div></div>`).join('')}</div>`;s.scrollTop=0;}
@@ -1296,7 +1463,7 @@ document.getElementById('impfile').addEventListener('change',e=>{importState(e.t
 loadUserLib();
 (function(){const mc=document.getElementById('menteCount');if(mc)mc.textContent=MENTES.length;})();
 loadFavs();loadWishlist();renderCats();renderGrid();loadP();renderProjects();
-try{const v=localStorage.getItem('slos_view');if(v==='conselheiros')showView('conselheiros');}catch(e){}
+try{const v=localStorage.getItem('slos_view');if(v==='conselheiros'||v==='pautas')showView(v);}catch(e){}
 </script>
 </body>
 </html>

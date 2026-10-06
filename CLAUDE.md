@@ -70,6 +70,8 @@ io.open('/tmp/chk.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</sc
 " && node --check /tmp/chk.js
 ```
 
+**1b. Os testes automatizados:** `node --test testes/*.test.mjs` (motor das pautas com SQLite real e Gemini simulado; aba Pautas com Playwright achado em `~/Developer/*/node_modules` ou `PW_MODULO=`).
+
 **2. Teste headless com Playwright.** Chromium em `/opt/pw-browsers/chromium` (ou o do sistema). Carregue `file://.../index.html`, monte o estado direto nas globais (`mesa`, `thread`, `projects`, `active`, `mesaLocked`), chame as funções e verifique o resultado. Sempre capture `pageerror`.
 
 > **Lição cara, aprendida na marra:** testar que um elemento *existe no DOM* não prova nada. Um botão foi entregue "testado" e estava invisível na tela onde o usuário precisava dele, porque vivia dentro de uma `<section>` com `display:none`. **Teste visibilidade e posição**, não presença:
@@ -105,7 +107,10 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 |---|---|---|
 | `index.html` | 10,5 MB | **o site em produção** |
 | `worker/worker.js` | 37 KB | **o motor** |
-| `wrangler.toml` | — | deploy do motor: nome, `main`, compat date, binding do D1 |
+| `wrangler.toml` | — | deploy do motor: nome, `main`, compat date, bindings do D1, cron das pautas |
+| `scripts/catalogo-pautas.py` | — | gera `data/catalogo-pautas.json` (+ `-texto.ndjson`) a partir de `BOOKS`; rodar ao mexer na estante |
+| `data/` | 2,3 MB | catálogo publicado pelo site e lido pelo motor (pautas) |
+| `testes/` | — | `node --test testes/*.test.mjs` — motor das pautas com SQLite real + Gemini simulado, e a aba com Playwright |
 | `classic.html` | 9,5 MB | interface antiga; tem o sync D1 funcionando e é a única que chama `/gen` |
 | `os.html` | 223 KB | variante; chama só `/council` |
 
@@ -115,17 +120,28 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 
 `broad-heart-33a0.rodrigobondioli.workers.dev` · modelo `gemini-flash-latest` · D1 `superlivros-db` no binding `DB` · `GEMINI_API_KEY` como Secret (não vai no `wrangler.toml`, sobrevive a deploy).
 
-Rotas: `/council` `/brief` `/mente` `/cast` `/orient` `/verdict` `/ask` `/librarian` `/gen` + GET/POST na raiz (estado no D1).
+Rotas: `/council` `/brief` `/mente` `/cast` `/orient` `/verdict` `/ask` `/librarian` `/gen` + GET/POST na raiz (estado no D1). Pautas: `GET /pautas?dias=14`, `POST /pautas/filtro`, `POST /pautas/gerar` (cobrada), `POST /pautas/status`, mais o handler `scheduled` (cron diário).
 
 - **A citação (`quote`) só existe no `/council`.** `/ask` devolve só `resposta`.
 - Portão em todas as rotas: allowlist de origem (curl sem `Origin` → 403), 150 chamadas por IP por hora no D1 (→ 429), corpo acima de 3 MB (→ 413). Se o D1 cair, o limite é ignorado e o conselho continua respondendo.
-- Tabelas do D1: `state` (sync), `rl` (limite), `log` (uma linha por chamada cobrada: rota, IP, bytes, latência, status). As duas últimas se criam sozinhas.
+- Tabelas do D1: `state` (sync), `rl` (limite), `log` (uma linha por chamada cobrada: rota, IP, bytes, latência, status), `pautas` (as 5 do dia) e `config` (`pautas_cats_off`). Fora `state`, todas se criam sozinhas no `ensureSchema`.
 - **`maxOutputTokens`:** 3072 por padrão, **8192 no `/council`**. Resposta cortada devolve `muito_longo` (lê o `finishReason`), não um `parse` genérico.
 
 **Ler o log do D1 exige terminal interativo** — o `wrangler` num shell não interativo pede `CLOUDFLARE_API_TOKEN`. Peça ao Rodrigo:
 ```
 npx wrangler d1 execute superlivros-db --remote --command "SELECT datetime(ts/1000,'unixepoch','-3 hours') h, rota, status, ms FROM log ORDER BY ts DESC LIMIT 10"
 ```
+
+## Pautas (aba + cron)
+
+Todo dia às 6h de São Paulo (`crons = ["0 9 * * *"]`) o `scheduled` sorteia **1 livro** das categorias ligadas e extrai **5 pautas neutras** em duas chamadas no Flash (15 candidatas → o crítico escolhe 5). Espec completa em `docs/pautas-prompt-claude-code.md`. O que morde:
+
+- **O motor não conhece a estante.** Ele baixa `data/catalogo-pautas.json` do site (cache de 6h). Mexeu em `BOOKS` → `python3 scripts/catalogo-pautas.py` e commita `data/`. Livro adicionado pelo app (só no `localStorage`) nunca entra no sorteio.
+- **Trechos:** rowids pelo índice (`livro:"<hash>"`), ordenados pelo número do id, fora dos 4% iniciais e 6% finais, 14 espalhados. Sem trecho (escaneado) → `data/catalogo-pautas-texto.ndjson`, lido por busca de texto na linha do livro, **sem parsear os 2 MB** — o plano gratuito dá 10 ms de CPU por chamada. Sem nada → sorteia outro.
+- **Idempotente:** se já há pautas `origem='cron'` no dia, o cron não faz nada. Gera manual não bloqueia o cron. Tudo desligado → nada gerado, `log` com `cron:pautas` e status 204.
+- `config.pautas_cats_off` guarda as categorias **desligadas**: categoria nova nasce ligada.
+- No front, texto do modelo entra só por `textContent` (ao contrário do conselho). Copiar manda `gancho + insight + "— livro, autor"`. Descartada some da lista mas fica no banco.
+- **Ler o log do cron** (terminal interativo): `... FROM log WHERE rota='cron:pautas'`.
 
 ## Estado do usuário
 
