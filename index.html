@@ -1433,7 +1433,7 @@ function renderPautas(){
   renderPautasChips();renderPautasAviso();
   const btn=document.getElementById('paugerar');if(btn){btn.disabled=pautasBusy;btn.textContent=pautasBusy?'Sorteando…':'Gerar agora';}
   const el=document.getElementById('paulist');if(!el)return;el.textContent='';
-  if(pautasBusy){const l=pauEl('div','libload');l.appendChild(pauEl('div','libspin'));l.appendChild(pauEl('span',null,'Sorteando um livro e lendo ele por dentro… uns 30 segundos.'));el.appendChild(l);}
+  if(pautasBusy){const l=pauEl('div','libload');l.appendChild(pauEl('div','libspin'));l.appendChild(pauEl('span',null,'Sorteando um livro e lendo ele por dentro… leva um ou dois minutos.'));el.appendChild(l);}
   if(pautasEstado==='carregando'){const l=pauEl('div','libload');l.appendChild(pauEl('div','libspin'));l.appendChild(pauEl('span',null,'Buscando as pautas…'));el.appendChild(l);return;}
   if(pautasEstado.indexOf('erro')===0){const e=pauEl('div','liberr','Não consegui buscar as pautas agora ('+pautasEstado.slice(5)+'). ');e.appendChild(pauBtn('btn sm','tentar de novo',pautasCarregar));el.appendChild(e);return;}
   const grupos=pautasGrupos();

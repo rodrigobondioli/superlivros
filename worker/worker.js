@@ -742,7 +742,8 @@ Gere 15 candidatas, no máximo 3 de cada tipo:
 Cada pauta:
 - gancho: até 15 palavras, a ideia em uma linha que para quem lê
 - insight: 2 a 3 frases, até 60 palavras, a ideia com a substância do livro
-- ancora: o conceito, caso ou passagem específica dos trechos que sustenta a pauta
+- ancora: o conceito, caso ou passagem específica que sustenta a pauta, dita em si
+  (nunca o número do trecho: "trecho [3]" não significa nada para quem lê)
 - tipo: um dos tipos acima
 
 Linguagem direta e neutra (sem puxar para nicho nenhum).
@@ -776,7 +777,9 @@ CANDIDATAS: ${JSON.stringify(candidatas)}`;
 function limpaPauta(p) {
   if (!p || typeof p !== "object") return null;
   const tipo = String(p.tipo || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
-  const gancho = String(p.gancho || "").trim(), insight = String(p.insight || "").trim(), ancora = String(p.ancora || "").trim();
+  const gancho = String(p.gancho || "").trim(), insight = String(p.insight || "").trim();
+  // o modelo as vezes aponta "no trecho [3]": o numero e interno do prompt, nao diz nada pra quem le
+  const ancora = String(p.ancora || "").replace(/\s*,?\s*(?:\b(?:n[oa]s?|d[oa]s?|conforme|ver|vide)\s+)?trechos?\s*\[\d+\](?:\s*(?:,|e)\s*\[\d+\])*/gi, "").replace(/\s+([.,;])/g, "$1").replace(/[,;]\s*$/, "").replace(/^[\s:;,\u2013-]+/, "").trim();
   if (PAUTAS_TIPOS.indexOf(tipo) < 0 || gancho.length < 8 || insight.length < 20) return null;
   return { tipo: tipo, gancho: gancho.slice(0, 220), insight: insight.slice(0, 800), ancora: ancora.slice(0, 500) };
 }

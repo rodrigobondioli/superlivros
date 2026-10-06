@@ -60,7 +60,7 @@ globalThis.fetch = async (url, init) => {
     }
     if (prompt.includes("editor exigente")) {
       if (mock.criticoQuebrado) return respostaGemini(null, "{\"pautas\": [ quebrado");
-      return respostaGemini({ pautas: Array.from({ length: 5 }, (_, i) => ({ tipo: TIPOS[i], gancho: `Escolhida ${i + 1}`, insight: `Insight escolhido ${i + 1}, reescrito mais afiado pelo critico.`, ancora: "Capitulo " + (i + 1) })) });
+      return respostaGemini({ pautas: Array.from({ length: 5 }, (_, i) => ({ tipo: TIPOS[i], gancho: `Escolhida ${i + 1}`, insight: `Insight escolhido ${i + 1}, reescrito mais afiado pelo critico.`, ancora: `O caso do capitulo ${i + 1}, no trecho [${i + 1}].` })) });
     }
     return new Response(JSON.stringify({ error: { message: "prompt desconhecido" } }), { status: 400 });
   }
@@ -103,6 +103,7 @@ test("1. o cron gera 5 pautas de um livro de categoria ligada", async () => {
   assert.ok(ps.every((p) => p.cat === "Design" && p.origem === "cron" && p.status === "nova" && p.dia === hojeSP()));
   assert.ok(ps.every((p) => p.livro === ps[0].livro && p.livro_titulo && p.gancho && p.insight));
   assert.equal(new Set(ps.map((p) => p.tipo)).size, 5, "5 tipos diferentes vindos do critico");
+  assert.deepEqual(ps.map((p) => p.ancora), [1, 2, 3, 4, 5].map((i) => `O caso do capitulo ${i}.`), "a ancora perde o numero do trecho");
   const log = db.prepare("SELECT rota, status, modelo FROM log").all();
   assert.deepEqual(log.map((l) => [l.rota, l.status, l.modelo]), [["cron:pautas", 200, FLASH]]);
 });
