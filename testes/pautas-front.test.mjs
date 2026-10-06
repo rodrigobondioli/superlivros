@@ -90,6 +90,11 @@ test("a aba Pautas esta no menu, visivel e clicavel; abre a lista por dia, mais 
   assert.equal(await page.$eval(".pauta .pauinsight", (e) => e.innerHTML.includes("&lt;b&gt;")), true, "texto do modelo entra como texto, nao como HTML");
   assert.ok((await page.$$eval(".pauta .pautipo", (els) => els.map((e) => e.textContent))).includes("contraintuitivo"));
   assert.equal(await page.$eval("#view-pautas", (e) => e.querySelector(".paucov").getAttribute("src").length > 0), true, "capa no cabecalho");
+  const [c1, c2, c3] = await page.$$eval(".paugrp:first-child .pauta", (els) => els.slice(0, 3).map((e) => { const r = e.getBoundingClientRect(); return { top: r.top, left: r.left, right: r.right, bottom: r.bottom }; }));
+  assert.ok(c1.top === c2.top && c2.left > c1.right, "no desktop, dois cards por linha: " + JSON.stringify([c1, c2]));
+  assert.ok(c3.top >= c1.bottom && c3.left === c1.left, "o terceiro vai pra linha de baixo");
+  const lista = await page.$eval("#paulist", (e) => { const r = e.getBoundingClientRect(); return { w: r.width, pai: e.parentElement.getBoundingClientRect().width }; });
+  assert.ok(lista.w > 900 && lista.pai - lista.w < 60, "a lista usa a largura toda, como a estante: " + JSON.stringify(lista));
 });
 
 test("o chip persiste depois de recarregar", async () => {
@@ -175,6 +180,11 @@ test("no celular, Pautas esta no segmento de cima e abre", async () => {
   await page.click("#mseg-pau");
   await page.waitForSelector(".pauempty");
   assert.ok((await visivel(page, "#paugerar")).dentroDaTela);
+  motor.pautas = novoMotor().pautas;
+  await page.reload();
+  await page.waitForSelector(".pauta");
+  const [m1, m2] = await page.$$eval(".paugrp:first-child .pauta", (els) => els.slice(0, 2).map((e) => { const r = e.getBoundingClientRect(); return { top: r.top, left: r.left, bottom: r.bottom }; }));
+  assert.ok(m2.top >= m1.bottom && m2.left === m1.left, "no celular, um card por linha: " + JSON.stringify([m1, m2]));
   await page.setViewportSize({ width: 1280, height: 800 });
 });
 
