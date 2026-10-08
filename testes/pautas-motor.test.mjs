@@ -51,7 +51,11 @@ globalThis.fetch = async (url, init) => {
   if (u.startsWith(SITE + "/data/catalogo-pautas-texto.ndjson")) return new Response(TEXTO, { status: 200 });
   if (u.includes("generativelanguage.googleapis.com")) {
     await new Promise((r) => setTimeout(r, 2));   // ts diferente a cada geracao
-    const prompt = JSON.parse(init.body).contents[0].parts[0].text;
+    const corpo = JSON.parse(init.body), gc = corpo.generationConfig || {};
+    // os proximos modelos devolvem 400 INVALID_ARGUMENT com estes parametros (aviso do Google, 10/2026)
+    const aposentados = ["temperature", "topP", "topK", "thinkingBudget"].filter((k) => k in gc || (gc.thinkingConfig && k in gc.thinkingConfig));
+    if (aposentados.length) return new Response(JSON.stringify({ error: { code: 400, status: "INVALID_ARGUMENT", message: "parametro aposentado: " + aposentados } }), { status: 400 });
+    const prompt = corpo.contents[0].parts[0].text;
     mock.prompts.push(prompt);
     if (prompt.includes("Gere 15 candidatas")) {
       if (mock.candidatasQuebradas > 0) { mock.candidatasQuebradas--; return respostaGemini(null, "isso nao e json {"); }

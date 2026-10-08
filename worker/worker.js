@@ -70,7 +70,7 @@ async function registra(env, d) {
 
 async function askGeminiModel(env, model, prompt, images, maxTokens, timeoutMs) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`;
-  const parts = [{ text: prompt }]; if (Array.isArray(images)) images.forEach(function (im) { if (im && im.data) parts.push({ inline_data: { mime_type: im.mime || "image/jpeg", data: im.data } }); }); const body = { contents: [{ role: "user", parts: parts }], generationConfig: { temperature: 0.85, topP: 0.95, maxOutputTokens: maxTokens || 8192, responseMimeType: "application/json" } };
+  const parts = [{ text: prompt }]; if (Array.isArray(images)) images.forEach(function (im) { if (im && im.data) parts.push({ inline_data: { mime_type: im.mime || "image/jpeg", data: im.data } }); }); const body = { contents: [{ role: "user", parts: parts }], generationConfig: { maxOutputTokens: maxTokens || 8192, responseMimeType: "application/json" } };
   const ac = timeoutMs ? new AbortController() : null;
   const tmo = ac ? setTimeout(function () { ac.abort(); }, timeoutMs) : null;
   let r;
@@ -573,7 +573,7 @@ async function askGemini(env, sys, user) {
   const body = {
     systemInstruction: { parts: [{ text: sys }] },
     contents: [{ role: "user", parts: [{ text: user }] }],
-    generationConfig: { temperature: 0.9, maxOutputTokens: 8192, responseMimeType: "application/json" }
+    generationConfig: { maxOutputTokens: 8192, responseMimeType: "application/json" }
   };
   const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json();
