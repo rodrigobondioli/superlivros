@@ -138,7 +138,9 @@ async function askClaudeModel(env, model, prompt, images, maxTokens, timeoutMs, 
   const tmo = ac ? setTimeout(function () { ac.abort(); }, timeoutMs) : null;
   let r, j;
   try {
-    r = await fetch(CLAUDE_URL, { method: "POST", headers: { "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "anthropic-beta": "server-side-fallback-2026-07-01", "content-type": "application/json" }, body: JSON.stringify(body), signal: ac ? ac.signal : undefined });
+    const hd = { "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "anthropic-beta": "server-side-fallback-2026-07-01", "content-type": "application/json" };
+    if (env.ANTHROPIC_WORKSPACE_ID) hd["anthropic-workspace-id"] = env.ANTHROPIC_WORKSPACE_ID;   // chave sem workspace exige este cabecalho
+    r = await fetch(CLAUDE_URL, { method: "POST", headers: hd, body: JSON.stringify(body), signal: ac ? ac.signal : undefined });
     j = await r.json().catch(function () { return null; });
   }
   catch (e) { throw { code: (e && e.name === "AbortError") ? "tempo_esgotado" : "rede", detail: model }; }
@@ -146,7 +148,9 @@ async function askClaudeModel(env, model, prompt, images, maxTokens, timeoutMs, 
   if (!r.ok) {
     const er = (j && j.error) || {};
     const credito = er.type === "billing_error" || /credit balance/i.test(er.message || "");
-    throw { code: credito ? "sem_credito" : "claude_error", status: r.status, detail: er.message || ("http " + r.status) };
+    // chave mal configurada (sem workspace, workspace errado) e problema de conta, como o 401: cai no Gemini
+    const chave = r.status === 400 && /api key|workspace/i.test(er.message || "");
+    throw { code: credito ? "sem_credito" : chave ? "chave_claude" : "claude_error", status: r.status, detail: er.message || ("http " + r.status) };
   }
   const usage = (j && j.usage) || {};
   if (meta) { meta.modelo = (j && j.model) || model; meta.tok_in = (usage.input_tokens | 0) + (usage.cache_creation_input_tokens | 0) + (usage.cache_read_input_tokens | 0); meta.tok_out = usage.output_tokens | 0; }
@@ -169,7 +173,7 @@ const IA_ROTAS = {
 };
 function caiNoGemini(e) {
   if (!e) return false;
-  if (["rede", "tempo_esgotado", "sem_credito", "recusa"].indexOf(e.code) > -1) return true;
+  if (["rede", "tempo_esgotado", "sem_credito", "recusa", "chave_claude"].indexOf(e.code) > -1) return true;
   return e.code === "claude_error" && (e.status === 429 || e.status >= 500 || e.status === 401 || e.status === 403);
 }
 async function askIA(env, rota, prompt, images, maxTokens, timeoutMs) {

@@ -131,8 +131,9 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 | todo o resto, inclusive `termosDeBusca` | — | Gemini, como antes |
 
 - **`askIA(env, rota, …)` é o único ponto que escolhe o provedor.** Interruptor por rota no `wrangler.toml`, `[vars]`: `IA_COUNCIL`, `IA_VERDICT`, `IA_PAUTAS` = `"claude"` ou `"gemini"`. Trocar a palavra exige `wrangler deploy`. Sem `ANTHROPIC_API_KEY`, tudo vai pro Gemini.
-- **Fallback:** rede, tempo esgotado, 429, 5xx, 401/403, crédito esgotado e recusa dos filtros de segurança refazem a chamada no Gemini equivalente e devolvem `caiu` (a tela avisa "o Claude não respondeu agora"). `muito_longo`, `parse` e outros 400 **não** caem: é bug nosso e tem que aparecer. Antes disso a própria API já tenta outro Claude em recusa (`fallbacks: "default"`).
+- **Fallback:** rede, tempo esgotado, 429, 5xx, 401/403, chave mal configurada (400 citando API key ou workspace), crédito esgotado e recusa dos filtros de segurança refazem a chamada no Gemini equivalente e devolvem `caiu` (a tela avisa "o Claude não respondeu agora"). `muito_longo`, `parse` e outros 400 **não** caem: é bug nosso e tem que aparecer. Antes disso a própria API já tenta outro Claude em recusa (`fallbacks: "default"`).
 - `askClaudeModel` tem o mesmo contrato do `askGeminiModel`. O Claude não tem `responseMimeType`: o prompt ganha no fim "Responda apenas com o JSON pedido…" e o parse tira cercas e pega o primeiro `{…}`. O pensamento adaptativo conta no `max_tokens`, por isso o Claude recebe o dobro do teto do Gemini (mínimo 16.000).
+- **A chave precisa ser de um workspace.** Chave da organização sem workspace devolve 400 ("not scoped to a workspace"). Ou crie a chave dentro de um workspace no Console, ou guarde o ID dele no secret `ANTHROPIC_WORKSPACE_ID` (vai no cabeçalho `anthropic-workspace-id`).
 - **Banco de teste sem deploy:** cabeçalho `X-IA: claude|gemini` + `X-Index-Key` (o mesmo segredo do `/indexar`) força o provedor. Sem a chave certa, é ignorado.
 - A tela espera 130 s no conselho (230 s com ⚡): o tempo do Claude mais a refeita no Gemini.
 

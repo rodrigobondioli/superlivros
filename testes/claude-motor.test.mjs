@@ -64,6 +64,7 @@ globalThis.fetch = async (url, init) => {
     if (m === 401) return erroClaude(401, "authentication_error", "invalid x-api-key");
     if (m === "credito") return erroClaude(400, "invalid_request_error", "Your credit balance is too low to access the Anthropic API.");
     if (m === 400) return erroClaude(400, "invalid_request_error", "outra coisa");
+    if (m === "workspace") return erroClaude(400, "invalid_request_error", "This API key is not scoped to a workspace, so this request must include the anthropic-workspace-id header with the ID of the workspace to use.");
     if (m === "max_tokens") return claudeResp('{"replies":[{"autor":"Autora A","txt":"cor', { model: body.model, stop_reason: "max_tokens" });
     if (m === "recusa") return claudeResp("", { model: body.model, content: [], stop_reason: "refusal", stop_details: { type: "refusal", category: "general_harms" } });
     if (m === "cercas") return claudeResp("Aqui está o JSON:\n```json\n" + JSON.stringify(TUDO) + "\n```\nQualquer coisa me fala.", { model: body.model });
@@ -189,7 +190,7 @@ test("5. max_tokens da muito_longo, sem cair no Gemini; JSON ilegivel da parse, 
 });
 
 test("6. 429, 5xx, tempo, rede, 401, credito e recusa caem no Gemini equivalente e devolvem caiu", async () => {
-  const casos = [[429, "claude_429"], [500, "claude_500"], [529, "claude_529"], ["timeout", "tempo_esgotado"], ["rede", "rede"], [401, "claude_401"], ["credito", "sem_credito"], ["recusa", "recusa"]];
+  const casos = [[429, "claude_429"], [500, "claude_500"], [529, "claude_529"], ["timeout", "tempo_esgotado"], ["rede", "rede"], [401, "claude_401"], ["credito", "sem_credito"], ["recusa", "recusa"], ["workspace", "chave_claude"]];
   for (const [modo, caiu] of casos) {
     sim.claude = modo; sim.chamadas = [];
     const r = await conselho();
@@ -204,6 +205,14 @@ test("6. 429, 5xx, tempo, rede, 401, credito e recusa caem no Gemini equivalente
   sim.chamadas = [];
   const p = await chama("/pautas/gerar", {});
   assert.equal(p.status, 200); assert.equal(p.j.modelo, FLASH); assert.equal(p.j.caiu, "claude_500");
+});
+
+test("6b. ANTHROPIC_WORKSPACE_ID, quando existe, vai no cabecalho anthropic-workspace-id", async () => {
+  await conselho();
+  assert.equal(so("claude")[0].headers["anthropic-workspace-id"], undefined);
+  sim.chamadas = []; env.ANTHROPIC_WORKSPACE_ID = "wrkspc_123";
+  await conselho();
+  assert.equal(so("claude")[0].headers["anthropic-workspace-id"], "wrkspc_123");
 });
 
 test("7. sem ANTHROPIC_API_KEY, tudo vai pro Gemini sem erro", async () => {
