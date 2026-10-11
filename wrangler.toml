@@ -28,3 +28,12 @@ database_id = "3ad57fe0-f600-42fc-8239-284b170694f9"
 # e extrai 5 pautas (handler "scheduled" no worker.js, docs/pautas-prompt-claude-code.md).
 [triggers]
 crons = ["0 9 * * *"]
+
+# Qual IA responde em cada rota (docs/claude-no-motor-prompt.md): "claude" ou "gemini".
+# Pra voltar ao Gemini, troque a palavra e rode `npx wrangler deploy`.
+# Sem o secret ANTHROPIC_API_KEY, tudo vai pro Gemini sozinho; se o Claude falhar
+# (rede, tempo, 429, 5xx, chave, credito), a chamada e refeita no Gemini equivalente.
+[vars]
+IA_COUNCIL = "claude"   # conselho: Sonnet 5.5 (normal) / Opus 5.5 (mais inteligente)
+IA_VERDICT = "claude"   # veredito: Opus 5.5
+IA_PAUTAS = "claude"    # pautas: Sonnet 5.5 nas duas chamadas

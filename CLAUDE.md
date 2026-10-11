@@ -110,7 +110,7 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 | `wrangler.toml` | — | deploy do motor: nome, `main`, compat date, bindings do D1, cron das pautas |
 | `scripts/catalogo-pautas.py` | — | gera `data/catalogo-pautas.json` (+ `-texto.ndjson`) a partir de `BOOKS`; rodar ao mexer na estante |
 | `data/` | 2,3 MB | catálogo publicado pelo site e lido pelo motor (pautas) |
-| `testes/` | — | `node --test testes/*.test.mjs` — motor das pautas com SQLite real + Gemini simulado, e a aba com Playwright |
+| `testes/` | — | `node --test testes/*.test.mjs` — motor das pautas e Claude no motor com SQLite real + Gemini/Anthropic simulados, e a aba com Playwright. `fumaca-gemini.mjs` (fora do `--test`, pago) chama as rotas de verdade |
 | `classic.html` | 9,5 MB | interface antiga; tem o sync D1 funcionando e é a única que chama `/gen` |
 | `os.html` | 223 KB | variante; chama só `/council` |
 
@@ -118,19 +118,44 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 
 ## O motor
 
-`broad-heart-33a0.rodrigobondioli.workers.dev` · modelo `gemini-flash-latest` · D1 `superlivros-db` no binding `DB` · `GEMINI_API_KEY` como Secret (não vai no `wrangler.toml`, sobrevive a deploy).
+`broad-heart-33a0.rodrigobondioli.workers.dev` · Gemini (`gemini-3.8-flash`, `gemini-3.1-pro-preview`) + Claude (`claude-sonnet-5-5`, `claude-opus-5-5`) · D1 `superlivros-db` no binding `DB` · `GEMINI_API_KEY` e `ANTHROPIC_API_KEY` como Secrets (não vão no `wrangler.toml`, sobrevivem a deploy).
+
+**Quem responde cada rota** (`docs/claude-no-motor-prompt.md`): o Claude entra só onde o texto é o produto.
+
+| rota | Claude (padrão) | Gemini equivalente |
+|---|---|---|
+| `/council` | Sonnet 5.5, esforço `medium`, espera 80 s | Flash |
+| `/council` com ⚡ (`pro: true`) | Opus 5.5, esforço `high`, espera 140 s | Pro (→ Flash) |
+| `/verdict` | Opus 5.5, esforço `medium`, espera 90 s | Pro (→ Flash) |
+| pautas (candidatas e crítico) | Sonnet 5.5, esforço `medium`, espera 70 s | Flash |
+| todo o resto, inclusive `termosDeBusca` | — | Gemini, como antes |
+
+- **`askIA(env, rota, …)` é o único ponto que escolhe o provedor.** Interruptor por rota no `wrangler.toml`, `[vars]`: `IA_COUNCIL`, `IA_VERDICT`, `IA_PAUTAS` = `"claude"` ou `"gemini"`. Trocar a palavra exige `wrangler deploy`. Sem `ANTHROPIC_API_KEY`, tudo vai pro Gemini.
+- **Fallback:** rede, tempo esgotado, 429, 5xx, 401/403, crédito esgotado e recusa dos filtros de segurança refazem a chamada no Gemini equivalente e devolvem `caiu` (a tela avisa "o Claude não respondeu agora"). `muito_longo`, `parse` e outros 400 **não** caem: é bug nosso e tem que aparecer. Antes disso a própria API já tenta outro Claude em recusa (`fallbacks: "default"`).
+- `askClaudeModel` tem o mesmo contrato do `askGeminiModel`. O Claude não tem `responseMimeType`: o prompt ganha no fim "Responda apenas com o JSON pedido…" e o parse tira cercas e pega o primeiro `{…}`. O pensamento adaptativo conta no `max_tokens`, por isso o Claude recebe o dobro do teto do Gemini (mínimo 16.000).
+- **Banco de teste sem deploy:** cabeçalho `X-IA: claude|gemini` + `X-Index-Key` (o mesmo segredo do `/indexar`) força o provedor. Sem a chave certa, é ignorado.
+- A tela espera 130 s no conselho (230 s com ⚡): o tempo do Claude mais a refeita no Gemini.
 
 Rotas: `/council` `/brief` `/mente` `/cast` `/orient` `/verdict` `/ask` `/librarian` `/gen` + GET/POST na raiz (estado no D1). Pautas: `GET /pautas?dias=14`, `POST /pautas/filtro`, `POST /pautas/gerar` (cobrada), `POST /pautas/status`, mais o handler `scheduled` (cron diário).
 
 - **A citação (`quote`) só existe no `/council`.** `/ask` devolve só `resposta`.
 - Portão em todas as rotas: allowlist de origem (curl sem `Origin` → 403), 150 chamadas por IP por hora no D1 (→ 429), corpo acima de 3 MB (→ 413). Se o D1 cair, o limite é ignorado e o conselho continua respondendo.
-- Tabelas do D1: `state` (sync), `rl` (limite), `log` (uma linha por chamada cobrada: rota, IP, bytes, latência, status), `pautas` (as 5 do dia) e `config` (`pautas_cats_off`). Fora `state`, todas se criam sozinhas no `ensureSchema`.
-- **`maxOutputTokens`:** 3072 por padrão, **8192 no `/council`**. Resposta cortada devolve `muito_longo` (lê o `finishReason`), não um `parse` genérico.
+- Tabelas do D1: `state` (sync), `rl` (limite), `log` (uma linha por chamada cobrada: rota, IP, bytes, latência, status, modelo, `tok_in`/`tok_out` nas chamadas do Claude), `pautas` (as 5 do dia) e `config` (`pautas_cats_off`). Fora `state`, todas se criam sozinhas no `ensureSchema`.
+- **`maxOutputTokens`:** 3072 por padrão, **8192 no `/council`** (no Claude, `max_tokens` = dobro, mínimo 16.000). Resposta cortada devolve `muito_longo` (lê o `finishReason` do Gemini ou o `stop_reason` do Claude), não um `parse` genérico.
 
 **Ler o log do D1 exige terminal interativo** — o `wrangler` num shell não interativo pede `CLOUDFLARE_API_TOKEN`. Peça ao Rodrigo:
 ```
 npx wrangler d1 execute superlivros-db --remote --command "SELECT datetime(ts/1000,'unixepoch','-3 hours') h, rota, status, ms FROM log ORDER BY ts DESC LIMIT 10"
 ```
+
+**Gasto do mês por modelo** (tokens do Claude; as linhas do Gemini aparecem com `tok_in` vazio):
+```
+npx wrangler d1 execute superlivros-db --remote --command "SELECT modelo, COUNT(*) n, SUM(tok_in) tin, SUM(tok_out) tout FROM log WHERE ts > strftime('%s','now','start of month')*1000 GROUP BY modelo"
+```
+Conta, com os preços conferidos em platform.claude.com/docs/en/about-claude/pricing em **11/10/2026** (US$ por milhão de tokens):
+- `claude-sonnet-5-5`: entrada 2, saída 10 → **US$ = (tin × 2 + tout × 10) / 1.000.000**
+- `claude-opus-5-5`: entrada 4, saída 20 → **US$ = (tin × 4 + tout × 20) / 1.000.000**
+- `tout` já inclui o pensamento (é cobrado como saída). Cache não está ligado (ver Pendências), então `tin` é tudo preço cheio.
 
 ## Pautas (aba + cron)
 
@@ -165,7 +190,7 @@ Pontos que já morderam:
 
 ## Banco de teste — rode antes e depois de mexer no motor
 
-`node docs/evals/rodar.mjs <rotulo>` roda os 18 casos de `docs/evals/perguntas.json` contra o motor publicado (~US$ 1,50, ~6 min) e grava `docs/evals/<rotulo>/resultados.json`. `node docs/evals/comparar.mjs <a> <b>` gera um HTML lado a lado. Mede acerto da curadoria contra a mesa que o Rodrigo realmente usou (casos `real`), citações literais (a frase existe no dossiê/trechos) e tempo. **O VM do Cowork não alcança o `workers.dev`** — isso roda no Terminal do Mac.
+`node docs/evals/rodar.mjs <rotulo> [--ia claude|gemini]` roda os 18 casos de `docs/evals/perguntas.json` contra o motor publicado (~US$ 1,50, ~6 min) e grava `docs/evals/<rotulo>/resultados.json`. `node docs/evals/comparar.mjs <a> <b>` gera um HTML lado a lado. Mede acerto da curadoria contra a mesa que o Rodrigo realmente usou (casos `real`), citações literais (a frase existe no dossiê/trechos) e tempo. `--ia` força o provedor do conselho pelo `X-IA` (lê a chave de `.indice/chave`); com Claude a rodada fica em torno de US$ 2,50 (o conselho no Sonnet sai ~US$ 0,07 por caso, a curadoria segue no Gemini). **O VM do Cowork não alcança o `workers.dev`** — isso roda no Terminal do Mac.
 
 ## Adicionar livro novo
 
@@ -176,6 +201,6 @@ Dois caminhos, propósitos diferentes — ver `docs/pipeline-livros.md`.
 1. `/ask` não aceita `images[]` — o front já manda, o Worker precisa do patch.
 2. **Retrieval** — no plano gratuito, com busca por texto no D1 (FTS5), não Vectorize. Código pronto e testado, trechos extraídos; falta o Rodrigo ligar (`docs/plano-retrieval.md`, bloco "Estado"). **O Rodrigo não vai assinar Workers Paid** — não proponha nada que dependa dele.
 3. Saída do modelo entra no DOM sem sanitização (é proposital para permitir `<b>`, mas é HTML livre).
-4. Custo por turno cresce sem controle: `/council` remonta dossiês + histórico inteiros a cada turno, sem cache.
+4. Custo por turno cresce sem controle: `/council` remonta dossiês + histórico inteiros a cada turno, sem cache. **Cache de prompt do Claude não foi ligado** (out/2026): dá pra separar o prompt em blocos sem mudar o texto, mas a parte que se repete entre turnos é pequena, porque os trechos do retrieval (que mudam a cada pergunta) estão grudados em cada dossiê e o `@` (DIRECIONADO) entra antes do contexto. Pra valer a pena: no `councilPrompt`, mover os trechos e a linha DIRECIONADO pra depois dos dossiês (instruções + contexto + dossiês viram o bloco com `cache_control`; trechos + conversa vão no bloco seguinte). Isso muda a ordem do prompt, então passa pelo banco de teste antes. Leitura de cache no Sonnet/Opus 5.5 custa 5% da entrada.
 5. ~~Não existe avaliação~~ → `docs/evals/` (ver "Banco de teste"). O baseline precisa ser rodado no Mac antes de ligar o retrieval.
 6. `classic.html` (9,5 MB) — decidir se fica.

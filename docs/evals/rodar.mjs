@@ -6,7 +6,8 @@
 //   node docs/evals/comparar.mjs baseline retrieval
 //
 // Opções: --pro (conselho no modelo forte) · --so=r3-posicionamento,s5-procrastinacao · --sem-cast
-// Custo aproximado por rodada completa (18 casos): ~US$ 1,50.
+//         --ia claude|gemini (força o provedor do conselho sem deploy; usa a chave de .indice/chave)
+// Custo aproximado por rodada completa (18 casos): ~US$ 1,50 no Gemini; com --ia claude, ~US$ 2 (ver CLAUDE.md).
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -17,11 +18,19 @@ const MOTOR = process.env.MOTOR || "https://broad-heart-33a0.rodrigobondioli.wor
 const ORIGEM = "https://superlivros.rodrigobondioli.com";
 
 const args = process.argv.slice(2);
-const rotulo = (args.find((a) => !a.startsWith("--")) || "").replace(/[^a-z0-9_-]/gi, "");
+const rotulo = (args.find((a, k) => !a.startsWith("--") && args[k - 1] !== "--ia") || "").replace(/[^a-z0-9_-]/gi, "");
 if (!rotulo) { console.log("Uso: node docs/evals/rodar.mjs <rotulo>   (ex.: baseline)"); process.exit(1); }
 const PRO = args.includes("--pro");
 const SEM_CAST = args.includes("--sem-cast");
 const SO = ((args.find((a) => a.startsWith("--so=")) || "").slice(5)).split(",").filter(Boolean);
+const IA = (() => { const k = args.indexOf("--ia"); const v = k > -1 ? args[k + 1] : (args.find((a) => a.startsWith("--ia=")) || "").slice(5); return v || ""; })();
+if (IA && IA !== "claude" && IA !== "gemini") { console.log("--ia aceita claude ou gemini"); process.exit(1); }
+const EXTRA = {};
+if (IA) {
+  const chaveP = path.join(RAIZ, ".indice", "chave");
+  if (!fs.existsSync(chaveP)) { console.log("Falta .indice/chave (a mesma do indexar.mjs): sem ela o motor ignora o --ia."); process.exit(1); }
+  EXTRA["X-IA"] = IA; EXTRA["X-Index-Key"] = fs.readFileSync(chaveP, "utf8").trim();
+}
 
 // ---- estante: lida do index.html (as linhas gigantes; nunca abrir no editor) ----
 function linhaJSON(prefixo) {
@@ -50,7 +59,7 @@ async function post(rota, corpo, tentativas = 2) {
   for (let t = 0; t < tentativas; t++) {
     const t0 = Date.now();
     try {
-      const r = await fetch(MOTOR + rota, { method: "POST", headers: { "Content-Type": "application/json", Origin: ORIGEM }, body: JSON.stringify(corpo), signal: AbortSignal.timeout(170000) });
+      const r = await fetch(MOTOR + rota, { method: "POST", headers: { "Content-Type": "application/json", Origin: ORIGEM, ...EXTRA }, body: JSON.stringify(corpo), signal: AbortSignal.timeout(170000) });
       const j = await r.json().catch(() => ({}));
       if (r.ok) return { ok: true, j, ms: Date.now() - t0 };
       ultimo = (j.error || "http " + r.status) + (j.detail ? " — " + j.detail : "");
@@ -102,14 +111,14 @@ async function rodaCaso(c, idx) {
   const rr = await post("/council", { problem: c.problema, project: c.projeto || null, mentes: mesa.map((m) => ({ id: m.id, autor: m.autor, titulo: m.titulo, dossie: m.md })), history, pro: PRO, debug: true });
   if (rr.ok) {
     const reps = (rr.j.replies || []).map((r) => ({ ...r, literal: citacaoLiteral(r, mesa, rr.j.trechos) }));
-    out.council = { ms: rr.ms, modelo: rr.j.modelo || "", mesa: mesa.map((m) => ({ id: m.id, autor: m.autor, titulo: m.titulo })), replies: reps, fontes: rr.j.fontes || {}, deriva: rr.j.deriva || "", sugeridos: rr.j.sugeridos || [] };
+    out.council = { ms: rr.ms, modelo: rr.j.modelo || "", caiu: rr.j.caiu || "", mesa: mesa.map((m) => ({ id: m.id, autor: m.autor, titulo: m.titulo })), replies: reps, fontes: rr.j.fontes || {}, deriva: rr.j.deriva || "", sugeridos: rr.j.sugeridos || [] };
   } else out.council = { erro: rr.erro, mesa: mesa.map((m) => ({ id: m.id, autor: m.autor })) };
   return out;
 }
 
 const banco = JSON.parse(fs.readFileSync(path.join(AQUI, "perguntas.json"), "utf8"));
 const casos = banco.casos.filter((c) => !SO.length || SO.includes(c.id));
-console.log(`Rodando ${casos.length} casos contra ${MOTOR}${PRO ? " (conselho no Pro)" : ""}…`);
+console.log(`Rodando ${casos.length} casos contra ${MOTOR}${PRO ? " (conselho no modelo forte)" : ""}${IA ? " — IA forçada: " + IA : ""}…`);
 const res = new Array(casos.length);
 let prox = 0, feitos = 0;
 await Promise.all([0, 1, 2].map(async () => {
@@ -127,7 +136,7 @@ const media = (xs) => xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0;
 const comReal = res.filter((r) => r.cast && r.cast.de);
 const cits = res.flatMap((r) => (r.council && r.council.replies) ? r.council.replies.filter((x) => x.literal !== null) : []);
 const resumo = {
-  rotulo, quando: new Date().toISOString(), motor: MOTOR, pro: PRO,
+  rotulo, quando: new Date().toISOString(), motor: MOTOR, pro: PRO, ia: IA || "interruptor",
   casos: res.length,
   cast_acerto_mesa_real: comReal.length ? `${comReal.reduce((a, r) => a + r.cast.acertos, 0)}/${comReal.reduce((a, r) => a + r.cast.de, 0)}` : "-",
   cast_ms_medio: Math.round(media(res.filter((r) => r.cast && r.cast.ms).map((r) => r.cast.ms))),
