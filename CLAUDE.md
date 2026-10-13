@@ -179,6 +179,8 @@ Tudo em `localStorage`, 9 chaves com prefixo `slos_`. Sem conta, sem servidor. G
 
 `startFromOpening()` → `convene()` chama `/cast` e monta a mesa → cartão do curador + barra de confirmação → `startDebate()` trava a mesa e chama `/orient` (cartão de caminhos) → `sendReply()` → `callCouncil()` chama `/council`.
 
+**Dentro de um projeto, a mesa já está sentada:** o projeto não guarda mesa própria; `mesaDoProjeto()` pega a da conversa mais recente e o `newSubject()` a herda (`mesaHerdada`). O botão vira "Perguntar à mesa" e `startFromOpening()` manda a pergunta direto pro `callCouncil()`, sem `/cast`, sem cartão do curador e sem `/orient`. "montar uma mesa nova" (`descartarHerdada`) volta ao fluxo normal. Projeto sem conversa ainda monta do zero.
+
 Pontos que já morderam:
 - `selectProject()` chama `newSubject()`, que **zera a thread**. Clicar num projeto no meio de uma conversa avulsa apaga ela.
 - A mesa **deduplica por autor**, não por livro. Vários autores têm 2-3 livros na estante; oferecer o mesmo autor duas vezes cria uma mente que nunca fala. Filtre por `norm(autor)`.
