@@ -236,7 +236,7 @@
 {"hash": "1a7377fc90d91aacbcbcc5a8ae67e5af", "titulo": "Laws of UX 2nd Ed", "autor": "Jon Yablonski", "cat": "UX, UI & Produto"},
 {"hash": "a02ea642d00bf52bfc553c152916b219", "titulo": "Lean UX - Designing Great Produtcs With Agile Teams", "autor": "Jeff Gothelf", "cat": "UX, UI & Produto"},
 {"hash": "812470d5ee94964b5a1b8681e82d9fd6", "titulo": "Microcopy - The Complete Guide", "autor": "Kinneret Yifrah", "cat": "UX, UI & Produto"},
-{"hash": "4a9e64c6777a10fced3f5bbedad1b54e", "titulo": "Nao me faca pensar - atualizado - Portuguese Edition", "autor": "Steve Krug", "cat": "UX, UI & Produto"},
+{"hash": "4a9e64c6777a10fced3f5bbedad1b54e", "titulo": "Don't Make Me Think Revisited", "autor": "Steve Krug", "cat": "UX, UI & Produto"},
 {"hash": "28becebe4f9126e7966426855a2705ed", "titulo": "O design do dia a dia  Edição revista e ampliada", "autor": "Don Norman", "cat": "UX, UI & Produto"},
 {"hash": "33fd8be5f14f045f219b68067b6a342e", "titulo": "Practical UI", "autor": "Adham Dannaway", "cat": "UX, UI & Produto"},
 {"hash": "2d8c8674a6b1af8f441ec509d4c7d7de", "titulo": "Refactoring UI", "autor": "Steve Schoger", "cat": "UX, UI & Produto"},
@@ -307,5 +307,18 @@
 {"hash": "7014dbf8d1ae5542acb9884a6d3b6318", "titulo": "The Secrets of Consulting", "autor": "Gerald M Weinberg", "cat": "One Person Business"},
 {"hash": "34bdb83c84998fe317d3923955d84ee6", "titulo": "Create Once, Distribute Forever", "autor": "Ross Simmonds", "cat": "Conteúdo & Audiência"},
 {"hash": "4a0824f079f82db4dd2966e1288f2c6b", "titulo": "Epic Content Marketing", "autor": "Joe Pulizzi", "cat": "Conteúdo & Audiência"},
-{"hash": "018653cc6e4f84f465abad79dc290fa8", "titulo": "Day Trading Attention", "autor": "Gary Vaynerchuk", "cat": "Conteúdo & Audiência"}
+{"hash": "018653cc6e4f84f465abad79dc290fa8", "titulo": "Day Trading Attention", "autor": "Gary Vaynerchuk", "cat": "Conteúdo & Audiência"},
+{"hash": "2b859331c670534ea803b0aa2ed6a9eb", "titulo": "Web Form Design", "autor": "Luke Wroblewski", "cat": "UX, UI & Produto"},
+{"hash": "2767844d34d8931c8b2410c5ee92c421", "titulo": "Dog Sense", "autor": "John Bradshaw", "cat": "Dog"},
+{"hash": "460fe6a4ff85de5a6762aeb66af03865", "titulo": "Inside of a Dog", "autor": "Alexandra Horowitz", "cat": "Dog"},
+{"hash": "1f8f818b7bfbcecb9091a681cdcbd32c", "titulo": "The Genius of Dogs", "autor": "Brian Hare e Vanessa Woods", "cat": "Dog"},
+{"hash": "e278c74e29d9706e2661f050d77f6473", "titulo": "The Domestic Dog", "autor": "James Serpell (org.)", "cat": "Dog"},
+{"hash": "c7fb286401253423adaf4c0264d22483", "titulo": "The Hidden Life of Dogs", "autor": "Elizabeth Marshall Thomas", "cat": "Dog"},
+{"hash": "3410741dd09d18efbf2c9c970158f79e", "titulo": "The Social Lives of Dogs", "autor": "Elizabeth Marshall Thomas", "cat": "Dog"},
+{"hash": "3d713fe9a8e0780671beb20d094ec226", "titulo": "Don't Shoot the Dog", "autor": "Karen Pryor", "cat": "Dog"},
+{"hash": "cdddac60ae1bd8eb26821665f9f4df4a", "titulo": "The Book Your Dog Wishes You Would Read", "autor": "Louise Glazebrook", "cat": "Dog"},
+{"hash": "9e62f9be61d1b2a362ac973cce975625", "titulo": "The Business of Belonging", "autor": "David Spinks", "cat": "Comunidade"},
+{"hash": "8a67c4222e7d2d824d9f57536b60ff98", "titulo": "UX for AI", "autor": "Greg Nudelman", "cat": "UX, UI & Produto"},
+{"hash": "7e8873d2380a6a4a6d72475dc6f25d5e", "titulo": "AI for UX Designers", "autor": "Lise Pilot", "cat": "UX, UI & Produto"},
+{"hash": "774704983b24552d16cb82d722357205", "titulo": "Designing for AI", "autor": "Arash Sadr", "cat": "UX, UI & Produto"}
 ]
