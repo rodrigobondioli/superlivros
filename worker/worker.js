@@ -44,17 +44,18 @@ async function ensureSchema(env) {
   } catch (e) { /* sem banco o app segue, so nao mede */ }
 }
 
-async function limite(env, ip) {
+async function limite(env, ip, max, janelaSeg) {
   if (!env.DB) return { ok: true, n: 0 };
+  max = max || RL_MAX; janelaSeg = janelaSeg || RL_JANELA;
   const agora = Math.floor(Date.now() / 1000);
-  const janela = agora - (agora % RL_JANELA);
+  const janela = agora - (agora % janelaSeg);
   try {
     const row = await env.DB.prepare("SELECT n, janela FROM rl WHERE ip=?").bind(ip).first();
     if (!row || row.janela !== janela) {
       await env.DB.prepare("INSERT INTO rl (ip,n,janela) VALUES (?,1,?) ON CONFLICT(ip) DO UPDATE SET n=1, janela=excluded.janela").bind(ip, janela).run();
       return { ok: true, n: 1 };
     }
-    if (row.n >= RL_MAX) return { ok: false, n: row.n };
+    if (row.n >= max) return { ok: false, n: row.n };
     await env.DB.prepare("UPDATE rl SET n=n+1 WHERE ip=?").bind(ip).run();
     return { ok: true, n: row.n + 1 };
   } catch (e) { return { ok: true, n: 0 }; }    // banco fora do ar nunca derruba o conselho
@@ -1016,6 +1017,84 @@ async function pautasGerar(req, env, cors) {
   return comTokens(res, r);
 }
 
+/* ===== /trechos: material bruto dos livros pra Dinora (app.heydinora.com), servidor a servidor =====
+   Nenhuma IA escreve nada: no modo tema so o Flash traduz o tema em termos de busca (termosDeBusca, como o /cast).
+   Chave propria (DINORA_KEY no cabecalho X-Dinora-Key), 300 chamadas por dia. */
+const DINORA_MAX_DIA = 300, TRECHO_MAX = 1200, TEMA_POR_LIVRO = 3;
+function cortaTrecho(t) { return String(t || "").slice(0, TRECHO_MAX); }
+function livroSaida(b, trechos, fonte) { return { hash: b.hash, titulo: b.titulo, autor: b.autor, cat: b.cat, fonte: fonte, trechos: trechos.map(cortaTrecho) }; }
+async function trechosDinora(req, env, cors) {
+  let b = {};
+  try { const t = await req.text(); b = t.trim() ? JSON.parse(t) : {}; } catch (e) { return json({ error: "bad_json" }, 400, cors); }
+  if (!b || typeof b !== "object") b = {};
+  const cats = Array.isArray(b.cats) ? b.cats.map(String).filter(Boolean) : [];
+  const catOk = function (c) { return !cats.length || cats.indexOf(c) > -1; };
+  let catalogo = null;
+  try { catalogo = await catalogoPautas(env); } catch (e) { catalogo = null; }
+
+  // ---- modo livro: um hash, ou sorteio ----
+  if (b.livro || b.sorteio === true) {
+    const vazio = json({ modo: "livro", termos: [], livros: [] }, 200, cors);
+    if (!catalogo) return vazio;
+    let alvos;
+    if (b.livro) {
+      const h = String(b.livro).replace(/[^a-z0-9]/gi, "");
+      const achado = catalogo.filter(function (x) { return x.hash === h; })[0];
+      if (!achado) return json({ error: "livro_desconhecido" }, 404, cors);
+      alvos = [achado];
+    }
+    const evitar = {}; (Array.isArray(b.evitar) ? b.evitar : []).forEach(function (h) { evitar[String(h).replace(/[^a-z0-9]/gi, "")] = 1; });
+    const ligados = catalogo.filter(function (x) { return catOk(x.cat) && !evitar[x.hash]; });
+    const pulados = {};
+    for (let tentativa = 0; tentativa < 4; tentativa++) {
+      const alvo = alvos ? alvos[0] : sorteiaLivro(ligados, {}, pulados);
+      if (!alvo) return vazio;
+      let fonte = "indice", trechos = await trechosPautas(env, alvo.hash);
+      if (!trechos.length) { trechos = await resumoPautas(env, alvo.hash) || []; fonte = "resumo"; }
+      if (trechos.length) return json({ modo: "livro", termos: [], livros: [livroSaida(alvo, trechos, fonte)] }, 200, cors);
+      if (alvos) return vazio;
+      pulados[alvo.hash] = 1;      // nem trecho nem resumo: sorteia outro
+    }
+    return vazio;
+  }
+
+  // ---- modo tema ----
+  const tema = String(b.tema || "").trim();
+  if (!tema) return json({ error: "sem_entrada", detail: "mande tema, livro ou sorteio" }, 400, cors);
+  const n = Math.max(1, Math.min(30, parseInt(b.n, 10) || 12));
+  const vazioTema = function (termos) { return json({ modo: "tema", termos: termos || [], livros: [] }, 200, cors); };
+  if (!temIndice(env) || !catalogo) return vazioTema();
+  let termos = [];
+  try { termos = await termosDeBusca(env, tema); } catch (e) { termos = []; }
+  if (!termos.length) return vazioTema();
+  try {
+    const porHash = {}; catalogo.forEach(function (x) { porHash[x.hash] = x; });
+    // 1) so rowid e livro, em ordem de bm25: leve no CPU. 2) o texto so dos escolhidos.
+    const r = await env.TRECHOS.prepare("SELECT busca.rowid AS r, busca.livro AS livro FROM busca WHERE busca MATCH ? ORDER BY bm25(busca, 0, 1) LIMIT 300").bind(consultaFts(termos)).all();
+    const ordem = [], grupos = {};
+    let total = 0;
+    (((r && r.results) || [])).forEach(function (x) {
+      if (total >= n) return;
+      const l = String((x && x.livro) || ""), meta = porHash[l];
+      if (!meta || !catOk(meta.cat)) return;
+      if (!grupos[l]) { grupos[l] = []; ordem.push(l); }
+      if (grupos[l].length >= TEMA_POR_LIVRO) return;   // no maximo 3 por livro: vem variedade de livros
+      grupos[l].push(x.r); total++;
+    });
+    if (!total) return vazioTema(termos);
+    const ids = [].concat.apply([], ordem.map(function (l) { return grupos[l]; }));
+    const st = env.TRECHOS.prepare("SELECT rowid AS r, txt FROM trechos WHERE rowid IN (" + ids.map(function () { return "?"; }).join(",") + ")");
+    const q = await st.bind.apply(st, ids).all();
+    const txt = {}; (((q && q.results) || [])).forEach(function (x) { txt[x.r] = String(x.txt || ""); });
+    const livros = ordem.filter(function (l) { return grupos[l].length; }).map(function (l) {
+      return livroSaida(porHash[l], grupos[l].map(function (id) { return txt[id]; }).filter(Boolean), "indice");
+    }).filter(function (x) { return x.trechos.length; });
+    const res = json({ modo: "tema", termos: termos, livros: livros }, 200, cors);
+    res.headers.set("X-Modelo", FLASH);
+    return res;
+  } catch (e) { return vazioTema(termos); }
+}
+
 function json(obj, status, cors) {
   return new Response(JSON.stringify(obj), { status: status || 200, headers: Object.assign({ "Content-Type": "application/json" }, cors) });
 }
@@ -1036,6 +1115,21 @@ export default {
     if (rota === "/indexar" && req.method === "POST") {
       if (!env.INDEX_KEY || req.headers.get("X-Index-Key") !== env.INDEX_KEY) return json({ error: "chave" }, 403, cors);
       try { return await indexar(req, env, cors); } catch (e) { return json({ error: String(e) }, 500, cors); }
+    }
+    // Dinora: servidor a servidor, sem Origin. Chave propria, limite diario proprio, mesmo log.
+    if (rota === "/trechos" && req.method === "POST") {
+      if (!env.DINORA_KEY || req.headers.get("X-Dinora-Key") !== env.DINORA_KEY) return json({ error: "chave" }, 403, cors);
+      const entradaD = parseInt(req.headers.get("Content-Length") || "0", 10) || 0;
+      if (entradaD > BODY_MAX) return json({ error: "corpo_grande_demais" }, 413, cors);
+      await ensureSchema(env);
+      const limD = await limite(env, "dinora", DINORA_MAX_DIA, 86400);
+      if (!limD.ok) return json({ error: "limite", detail: "300 chamadas por dia" }, 429, cors);
+      const t0D = Date.now();
+      let resD;
+      try { resD = await trechosDinora(req, env, cors); } catch (e) { resD = json({ modo: "", termos: [], livros: [] }, 200, cors); }
+      const dD = { rota: "/trechos", ip: ip, entrada: entradaD, ms: Date.now() - t0D, status: resD.status, modelo: resD.headers.get("X-Modelo") || "" };
+      if (ctx && ctx.waitUntil) ctx.waitUntil(registra(env, dD)); else await registra(env, dD);
+      return resD;
     }
     // toda rota que custa dinheiro passa pelo portao
     const CUSTA = ["/council", "/brief", "/mente", "/cast", "/orient", "/verdict", "/ask", "/librarian", "/gen", "/pautas/gerar"];

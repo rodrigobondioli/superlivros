@@ -110,7 +110,7 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 | `wrangler.toml` | — | deploy do motor: nome, `main`, compat date, bindings do D1, cron das pautas |
 | `scripts/catalogo-pautas.py` | — | gera `data/catalogo-pautas.json` (+ `-texto.ndjson`) a partir de `BOOKS`; rodar ao mexer na estante |
 | `data/` | 2,3 MB | catálogo publicado pelo site e lido pelo motor (pautas) |
-| `testes/` | — | `node --test testes/*.test.mjs` — motor das pautas e Claude no motor com SQLite real + Gemini/Anthropic simulados, e a aba com Playwright. `fumaca-gemini.mjs` (fora do `--test`, pago) chama as rotas de verdade |
+| `testes/` | — | `node --test testes/*.test.mjs` — motor das pautas, Claude no motor e `/trechos` com SQLite real + Gemini/Anthropic simulados, e a aba com Playwright. `fumaca-gemini.mjs` (fora do `--test`, pago) chama as rotas de verdade |
 | `classic.html` | 9,5 MB | interface antiga; tem o sync D1 funcionando e é a única que chama `/gen` |
 | `os.html` | 223 KB | variante; chama só `/council` |
 
@@ -118,7 +118,7 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 
 ## O motor
 
-`broad-heart-33a0.rodrigobondioli.workers.dev` · Gemini (`gemini-3.8-flash`, `gemini-3.1-pro-preview`) + Claude (`claude-sonnet-5-5`, `claude-opus-5-5`) · D1 `superlivros-db` no binding `DB` · `GEMINI_API_KEY` e `ANTHROPIC_API_KEY` como Secrets (não vão no `wrangler.toml`, sobrevivem a deploy).
+`broad-heart-33a0.rodrigobondioli.workers.dev` · Gemini (`gemini-3.8-flash`, `gemini-3.1-pro-preview`) + Claude (`claude-sonnet-5-5`, `claude-opus-5-5`) · D1 `superlivros-db` no binding `DB` · `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `INDEX_KEY` e `DINORA_KEY` como Secrets (não vão no `wrangler.toml`, sobrevivem a deploy).
 
 **Quem responde cada rota** (`docs/claude-no-motor-prompt.md`): o Claude entra só onde o texto é o produto.
 
@@ -137,7 +137,13 @@ São dois comandos separados: mexeu em `index.html` → `git push`. Mexeu em `wo
 - **Banco de teste sem deploy:** cabeçalho `X-IA: claude|gemini` + `X-Index-Key` (o mesmo segredo do `/indexar`) força o provedor. Sem a chave certa, é ignorado.
 - A tela espera 130 s no conselho (230 s com ⚡): o tempo do Claude mais a refeita no Gemini.
 
-Rotas: `/council` `/brief` `/mente` `/cast` `/orient` `/verdict` `/ask` `/librarian` `/gen` + GET/POST na raiz (estado no D1). Pautas: `GET /pautas?dias=14`, `POST /pautas/filtro`, `POST /pautas/gerar` (cobrada), `POST /pautas/status`, mais o handler `scheduled` (cron diário).
+Rotas: `/council` `/brief` `/mente` `/cast` `/orient` `/verdict` `/ask` `/librarian` `/gen` + GET/POST na raiz (estado no D1). Pautas: `GET /pautas?dias=14`, `POST /pautas/filtro`, `POST /pautas/gerar` (cobrada), `POST /pautas/status`, mais o handler `scheduled` (cron diário). Dinorá: `POST /trechos` (ver abaixo).
+
+**`POST /trechos` — material bruto pra Dinorá** (app.heydinora.com, servidor a servidor). Nenhuma IA escreve: só devolve trechos.
+- Acesso: cabeçalho `X-Dinora-Key` = secret `DINORA_KEY` (sem ou errada → 403). Pula o portão de origem (vem sem `Origin`), mantém `BODY_MAX`, grava no `log` com rota `/trechos` e tem limite próprio de **300 por dia** na `rl` (chave `dinora`, janela diária UTC → 429).
+- Modo tema: `{ "tema": "...", "cats": [...]?, "n": 12 }`. `termosDeBusca` (uma chamada curta no Flash, como o `/cast`) + bm25 na `busca`; `n` é o total de trechos, no máximo 3 por livro; `cats` filtra pelo `catalogoPautas`. Busca primeiro só `rowid`+`livro` e depois o texto dos escolhidos, pra caber nos 10 ms de CPU.
+- Modo livro: `{ "livro": "<hash>" }` ou `{ "sorteio": true, "cats": [...]?, "evitar": ["<hash>"] }`. Reusa `trechosPautas` → `resumoPautas` (livro escaneado vem do resumo, `fonte: "resumo"`) e `sorteiaLivro`. Hash fora do catálogo → 404.
+- Saída: `{ modo, termos, livros: [{ hash, titulo, autor, cat, fonte, trechos }] }`, cada trecho com no máximo 1200 caracteres. Sem índice, sem catálogo ou busca vazia: `livros: []` com 200.
 
 - **A citação (`quote`) só existe no `/council`.** `/ask` devolve só `resposta`.
 - Portão em todas as rotas: allowlist de origem (curl sem `Origin` → 403), 150 chamadas por IP por hora no D1 (→ 429), corpo acima de 3 MB (→ 413). Se o D1 cair, o limite é ignorado e o conselho continua respondendo.
